@@ -12,6 +12,10 @@ export default defineNuxtConfig({
         'pinia-plugin-persistedstate/nuxt'
     ],
 
+    typescript: {
+        typeCheck: true,
+    },
+
     shadcn: {
         prefix: '',
         componentDir: './components/ui'

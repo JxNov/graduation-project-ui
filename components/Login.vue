@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
+const router = useRouter()
 const {toast} = useToast()
 
 const formSchema = toTypedSchema(z.object({
@@ -106,7 +107,7 @@ const onSubmit = handleSubmit((values) => {
             @edu.vn
           </Button>
 
-          <Button class="w-full mt-2" variant="secondary" @click="() => $router.push('/')">
+          <Button class="w-full mt-2" variant="secondary" @click="() => router.push('/')">
             Back to Home
           </Button>
         </div>
