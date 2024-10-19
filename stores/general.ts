@@ -1,23 +1,34 @@
-import {defineStore} from "pinia";
-import {ref} from "vue";
+import {defineStore} from 'pinia';
+import {ref} from 'vue';
 
-export const useGeneralStore = defineStore("general", () => {
+export const useGeneralStore = defineStore('general', () => {
+    const {$axios} = useNuxtApp();
+    const config = useRuntimeConfig();
+
     const isLogged = ref<boolean>(false);
 
-    const fetchPermissions = async () => {
-        const {$axios} = useNuxtApp();
-
+    const getCsrfToken = async () => {
         try {
-            const response = await $axios.get("/v1/permissions");
-            console.log(response);
+            const response = await $axios.get(`${config.public.baseApi}/sanctum/csrf-cookie`);
+
+            if (!response) {
+                throw new Error('Invalid response');
+            }
+
+            return response;
         } catch (error) {
             console.error(error);
         }
     }
 
+    const clearGeneral = () => {
+        isLogged.value = false;
+    }
+
     return {
         isLogged,
-        fetchPermissions,
+        getCsrfToken,
+        clearGeneral,
     }
 }, {
     persist: true,

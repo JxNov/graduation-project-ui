@@ -1,0 +1,24 @@
+<script setup lang="ts">
+import type {NavLink} from '~/types/nav'
+
+const route = useRoute()
+
+defineProps<{
+  item: NavLink
+}>()
+</script>
+
+<template>
+  <SheetClose as-child>
+    <NuxtLink
+        :to="item.link"
+        :class="[
+        { 'bg-muted': item.link === route.path },
+      ]"
+        class="flex items-center gap-4 rounded-lg px-3 py-2 text-sm text-foreground font-normal hover:bg-muted"
+    >
+      <Icon v-if="item.icon" :name="item.icon" size-4.5/>
+      {{ item.title }}
+    </NuxtLink>
+  </SheetClose>
+</template>
