@@ -75,11 +75,10 @@ const table = useVueTable({
   getFacetedRowModel: getFacetedRowModel(),
   getFacetedUniqueValues: getFacetedUniqueValues(),
 })
-
 </script>
 
 <template>
-  <div class="space-y-4 bg-white p-4 rounded-md shadow">
+  <div class="space-y-4 bg-card p-4 rounded-md shadow">
     <DataTableToolbar :table="table" :filters="filters" :reload-data="reloadData"/>
 
     <div class="rounded-md border">

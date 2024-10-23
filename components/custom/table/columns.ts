@@ -1,76 +1,47 @@
-import type {ColumnDef} from '@tanstack/vue-table'
+import type {ColumnDef, HeaderContext, CellContext} from '@tanstack/vue-table'
 import {h} from 'vue'
 import DataTableColumnHeader from './DataTableColumnHeader.vue'
 import DataTableRowActions from './DataTableRowActions.vue'
 import {Checkbox} from '~/components/ui/checkbox'
-import type {Interface} from "node:readline";
 
-// export const createColumns = (fields: any[][], schema: object, dialogEdit: Component, dialogDelete: Component): ColumnDef<Interface>[] => {
-//     return fields.map(([field, title, className, option]) => {
-//         if (field === 'select') {
-//             return {
-//                 id: 'select',
-//                 header: ({table}) => h(Checkbox, {
-//                     'checked': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-//                     'onUpdate:checked': value => table.toggleAllPageRowsSelected(!!value),
-//                     'ariaLabel': 'Select all',
-//                     'class': 'translate-y-0.5',
-//                 }),
-//                 cell: ({row}) => h(Checkbox, {
-//                     'checked': row.getIsSelected(),
-//                     'onUpdate:checked': value => row.toggleSelected(!!value),
-//                     'ariaLabel': 'Select row',
-//                     'class': 'translate-y-0.5',
-//                 }),
-//                 enableSorting: false,
-//                 enableHiding: false,
-//             }
-//         }
-//
-//         if (field === 'actions') {
-//             return {
-//                 id: 'actions',
-//                 header: 'Actions',
-//                 cell: ({row}) => h(DataTableRowActions, {}, {
-//                         edit: () => h(dialogEdit, {row, schema}),
-//                         delete: () => h(dialogDelete, {row, schema}),
-//                     }
-//                 ),
-//             }
-//         }
-//
-//         return {
-//             accessorKey: field,
-//             header: ({column}) => h(DataTableColumnHeader, {column, title}),
-//             cell: ({row}) => h('div', {class: className}, row.getValue(field)),
-//             ...option,
-//             filterFn: (row, id, value) => {
-//                 return value.includes(row.getValue(id))
-//             },
-//         }
-//     })
-// }
+type RowData = Record<string, any>;
+type CustomField = {
+    accessorKey: string,
+    title: string,
+    render: (row: RowData) => any,
+    options?: object,
+    before?: string,
+    after?: string,
+};
 
 export const createColumns = (
     fields: any[][],
     schema: object,
+    customFields: CustomField[] = [],
     nameEmitEdit: string,
     nameEmitDelete: string,
-): ColumnDef<Interface>[] => {
-    return fields.map(
+    permissionEdit: string,
+    permissionDelete: string,
+): ColumnDef<RowData>[] => {
+    const {$generalStore} = useNuxtApp()
+    const userPermissions = $generalStore.userPermissions
+    const canEdit = userPermissions.includes(permissionEdit)
+    const canDelete = userPermissions.includes(permissionDelete)
+
+    let columns = fields.map(
         ([field, title, className, option]) => {
             if (field === 'select') {
                 return {
                     id: 'select',
-                    header: ({table}) => h(Checkbox, {
+                    header: ({table}: HeaderContext<RowData, unknown>) => h(Checkbox, {
                         'checked': table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate'),
-                        'onUpdate:checked': value => table.toggleAllPageRowsSelected(!!value),
+                        'onUpdate:checked': (value: boolean) => table.toggleAllPageRowsSelected(!!value),
                         'ariaLabel': 'Select all',
                         'class': 'translate-y-0.5',
                     }),
-                    cell: ({row}) => h(Checkbox, {
+                    cell: ({row}: CellContext<RowData, unknown>) => h(Checkbox, {
                         'checked': row.getIsSelected(),
-                        'onUpdate:checked': value => row.toggleSelected(!!value),
+                        'onUpdate:checked': (value: boolean) => row.toggleSelected(!!value),
                         'ariaLabel': 'Select row',
                         'class': 'translate-y-0.5',
                     }),
@@ -79,23 +50,70 @@ export const createColumns = (
                 }
             }
 
-            if (field === 'actions') {
+            if (field === 'actions' && (canEdit || canDelete)) {
                 return {
                     id: 'actions',
-                    header: 'Actions',
-                    cell: ({row}) => h(DataTableRowActions, {row, schema, nameEmitEdit, nameEmitDelete}
-                    ),
+                    accessorKey: 'actions',
+                    cell: ({row}: CellContext<RowData, unknown>) => h(DataTableRowActions, {
+                        row,
+                        schema,
+                        nameEmitEdit,
+                        nameEmitDelete,
+                        permissionEdit: canEdit,
+                        permissionDelete: canDelete,
+                    }),
                 }
             }
 
             return {
                 accessorKey: field,
-                header: ({column}) => h(DataTableColumnHeader, {column, title}),
-                cell: ({row}) => h('div', {class: className}, row.getValue(field)),
+                header: ({column}: HeaderContext<RowData, unknown>) => h(DataTableColumnHeader, {column, title}),
+                cell: ({row}: CellContext<RowData, unknown>) => h('div', {class: className}, row.getValue(field)),
                 ...option,
-                filterFn: (row, id, value) => {
+                filterFn: (row: RowData, id: string, value: string[]) => {
                     return value.includes(row.getValue(id))
                 },
             }
-        })
+        }
+    )
+
+    customFields.forEach(customField => {
+        const column = {
+            accessorKey: customField.accessorKey,
+            header: ({column}: HeaderContext<RowData, unknown>) => h(DataTableColumnHeader, {
+                column,
+                title: customField.title
+            }),
+            cell: ({row}: CellContext<RowData, unknown>) => customField.render(row),
+            ...customField.options,
+            filterFn: (row: RowData, id: string, value: string[]) => {
+                if (Array.isArray(row.getValue(id))) {
+                    // return value.some(v => row.getValue(id).includes(v))
+
+                    // Fix filter for array value
+                    return value.some(v => row.getValue(id).some((val: any) => val.includes(v)))
+                }
+            },
+        }
+
+        if (customField.before) {
+            const index = columns.findIndex(col => col.accessorKey === customField.before)
+            if (index !== -1) {
+                columns.splice(index, 0, column)
+            } else {
+                columns.push(column)
+            }
+        } else if (customField.after) {
+            const index = columns.findIndex(col => col.accessorKey === customField.after)
+            if (index !== -1) {
+                columns.splice(index + 1, 0, column)
+            } else {
+                columns.push(column)
+            }
+        } else {
+            columns.push(column)
+        }
+    })
+
+    return columns
 }

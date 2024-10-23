@@ -16,7 +16,7 @@ export default defineNuxtPlugin((NuxtApp) => {
             return response;
         },
         async (error) => {
-            const {$generalStore, $userStore} = useNuxtApp();
+            const {$generalStore, $authStore} = useNuxtApp();
             const router = useRouter();
 
             const processQueue = (error: any) => {
@@ -36,7 +36,7 @@ export default defineNuxtPlugin((NuxtApp) => {
                     isRefreshing = true;
 
                     try {
-                        await $userStore.refreshToken();
+                        await $authStore.refreshToken();
                         processQueue(null);
                         return axios.request(error.config);
                     } catch (err) {

@@ -2,9 +2,10 @@ import type {NavMenuItems} from '~/types/nav'
 
 export const navMenu: NavMenuItems = [
     {
-        title: 'Home',
+        title: 'Dashboard',
         icon: 'i-lucide-home',
-        link: '/',
+        link: '/admin',
+        permissions: [],
     },
     {
         title: 'General',
@@ -14,26 +15,31 @@ export const navMenu: NavMenuItems = [
                 title: 'Generations',
                 icon: 'fluent:people-team-16-regular',
                 link: '/admin/generations',
+                permissions: [],
             },
             {
                 title: 'Students',
                 icon: 'ph:student',
-                link: '/students',
+                link: '/admin/students',
+                permissions: [],
             },
             {
                 title: 'Teachers',
                 icon: 'hugeicons:teaching',
-                link: '/teachers',
+                link: '/admin/teachers',
+                permissions: [],
             },
             {
                 title: 'Subjects',
                 icon: 'carbon:document-subject',
-                link: '/subjects',
+                link: '/admin/subjects',
+                permissions: [],
             },
             {
                 title: 'Classes',
                 icon: 'eos-icons:product-classes-outlined',
-                link: '/classes',
+                link: '/admin/classes',
+                permissions: [],
             },
         ],
     },
@@ -41,6 +47,13 @@ export const navMenu: NavMenuItems = [
         title: 'Roles',
         icon: 'eos-icons:role-binding-outlined',
         link: '/admin/roles',
+        permissions: [],
+    },
+    {
+        title: 'Users',
+        icon: 'fluent:people-20-regular',
+        link: '/admin/users',
+        permissions: [],
     },
 ]
 

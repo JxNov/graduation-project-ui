@@ -7,12 +7,12 @@ import {toast} from "vue-sonner";
 
 const {$roleStore, $bus} = useNuxtApp();
 
-interface DialogEditAuthorityProps {
+interface DialogEditRoleProps {
   data?: any,
   edit?: boolean,
 }
 
-const props = defineProps<DialogEditAuthorityProps>()
+const props = defineProps<DialogEditRoleProps>()
 
 const isLoading = ref<boolean>(false)
 const selectAll = ref<boolean>(false);

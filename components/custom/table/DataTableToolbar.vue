@@ -14,6 +14,8 @@ interface DataTableToolbarProps {
   reloadData: () => void
 }
 
+const {$bus} = useNuxtApp();
+
 const props = defineProps<DataTableToolbarProps>()
 
 const isFiltered = computed(() => props.table.getState().columnFilters.length > 0)
@@ -23,7 +25,13 @@ const debouncedSearch = refDebounced(searchValue, 250)
 
 watch(debouncedSearch, (value) => {
   props.table.setGlobalFilter(value.trim())
-})
+});
+
+const handleReset = () => {
+  props.table.resetColumnFilters();
+  searchValue.value = '';
+  $bus.emit('reset-filters');
+};
 </script>
 
 <template>
@@ -47,7 +55,7 @@ watch(debouncedSearch, (value) => {
           v-if="isFiltered || searchValue"
           variant="ghost"
           class="h-8 px-2 lg:px-3"
-          @click="table.resetColumnFilters(); searchValue = ''"
+          @click="handleReset"
       >
         Reset
         <Cross2Icon class="ml-2 h-4 w-4"/>

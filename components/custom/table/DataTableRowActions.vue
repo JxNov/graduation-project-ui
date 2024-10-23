@@ -17,6 +17,8 @@ interface DialogEditAuthorityProps {
   schema: any,
   nameEmitEdit: string,
   nameEmitDelete: string,
+  permissionEdit: boolean,
+  permissionDelete: boolean,
 }
 
 const props = defineProps<DialogEditAuthorityProps>()
@@ -43,12 +45,12 @@ const handleDelete = () => {
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end" class="w-[160px]">
-      <DropdownMenuItem @click="handleEdit">
+      <DropdownMenuItem @click="handleEdit" v-if="permissionEdit">
         Edit
       </DropdownMenuItem>
-      <DropdownMenuSeparator/>
+      <DropdownMenuSeparator v-if="permissionEdit && permissionDelete"/>
 
-      <DropdownMenuItem @click="handleDelete">
+      <DropdownMenuItem @click="handleDelete" v-if="permissionDelete">
         Delete
       </DropdownMenuItem>
     </DropdownMenuContent>
