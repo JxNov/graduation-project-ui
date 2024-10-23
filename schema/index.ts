@@ -9,3 +9,6 @@ export type {Permission} from './permission'
 
 export {generationSchema} from './generation'
 export type {Generation} from './generation'
+
+export {userSchema} from './user'
+export type {User} from './user'

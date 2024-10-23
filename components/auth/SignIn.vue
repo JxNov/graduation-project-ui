@@ -5,7 +5,7 @@ import {toTypedSchema} from '@vee-validate/zod';
 import {z} from 'zod';
 import {toast} from 'vue-sonner'
 
-const {$userStore, $generalStore} = useNuxtApp();
+const {$authStore, $generalStore} = useNuxtApp();
 
 const isLoading = ref<boolean>(false)
 
@@ -22,7 +22,7 @@ const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
   try {
-    await $userStore.login(values)
+    await $authStore.login(values)
     if (!$generalStore.isLogged) {
       throw new Error('Login failed!')
     }
@@ -76,11 +76,4 @@ const onSubmit = handleSubmit(async (values) => {
       Login with Google
     </Button>
   </form>
-
-  <div class="mt-4 text-center text-sm text-muted-foreground">
-    Don't have an account?
-    <NuxtLink to="/register" class="underline">
-      Sign up
-    </NuxtLink>
-  </div>
 </template>

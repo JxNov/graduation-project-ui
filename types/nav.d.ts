@@ -1,17 +1,18 @@
 export interface NavLink {
-  title: string
-  link: string
-  icon?: string
+    title: string
+    link: string
+    icon?: string
+    permissions?: string[]
 }
 
 export interface NavSectionTitle {
-  heading: string
+    heading: string
 }
 
 export interface NavGroup {
-  title: string
-  icon?: string
-  children: NavLink[]
+    title: string
+    icon?: string
+    children: NavLink[]
 }
 
 export declare type NavMenuItems = (NavLink | NavGroup | NavSectionTitle)[]

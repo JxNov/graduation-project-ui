@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import type {ColumnDef} from "@tanstack/vue-table";
 import type {Role} from "~/schema";
+import type {TableFilter} from "~/types/table";
 import {roleSchema} from "~/schema";
+import {useThrottle} from "~/composables/useThrottle";
 import {createColumns} from "~/components/custom/table/columns";
+import {showElement} from '~/utils/showElement';
+import {extractValue} from "~/utils/extractValue";
 import {RoleDialogCreateEdit, RoleDialogDelete} from "~/components/custom/dialog/role";
 import {toast} from "vue-sonner";
-import {useThrottle} from "~/composables/useThrottle";
+import {Badge} from "~/components/ui/badge";
 
-const {$roleStore, $bus} = useNuxtApp();
+const {$generalStore, $roleStore, $bus} = useNuxtApp();
 
 onMounted(async () => {
   if (!$roleStore.modules.length) {
@@ -26,46 +30,81 @@ onMounted(async () => {
 const isCreating = ref<boolean>(false);
 const isEditing = ref(false);
 const isDeleting = ref(false);
-let selectedRole = reactive<Role | object>({});
+const selectedRole = ref<Role | object>({});
 
 $bus.on('open-dialog-edit-role', (row: Role) => {
   isEditing.value = true;
-  selectedRole = row;
+  selectedRole.value = row;
 })
 
 $bus.on('open-dialog-delete-role', (row: Role) => {
   isDeleting.value = true;
-  selectedRole = row;
+  selectedRole.value = row;
 })
 
 $bus.on('close-dialog-create-edit-role', (value: boolean) => {
   isCreating.value = value;
   isEditing.value = value;
-  selectedRole = {};
+  selectedRole.value = {};
 })
 
 $bus.on('close-dialog-delete-role', (value: boolean) => {
   isDeleting.value = value;
-  selectedRole = {};
+  selectedRole.value = {};
 })
 
-const valueRoles = $roleStore.roles.map((role: Role) => {
-  return {label: role.name, value: role.name}
-})
+const columns = createColumns(
+    [
+      ['select'],
+      ['name', 'Role'],
+      ['actions'],
+    ],
+    roleSchema,
+    [
+      {
+        accessorKey: 'permissions',
+        title: 'Permissions',
+        render: (row) => h('div', {class: 'truncate w-80'},
+            row.original.permissions.map((permission: any) => h(Badge, {
+              variant: 'outline',
+              class: 'mr-1',
+            }, () => permission))
+        ),
+        options: {
+          enableSorting: false,
+        },
+        before: 'actions',
+      },
+    ],
+    'open-dialog-edit-role',
+    'open-dialog-delete-role',
+    'users.update',
+    'users.delete'
+) as ColumnDef<Role>[]
 
-const columns = createColumns([
-  ['select'],
-  ['name', 'Role', 'w-1/3'],
-  ['actions'],
-], roleSchema, 'open-dialog-edit-role', 'open-dialog-delete-role') as ColumnDef<Role>[]
+const valueRoles = extractValue($roleStore.roles, 'name');
+const valuePermissions = extractValue($roleStore.roles, 'permissions');
 
-const filters = [
+const filters: TableFilter[] = [
   {
     name: 'name',
     label: 'Role',
     values: valueRoles,
   },
+  {
+    name: 'permissions',
+    label: 'Permissions',
+    values: valuePermissions,
+  },
 ]
+
+watch(() => $roleStore.roles, (newValue) => {
+  const valueRoles = extractValue(newValue, 'name');
+  const valuePermissions = extractValue(newValue, 'permissions');
+
+  filters[0].values = valueRoles;
+  filters[1].values = valuePermissions;
+})
 
 const reloadData = useThrottle(() => {
   const promise = () => $roleStore.reloadData();
@@ -86,15 +125,19 @@ const handleCloseDialog = () => {
   isCreating.value = false;
   isEditing.value = false;
   isDeleting.value = false;
-  selectedRole = {};
+  selectedRole.value = {};
 }
+
+const shouldShowElement = computed(() => {
+  return showElement($generalStore.userPermissions, ['users.create']);
+});
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Roles</h2>
-      <Button variant="default" @click="isCreating = true">
+      <h2 class="text-4xl font-bold tracking-tight">Manage Roles</h2>
+      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
         Create new role
       </Button>
     </div>

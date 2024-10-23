@@ -1,11 +1,12 @@
 import {defineStore} from 'pinia';
-import {ref} from 'vue';
 
 export const useGeneralStore = defineStore('general', () => {
     const {$axios} = useNuxtApp();
     const config = useRuntimeConfig();
 
     const isLogged = ref<boolean>(false);
+    const userRoles = ref<string[]>([]);
+    const userPermissions = ref<string[]>([]);
 
     const getCsrfToken = async () => {
         try {
@@ -23,10 +24,14 @@ export const useGeneralStore = defineStore('general', () => {
 
     const clearGeneral = () => {
         isLogged.value = false;
+        userRoles.value = [];
+        userPermissions.value = [];
     }
 
     return {
         isLogged,
+        userRoles,
+        userPermissions,
         getCsrfToken,
         clearGeneral,
     }

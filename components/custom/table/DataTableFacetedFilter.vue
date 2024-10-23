@@ -23,10 +23,40 @@ interface DataTableFacetedFilter {
   options: TableValueFilter[]
 }
 
+const {$bus} = useNuxtApp();
 const props = defineProps<DataTableFacetedFilter>()
 
-const facets = computed(() => props.column?.getFacetedUniqueValues())
-const selectedValues = computed(() => new Set(props.column?.getFilterValue() as string[]))
+const processFacetedUniqueValues = (uniqueValues: Map<any, number>): Map<string, number> => {
+  const mergedFacets = new Map();
+
+  uniqueValues.forEach((count, key) => {
+    const values = Array.isArray(key) ? key : [key];
+
+    const uniqueEntryKeys = new Set(values);
+
+    uniqueEntryKeys.forEach((value) => {
+      if (mergedFacets.has(value)) {
+        mergedFacets.set(value, mergedFacets.get(value) + count);
+      } else {
+        mergedFacets.set(value, count);
+      }
+    });
+  });
+
+  return mergedFacets;
+};
+
+const facets = computed(() => {
+  const uniqueValues = props.column?.getFacetedUniqueValues();
+
+  if (uniqueValues instanceof Map) {
+    return processFacetedUniqueValues(uniqueValues);
+  }
+
+  return new Map();
+});
+
+const selectedValues = ref(new Set(props.column?.getFilterValue() as string[]));
 
 const filterFunction = (
     val: string[] | number[] | Record<string, any>[] | false[] | true[],
@@ -38,6 +68,11 @@ const filterFunction = (
 
   return val;
 };
+
+$bus.on('reset-filters', () => {
+  selectedValues.value.clear();
+  props.column?.setFilterValue(undefined);
+});
 </script>
 
 <template>
@@ -85,41 +120,46 @@ const filterFunction = (
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup>
-            <CommandItem
-                v-for="option in options"
-                :key="option.value"
-                :value="option"
-                @select="() => {
-                  const isSelected = selectedValues.has(option.value)
-                  if (isSelected) {
-                    selectedValues.delete(option.value)
-                  }
-                  else {
-                    selectedValues.add(option.value)
-                  }
-                  const filterValues = Array.from(selectedValues)
-                  column?.setFilterValue(
-                    filterValues.length ? filterValues : undefined,
-                  )
-                }"
+            <template
+                v-for="option in facets"
+                :key="option[0]"
             >
-              <div
-                  :class="cn(
-                  'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                  selectedValues.has(option.value)
-                    ? 'bg-primary text-primary-foreground'
-                    : 'opacity-50 [&_svg]:invisible',
-                )"
+              <CommandItem
+                  v-if="facets?.get(option[0])"
+                  :value="option"
+                  @select="() => {
+                    const isSelected = selectedValues.has(option[0])
+                    if (isSelected) {
+                      selectedValues.delete(option[0])
+                    }
+                    else {
+                      selectedValues.add(option[0])
+                    }
+                    const filterValues = Array.from(selectedValues)
+                    column?.setFilterValue(
+                      filterValues.length ? filterValues : undefined,
+                    )
+                  }"
               >
-                <CheckIcon :class="cn('h-4 w-4')"/>
-              </div>
-              <component :is="option.icon" v-if="option.icon" class="mr-2 h-4 w-4 text-muted-foreground"/>
-              <span>{{ option.label }}</span>
-              <span v-if="facets?.get(option.value)"
-                    class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                {{ facets.get(option.value) }}
-              </span>
-            </CommandItem>
+                <div
+                    :class="cn(
+                      'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                      selectedValues.has(option[0])
+                        ? 'bg-primary text-primary-foreground'
+                        : 'opacity-50 [&_svg]:invisible',
+                    )"
+                >
+                  <CheckIcon :class="cn('h-4 w-4')"/>
+                </div>
+                <span>{{ option[0] }}</span>
+                <span
+                    v-if="facets?.get(option[0])"
+                    class="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs"
+                >
+                  {{ facets.get(option[0]) }}
+                </span>
+              </CommandItem>
+            </template>
           </CommandGroup>
 
           <template v-if="selectedValues.size > 0">
@@ -128,7 +168,7 @@ const filterFunction = (
               <CommandItem
                   :value="{ label: 'Clear filters' }"
                   class="justify-center text-center"
-                  @select="column?.setFilterValue(undefined)"
+                  @select="column?.setFilterValue(undefined); selectedValues.clear()"
               >
                 Clear filters
               </CommandItem>

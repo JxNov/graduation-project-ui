@@ -4,11 +4,11 @@ import {navMenu, navMenuBottom} from '~/constants/menus'
 import type {NavGroup, NavLink, NavSectionTitle} from '~/types/nav'
 import {useMediaQuery} from "@vueuse/core";
 
-const {$userStore, $generalStore} = useNuxtApp();
+const {$authStore, $generalStore} = useNuxtApp();
 
 const handleLogout = async () => {
   try {
-    await $userStore.logout()
+    await $authStore.logout()
 
     if ($generalStore.isLogged) {
       throw new Error('Logout failed!!!')
@@ -90,11 +90,11 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             <DropdownMenuLabel class="flex font-normal">
               <div class="flex flex-col space-y-1">
                 <p class="text-sm font-medium leading-none">
-                  {{ $userStore.name }}
+                  {{ $authStore.name }}
                 </p>
 
                 <p class="text-xs text-muted-foreground leading-none">
-                  {{ $userStore.email }}
+                  {{ $authStore.email }}
                 </p>
               </div>
             </DropdownMenuLabel>

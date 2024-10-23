@@ -1,21 +1,27 @@
 <script setup lang="ts">
 import {cn} from '~/lib/utils'
 import type {NavLink} from '~/types/nav'
+import {hasPermission as checkPermission} from "~/utils/permissions";
 
 const route = useRoute()
+const {$generalStore} = useNuxtApp()
 
 defineProps<{
   item: NavLink
 }>()
 
 const {isOpen} = storeToRefs(useNavbar())
+
+const hasPermission = (permissions: string[] | undefined): boolean => {
+  return checkPermission(permissions, $generalStore.userPermissions);
+};
 </script>
 
 <template>
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger as-child>
-        <NuxtLink :to="item.link">
+        <NuxtLink :to="item.link" v-if="hasPermission(item.permissions)">
           <Button
               variant="ghost"
               size="icon"
