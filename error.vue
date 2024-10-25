@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import type {NuxtError} from '#app'
+import type { NuxtError } from '#app'
+import Forbidden from '~/components/common/error/Forbidden.vue'
+import NotFound from '~/components/common/error/NotFound.vue'
 
 const props = defineProps({
   error: Object as () => NuxtError
 }) as { error: NuxtError }
 
 definePageMeta({
-  layout: 'blank',
+  layout: 'blank'
 })
 
 onMounted(() => {
@@ -15,6 +17,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <CommonForbidden v-if="props.error.statusCode === 403"/>
-  <CommonNotFound v-else/>
+  <Forbidden v-if="props.error.statusCode === 403" />
+  <NotFound v-else />
 </template>

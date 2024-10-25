@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import {Loader2} from 'lucide-vue-next'
-import {useForm} from 'vee-validate';
-import {toTypedSchema} from '@vee-validate/zod';
-import {z} from 'zod';
-import {toast} from 'vue-sonner'
+import { Loader2 } from 'lucide-vue-next'
+import { useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import { z } from 'zod'
+import { toast } from 'vue-sonner'
 
-const {$authStore, $generalStore} = useNuxtApp();
+const { $authStore, $generalStore } = useNuxtApp()
 
 const isLoading = ref<boolean>(false)
 
 const formSchema = toTypedSchema(z.object({
   password: z.string().min(8),
-  email: z.string().email(),
-}));
+  email: z.string().email()
+}))
 
-const {isFieldDirty, handleSubmit} = useForm({
-  validationSchema: formSchema,
+const { isFieldDirty, handleSubmit } = useForm({
+  validationSchema: formSchema
 })
 
 const onSubmit = handleSubmit(async (values) => {
@@ -30,16 +30,16 @@ const onSubmit = handleSubmit(async (values) => {
     isLoading.value = false
     toast.success('Login successful!', {
       action: {
-        label: 'Undo',
-      },
+        label: 'Undo'
+      }
     })
     navigateTo('/')
   } catch (error) {
     isLoading.value = false
     toast.error('Login failed!', {
       action: {
-        label: 'Undo',
-      },
+        label: 'Undo'
+      }
     })
   }
 })
@@ -51,9 +51,9 @@ const onSubmit = handleSubmit(async (values) => {
       <FormItem class="mb-4">
         <FormLabel>Email</FormLabel>
         <FormControl>
-          <Input type="text" placeholder="example@mail.com" v-bind="componentField" :disabled="isLoading"/>
+          <Input type="text" placeholder="example@mail.com" v-bind="componentField" :disabled="isLoading" />
         </FormControl>
-        <FormMessage/>
+        <FormMessage />
       </FormItem>
     </FormField>
 
@@ -61,19 +61,19 @@ const onSubmit = handleSubmit(async (values) => {
       <FormItem>
         <FormLabel>Password</FormLabel>
         <FormControl>
-          <Input type="password" v-bind="componentField" :disabled="isLoading"/>
+          <Input type="password" v-bind="componentField" :disabled="isLoading" />
         </FormControl>
-        <FormMessage/>
+        <FormMessage />
       </FormItem>
     </FormField>
 
     <Button type="submit" class="w-full" :disabled="isLoading">
-      <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin"/>
-      Login
+      <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+      {{ $t('auth.login.title') }}
     </Button>
 
     <Button variant="outline" class="w-full">
-      Login with Google
+      {{ $t('auth.login.google') }}
     </Button>
   </form>
 </template>

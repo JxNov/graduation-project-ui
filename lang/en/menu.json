@@ -1,0 +1,18 @@
+{
+  "menu": {
+    "nav": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "general": "General",
+      "generations": "Generations",
+      "students": "Students",
+      "teachers": "Teachers",
+      "subjects": "Subjects",
+      "classes": "Classes",
+      "roles": "Roles",
+      "users": "Users",
+      "help": "Help",
+      "account": "Account"
+    }
+  }
+}
