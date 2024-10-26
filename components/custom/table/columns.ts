@@ -54,6 +54,10 @@ export const createColumns = (
                 return {
                     id: 'actions',
                     accessorKey: 'actions',
+                    header: ({column}: HeaderContext<RowData, unknown>) => h(DataTableColumnHeader, {
+                        column,
+                        title: '',
+                    }),
                     cell: ({row}: CellContext<RowData, unknown>) => h(DataTableRowActions, {
                         row,
                         schema,
@@ -62,17 +66,24 @@ export const createColumns = (
                         permissionEdit: canEdit,
                         permissionDelete: canDelete,
                     }),
+                    enableSorting: false,
+                    enableHiding: false,
                 }
             }
 
-            return {
-                accessorKey: field,
-                header: ({column}: HeaderContext<RowData, unknown>) => h(DataTableColumnHeader, {column, title}),
-                cell: ({row}: CellContext<RowData, unknown>) => h('div', {class: className}, row.getValue(field)),
-                ...option,
-                filterFn: (row: RowData, id: string, value: string[]) => {
-                    return value.includes(row.getValue(id))
-                },
+            if (field !== 'actions' || field !== 'select') {
+                return {
+                    accessorKey: field,
+                    header: ({ column }: HeaderContext<RowData, unknown>) => h(DataTableColumnHeader, {
+                        column,
+                        title
+                    }),
+                    cell: ({ row }: CellContext<RowData, unknown>) => h('div', { class: className }, row.getValue(field)),
+                    ...option,
+                    filterFn: (row: RowData, id: string, value: string[]) => {
+                        return value.includes(row.getValue(id))
+                    },
+                }
             }
         }
     )
@@ -87,12 +98,18 @@ export const createColumns = (
             cell: ({row}: CellContext<RowData, unknown>) => customField.render(row),
             ...customField.options,
             filterFn: (row: RowData, id: string, value: string[]) => {
-                if (Array.isArray(row.getValue(id))) {
-                    // return value.some(v => row.getValue(id).includes(v))
+                const rowValue = row.getValue(id);
 
-                    // Fix filter for array value
-                    return value.some(v => row.getValue(id).some((val: any) => val.includes(v)))
+                if (Array.isArray(rowValue)) {
+                    const valueArray = Array.isArray(value) ? value : [value];
+                    return valueArray.some(v =>
+                      rowValue.some((val: any) =>
+                        val.toString().toLowerCase().includes(v.toLowerCase())
+                      )
+                    );
                 }
+
+                return value.includes(rowValue?.toString().toLowerCase());
             },
         }
 

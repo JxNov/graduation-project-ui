@@ -53,6 +53,10 @@ $bus.on('close-dialog-delete-role', (value: boolean) => {
   selectedRole.value = {}
 })
 
+$bus.on('delete-rows-role', (value: Role[]) => {
+  console.log(value)
+})
+
 const columns = createColumns(
   [
     ['select'],
@@ -124,16 +128,16 @@ const handleInteractOutside = (event: Event) => {
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
+const shouldShowElement = computed(() => {
+  return showElement($generalStore.userPermissions, ['users.create'])
+})
+
 const handleCloseDialog = () => {
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
   selectedRole.value = {}
 }
-
-const shouldShowElement = computed(() => {
-  return showElement($generalStore.userPermissions, ['users.create'])
-})
 </script>
 
 <template>
@@ -145,7 +149,13 @@ const shouldShowElement = computed(() => {
       </Button>
     </div>
 
-    <LayoutTable :data="$roleStore.roles" :columns="columns" :filters="filters" :reload-data="reloadData" />
+    <LayoutTable
+      :data="$roleStore.roles"
+      :columns="columns"
+      :filters="filters"
+      :reload-data="reloadData"
+      emit-delete-rows="delete-rows-role"
+    />
   </div>
 
   <Dialog :open="isCreating" @update:open="handleCloseDialog">

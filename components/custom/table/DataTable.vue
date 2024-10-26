@@ -3,7 +3,7 @@ import type {
   ColumnDef,
   ColumnFiltersState,
   SortingState,
-  VisibilityState,
+  VisibilityState
 } from '@tanstack/vue-table'
 import {
   FlexRender,
@@ -13,26 +13,27 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useVueTable,
+  useVueTable
 } from '@tanstack/vue-table'
 import DataTablePagination from './DataTablePagination.vue'
 import DataTableToolbar from './DataTableToolbar.vue'
-import {valueUpdater} from '~/lib/utils'
+import { valueUpdater } from '~/lib/utils'
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from '~/components/ui/table'
-import type {TableFilter} from "~/types/table";
+import type { TableFilter } from '~/types/table'
 
 interface DataTableProps {
   columns: ColumnDef<any, any>[]
   data: any[],
   filters: TableFilter[]
   reloadData: () => void
+  emitDeleteRows: string
 }
 
 const props = defineProps<DataTableProps>()
@@ -61,7 +62,7 @@ const table = useVueTable({
     },
     get rowSelection() {
       return rowSelection.value
-    },
+    }
   },
   enableRowSelection: true,
   onSortingChange: updaterOrValue => valueUpdater(updaterOrValue, sorting),
@@ -73,13 +74,13 @@ const table = useVueTable({
   getPaginationRowModel: getPaginationRowModel(),
   getSortedRowModel: getSortedRowModel(),
   getFacetedRowModel: getFacetedRowModel(),
-  getFacetedUniqueValues: getFacetedUniqueValues(),
+  getFacetedUniqueValues: getFacetedUniqueValues()
 })
 </script>
 
 <template>
   <div class="space-y-4 bg-card p-4 rounded-md shadow">
-    <DataTableToolbar :table="table" :filters="filters" :reload-data="reloadData"/>
+    <DataTableToolbar :table="table" :filters="filters" :reload-data="reloadData" :emit-delete-rows="emitDeleteRows"/>
 
     <div class="rounded-md border">
       <Table>
@@ -87,27 +88,27 @@ const table = useVueTable({
           <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
             <TableHead v-for="header in headerGroup.headers" :key="header.id">
               <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
-                          :props="header.getContext()"/>
+                          :props="header.getContext()" />
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
             <TableRow
-                v-for="row in table.getRowModel().rows"
-                :key="row.id"
-                :data-state="row.getIsSelected() && 'selected'"
+              v-for="row in table.getRowModel().rows"
+              :key="row.id"
+              :data-state="row.getIsSelected() && 'selected'"
             >
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()"/>
+                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
             </TableRow>
           </template>
 
           <TableRow v-else>
             <TableCell
-                :colspan="columns.length"
-                class="h-24 text-center"
+              :colspan="columns.length"
+              class="h-24 text-center"
             >
               No results.
             </TableCell>
@@ -116,6 +117,6 @@ const table = useVueTable({
       </Table>
     </div>
 
-    <DataTablePagination :table="table"/>
+    <DataTablePagination :table="table" />
   </div>
 </template>

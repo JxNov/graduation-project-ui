@@ -22,25 +22,29 @@ const isEditing = ref(false)
 const isDeleting = ref(false)
 const selectedUser = ref<User | object>({})
 
-$bus.on('open-dialog-edit-role', (row: User) => {
+$bus.on('open-dialog-edit-user', (row: User) => {
   isEditing.value = true
   selectedUser.value = row
 })
 
-$bus.on('open-dialog-delete-role', (row: User) => {
+$bus.on('open-dialog-delete-user', (row: User) => {
   isDeleting.value = true
   selectedUser.value = row
 })
 
-$bus.on('close-dialog-create-edit-role', (value: boolean) => {
+$bus.on('close-dialog-create-edit-user', (value: boolean) => {
   isCreating.value = value
   isEditing.value = value
   selectedUser.value = {}
 })
 
-$bus.on('close-dialog-delete-role', (value: boolean) => {
+$bus.on('close-dialog-delete-user', (value: boolean) => {
   isDeleting.value = value
   selectedUser.value = {}
+})
+
+$bus.on('delete-rows-user', (value: User[]) => {
+  console.log(value)
 })
 
 const columns = createColumns(
@@ -71,8 +75,8 @@ const columns = createColumns(
       before: 'actions'
     }
   ],
-  'open-dialog-edit-role',
-  'open-dialog-delete-role',
+  'open-dialog-edit-user',
+  'open-dialog-delete-user',
   'users.update',
   'users.delete'
 ) as ColumnDef<User>[]
@@ -130,7 +134,13 @@ const shouldShowElement = computed(() => {
       </Button>
     </div>
 
-    <LayoutTable :data="$userStore.users" :columns="columns" :filters="filters" :reload-data="reloadData" />
+    <LayoutTable
+      :data="$userStore.users"
+      :columns="columns"
+      :filters="filters"
+      :reload-data="reloadData"
+      emit-delete-rows="delete-rows-user"
+    />
   </div>
 
   <!--  <Dialog :open="isCreating" @update:open="handleCloseDialog">-->

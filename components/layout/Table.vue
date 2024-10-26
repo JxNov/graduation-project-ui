@@ -7,9 +7,10 @@ defineProps<{
   columns: any[]
   filters: TableFilter[]
   reloadData: () => void
+  emitDeleteRows: string
 }>();
 </script>
 
 <template>
-  <DataTable :data="data" :columns="columns" :filters="filters" :reload-data="reloadData"/>
+  <DataTable :data="data" :columns="columns" :filters="filters" :reload-data="reloadData" :emit-delete-rows="emitDeleteRows"/>
 </template>
