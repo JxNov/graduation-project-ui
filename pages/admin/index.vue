@@ -1,342 +1,203 @@
-<script setup lang="ts">
-import {Activity, ArrowUpRight, CreditCard, DollarSign, Users} from 'lucide-vue-next'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table'
-import {Badge} from '~/components/ui/badge'
-</script>
-
-<template>
-  <div class="w-full flex flex-col gap-4">
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <h2 class="text-3xl font-bold tracking-tight">
-        Dashboard
-      </h2>
-      <div class="flex items-center space-x-2">
-        <BaseDateRangePicker/>
-        <Button>Download</Button>
+<script setup>
+  import { ref } from 'vue'
+  
+  // Trạng thái hiển thị dropdown theo id của từng class
+  const dropdownState = ref({})
+  
+  // Hàm chuyển đổi trạng thái dropdown cho từng class
+  const toggleDropdown = (classId) => {
+    dropdownState.value[classId] = !dropdownState.value[classId]
+  }
+  
+  const classes = ref([
+    { title: 'WEB2014', author: 'Phạm Anh Vũ', avatarClass: 'avatar-header', initial: 'V' },
+    { title: 'Khởi sự doanh nghiệp', author: 'Nguyễn Việt Lập', avatarClass: 'avatar-header2', initial: 'L' },
+  ])
+  </script>
+  
+  <template>
+    <div class="home-wrapper">
+      <!-- Sử dụng v-for để hiển thị từng class-inner với id riêng biệt -->
+      <div v-for="(classItem, index) in classes" :key="index" class="class-inner">
+        <div class="class-inner-header">
+          <div class="title-top-header">
+            <div class="class-inner-title">{{ classItem.title }}</div>
+            <!-- Biểu tượng ba chấm theo chiều dọc -->
+            <div class="icon-dots" @click="toggleDropdown(index)">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="5" r="2" fill="white" />
+                <circle cx="12" cy="12" r="2" fill="white" />
+                <circle cx="12" cy="19" r="2" fill="white" />
+              </svg>
+              <!-- Dropdown menu chỉ hiển thị khi trạng thái dropdownState của phần tử này là true... -->
+              <div v-if="dropdownState[index]" class="dropdown-menu">
+                <ul>
+                  <li>Copy URL</li>
+                  <li>Edit</li>
+                  <li>Copy</li>
+                  <li>Save</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="title-bottom-header">{{ classItem.author }}</div>
+          <div class="avatar-wrapper">
+            <div :class="classItem.avatarClass">{{ classItem.initial }}</div>
+          </div>
+        </div>
+        <div class="class-body-header"></div>
+        <div class="class-footer-header">
+          <div class="icon-footer">
+            <div class="icon-footer-inner">
+              <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="NMm5M hhikbc">
+                <path d="M16 6v2h2.58l-5.17 5.17-4-4L2 16.59 3.41 18l6-6 4 4L20 9.42V12h2V6z"></path>
+              </svg>
+            </div>
+            <div class="icon-footer-inner">
+              <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="NMm5M">
+                <path
+                  d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <main class="flex flex-1 flex-col gap-4 md:gap-8">
-      <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2 md:gap-8">
-        <Card>
-          <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle class="text-sm font-medium">
-              Total Revenue
-            </CardTitle>
-            <DollarSign class="h-4 w-4 text-muted-foreground"/>
-          </CardHeader>
-          <CardContent>
-            <div class="text-2xl font-bold">
-              $45,231.89
-            </div>
-            <p class="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle class="text-sm font-medium">
-              Subscriptions
-            </CardTitle>
-            <Users class="h-4 w-4 text-muted-foreground"/>
-          </CardHeader>
-          <CardContent>
-            <div class="text-2xl font-bold">
-              +2350
-            </div>
-            <p class="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle class="text-sm font-medium">
-              Sales
-            </CardTitle>
-            <CreditCard class="h-4 w-4 text-muted-foreground"/>
-          </CardHeader>
-          <CardContent>
-            <div class="text-2xl font-bold">
-              +12,234
-            </div>
-            <p class="text-xs text-muted-foreground">
-              +19% from last month
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle class="text-sm font-medium">
-              Active Now
-            </CardTitle>
-            <Activity class="h-4 w-4 text-muted-foreground"/>
-          </CardHeader>
-          <CardContent>
-            <div class="text-2xl font-bold">
-              +573
-            </div>
-            <p class="text-xs text-muted-foreground">
-              +201 since last hour
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-      <div class="grid gap-4 lg:grid-cols-2 xl:grid-cols-3 md:gap-8">
-        <Card class="xl:col-span-2">
-          <CardHeader class="flex flex-row items-center">
-            <div class="grid gap-2">
-              <CardTitle>Transactions</CardTitle>
-              <CardDescription>
-                Recent transactions from your store.
-              </CardDescription>
-            </div>
-            <Button as-child size="sm" class="ml-auto gap-1">
-              <a href="#">
-                View All
-                <ArrowUpRight class="h-4 w-4"/>
-              </a>
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Customer</TableHead>
-                  <TableHead class="hidden xl:table-column">
-                    Type
-                  </TableHead>
-                  <TableHead class="hidden xl:table-column">
-                    Status
-                  </TableHead>
-                  <TableHead class="hidden xl:table-column">
-                    Date
-                  </TableHead>
-                  <TableHead class="text-right">
-                    Amount
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Liam Johnson
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      liam@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Sale
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-23
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $250.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Olivia Smith
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      olivia@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Refund
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Declined
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-24
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $150.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Noah Williams
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      noah@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Subscription
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-25
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $350.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Emma Brown
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      emma@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Sale
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-26
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $450.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Liam Johnson
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      liam@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Sale
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-27
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $550.00
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-          </CardHeader>
-          <CardContent class="grid gap-8">
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>OM</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Olivia Martin
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  olivia.martin@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$1,999.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>JL</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Jackson Lee
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  jackson.lee@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$39.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>IN</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Isabella Nguyen
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  isabella.nguyen@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$299.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>WK</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  William Kim
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  will@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$99.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>SD</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Sofia Davis
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  sofia.davis@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$39.00
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </main>
-  </div>
-</template>
+  </template>
+  
+  <style scoped>
+  .home-wrapper {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+  
+  .class-inner {
+    width: 300px;
+    height: 300px;
+    border: 1px solid #dadce0;
+    border-radius: 7px;
+  }
+  
+  .class-inner-header {
+    background-image: url(https://gstatic.com/classroom/themes/Honors.jpg);
+    height: 30%;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .title-top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .class-inner-title {
+    font-size: 1.375rem;
+    font-weight: 400;
+    color: #ffffff;
+  }
+  
+  .icon-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #dadce0;
+    border-radius: 5px;
+    width: 120px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+  
+  .dropdown-menu ul {
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+  }
+  
+  .dropdown-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .dropdown-menu li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .title-bottom-header {
+    color: #ffffff;
+  }
+  
+  .avatar-header {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: red;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-weight: 3700;
+  }
+  
+  .avatar-header2 {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: orange;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-weight: 3700;
+  }
+  
+  .avatar-wrapper {
+    width: 90%;
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    top: 70%;
+  }
+  
+  .class-footer-header {
+    height: 20%;
+    border-top: 1px solid #dadce0;
+    display: flex;
+    width: 100%;
+    justify-content: end;
+    padding: 20px;
+    cursor: pointer;
+  }
+  
+  .icon-footer {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .class-body-header {
+    height: 50%;
+  }
+  </style>
+  

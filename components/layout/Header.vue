@@ -21,24 +21,26 @@ const handleLogout = async () => {
 }
 
 function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
-  if ('heading' in item)
-    return resolveComponent('LayoutNavHeadingMobile')
-  else if ('children' in item)
-    return resolveComponent('LayoutNavGroupMobile')
+  if ('heading' in item) return resolveComponent('LayoutNavHeadingMobile')
+  else if ('children' in item) return resolveComponent('LayoutNavGroupMobile')
 
   return resolveComponent('LayoutNavLinkMobile')
 }
+
+const color = useColorMode()
 
 const isMediumScreen = useMediaQuery('(min-width: 768px)')
 </script>
 
 <template>
-  <header class="sticky top-0 z-10 h-[53px] flex items-center gap-4 border-b bg-background px-4 md:px-6">
+  <header
+    class="sticky top-0 z-10 h-[53px] flex items-center gap-4 border-b bg-background px-4 md:px-6"
+  >
     <div class="w-full flex items-center gap-4">
-      <Sheet>
+      <!-- <Sheet>
         <SheetTrigger as-child>
           <Button size="icon" variant="outline" class="sm:hidden">
-            <Menu />
+            <Menu/>
             <span class="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
@@ -46,7 +48,7 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
         <SheetContent aria-describedby="radix-vue-dialog-description-1" side="left" class="flex flex-col p-4">
           <SheetHeader>
             <SheetTitle class="flex items-center gap-3">
-              <Triangle class="size-5 fill-foreground" />
+              <Triangle class="size-5 fill-foreground"/>
               Dashboard
             </SheetTitle>
           </SheetHeader>
@@ -54,31 +56,42 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
           <ScrollArea class="w-full">
             <nav class="grid gap-2">
               <component
-                :is="resolveNavItemComponent(item)"
-                v-for="(item, index) in navMenu"
-                :key="index"
-                :item="item" />
+                  :is="resolveNavItemComponent(item)"
+                  v-for="(item, index) in navMenu"
+                  :key="index"
+                  :item="item"/>
             </nav>
           </ScrollArea>
 
           <div class="mt-auto">
             <nav class="grid gap-2">
               <component
-                :is="resolveNavItemComponent(item)"
-                v-for="(item, index) in navMenuBottom"
-                :key="index"
-                :item="item" />
+                  :is="resolveNavItemComponent(item)"
+                  v-for="(item, index) in navMenuBottom"
+                  :key="index"
+                  :item="item"/>
             </nav>
           </div>
         </SheetContent>
-      </Sheet>
+      </Sheet> -->
 
-      <Search />
+      <!-- <Search/> -->
 
       <div class="ml-auto flex items-center gap-4">
+        <div>
+          <svg focusable="false" width="24" height="24" viewBox="0 0 24 24" class="NMm5M">
+            <path d="M20 13h-7v7h-2v-7H4v-2h7V4h2v7h7v2z"></path>
+          </svg>
+        </div>
+        
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button id="radix-vue-dropdown-menu-trigger-1" variant="secondary" size="icon" class="rounded-full">
+            <Button
+              id="radix-vue-dropdown-menu-trigger-1"
+              variant="secondary"
+              size="icon"
+              class="rounded-full"
+            >
               <CircleUser class="h-5 w-5" />
               <span class="sr-only">Toggle user menu</span>
             </Button>
@@ -99,23 +112,56 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                Profile
-              </DropdownMenuItem>
+              <DropdownMenuItem> Profile </DropdownMenuItem>
 
-              <DropdownMenuItem>
-                Settings
-              </DropdownMenuItem>
+              <DropdownMenuItem> Settings </DropdownMenuItem>
 
-              <DarkToggle />
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <span>Theme</span>
+                </DropdownMenuSubTrigger>
 
-              <LanguageSwitcher />
+                <DropdownMenuPortal>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuItem @click="color.preference = 'light'">
+                      <Icon name="i-ph-sun-dim-duotone" size="16" />
+                      <span class="ml-2">Light</span>
+                      <Icon
+                        v-if="color.preference === 'light'"
+                        name="i-radix-icons-check"
+                        size="16"
+                        class="ml-auto"
+                      />
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem @click="color.preference = 'dark'">
+                      <Icon name="i-ph-moon-stars-duotone" size="16" />
+                      <span class="ml-2">Dark</span>
+                      <Icon
+                        v-if="color.preference === 'dark'"
+                        name="i-radix-icons-check"
+                        size="16"
+                        class="ml-auto"
+                      />
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem @click="color.preference = 'system'">
+                      <Icon name="i-lucide-monitor" size="16" />
+                      <span class="ml-2">System</span>
+                      <Icon
+                        v-if="color.preference === 'system'"
+                        name="i-radix-icons-check"
+                        size="16"
+                        class="ml-auto"
+                      />
+                    </DropdownMenuItem>
+                  </DropdownMenuSubContent>
+                </DropdownMenuPortal>
+              </DropdownMenuSub>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem @click="handleLogout">
-              {{ $t('auth.logout') }}
-            </DropdownMenuItem>
+            <DropdownMenuItem @click="handleLogout"> Log out </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

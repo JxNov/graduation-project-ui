@@ -32,10 +32,11 @@ function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
           class="flex items-center gap-3"
           :class="cn('justify-center lg:justify-start', isOpen ? 'lg:justify-start' : 'lg:justify-center')"
       >
-        <Button variant="outline" size="icon" aria-label="Home">
+        <!-- <Button variant="outline" size="icon" aria-label="Home">
           <Triangle class="size-5 fill-foreground"/>
-        </Button>
-        <span v-if="isOpen" class="hidden text-xl font-semibold lg:inline-block">Dashboard</span>
+        </Button> -->
+        <img src = "https://www.gstatic.com/classroom/logo_square_rounded.svg" alt="" width="28px" height="28px"/>
+        <span v-if="isOpen" class="hidden text-xl font-semibold lg:inline-block">Classroom</span>
       </div>
 
       <Button variant="outline" class="absolute top-4 hidden size-6 rounded-full p-0 -right-3 lg:inline-flex"

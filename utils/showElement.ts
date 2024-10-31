@@ -1,4 +1,7 @@
+export const hasPermission = (permissions: string[], userPermissions: string[]): boolean => {
+    return permissions.length === 0 || permissions.some(permission => userPermissions.includes(permission));
+};
+
 export const showElement = (permissions: string[], userPermissions: string[]): boolean => {
-  if (!permissions || permissions.length === 0) return false
-  return permissions.some(permission => userPermissions.includes(permission))
-}
+    return hasPermission(permissions, userPermissions);
+};

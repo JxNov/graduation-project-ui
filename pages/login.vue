@@ -1,12 +1,10 @@
 <script setup lang="ts">
-const { t } = useI18n()
-
 definePageMeta({
-  layout: 'blank'
+  layout: 'blank',
 })
 
 onMounted(() => {
-  document.title = t('auth.login.title')
+  document.title = 'Login'
 })
 </script>
 
@@ -15,13 +13,13 @@ onMounted(() => {
     <div class="grid mx-auto max-w-sm gap-6">
       <div class="grid gap-2 text-center">
         <h1 class="text-2xl font-semibold tracking-tight">
-          {{ $t('auth.login.title') }}
+          Login
         </h1>
         <p class="text-balance text-sm text-muted-foreground">
-          {{ $t('auth.login.subtitle') }}
+          Enter your email below to login to your account
         </p>
       </div>
-      <AuthSignIn />
+      <AuthSignIn/>
     </div>
   </LayoutAuth>
 </template>
