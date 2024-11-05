@@ -1,118 +1,96 @@
-import {defineStore} from 'pinia';
-import {clearStores} from "~/stores/index";
+import type { Auth } from '~/schema'
+import { clearStores } from './index'
+import { getCsrfTokenService } from '~/services/general'
+import { loginService, profileService, logoutService, refreshTokenService } from '~/services/auth'
+import { toast } from 'vue-sonner'
 
 export const useAuthStore = defineStore('auth', () => {
-    const {$axios, $generalStore} = useNuxtApp();
+  const { $generalStore } = useNuxtApp()
 
-    const name = ref<string>('');
-    const email = ref<string>('');
-    const username = ref<string>('');
-    const gender = ref<string>('');
-    const dob = ref<string>('');
-    const phone = ref<string>('');
+  const user = ref<Auth>({
+    name: '',
+    username: '',
+    dateOfBirth: '',
+    gender: '',
+    phoneNumber: '',
+    email: '',
+    roles: [],
+    permissions: []
+  })
 
-    const login = async (data: { email: string, password: string }) => {
-        const {email, password} = data;
+  const login = async (data: { email: string, password: string }) => {
+    try {
+      await getCsrfTokenService()
+      await loginService(data)
+      user.value = await profileService()
+      $generalStore.isLogged = true
 
-        try {
-            await $generalStore.getCsrfToken();
-            const response = await $axios.post('/auth/login', {
-                email,
-                password,
-            });
-
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            const user = await fetchUser();
-
-            if (!user) {
-                throw new Error('Invalid user');
-            }
-
-            $generalStore.isLogged = true;
-
-            return response;
-        } catch (error) {
-            console.error(error);
+      setTimeout(() => {
+        toast.success('Login success!!!', {
+          action: {
+            label: 'Close'
+          }
+        })
+      }, 300)
+    } catch (error) {
+      toast.error('Login failed!!!', {
+        action: {
+          label: 'Close'
         }
+      })
     }
+  }
 
-    const fetchUser = async () => {
-        try {
-            const response = await $axios.get('/auth/profile');
+  const logout = async () => {
+    try {
+      await logoutService()
+      clearStores()
 
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            const {data} = response;
-
-            name.value = data.name;
-            email.value = data.email;
-            username.value = data.username;
-            gender.value = data.gender;
-            dob.value = data.date_of_birth;
-            phone.value = data.phone_number;
-            $generalStore.userRoles = data.roles;
-            $generalStore.userPermissions = data.permissions;
-
-            return data;
-        } catch (error) {
-            console.error(error);
+      setTimeout(() => {
+        toast.success('Logout success!!!', {
+          action: {
+            label: 'Close'
+          }
+        })
+      }, 300)
+    } catch (error) {
+      toast.error('Logout failed!!!', {
+        action: {
+          label: 'Close'
         }
+      })
     }
+  }
 
-    const logout = async () => {
-        try {
-            const response = await $axios.post('/auth/logout');
-
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            clearStores();
-        } catch (error) {
-            console.error(error);
-        }
+  const refreshToken = async () => {
+    try {
+      await refreshTokenService()
+      user.value = await profileService()
+    } catch (error) {
+      console.error(error)
     }
+  }
 
-    const refreshToken = async () => {
-        try {
-            const response = await $axios.post('/auth/refresh-token');
-
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            return response;
-        } catch (error) {
-            console.error(error);
-        }
+  const clearUser = () => {
+    user.value = {
+      name: '',
+      username: '',
+      dateOfBirth: '',
+      gender: '',
+      phoneNumber: '',
+      email: '',
+      roles: [],
+      permissions: []
     }
+  }
 
-    const clearUser = () => {
-        name.value = '';
-        email.value = '';
-        username.value = '';
-        gender.value = '';
-        dob.value = '';
-        phone.value = '';
-    }
-
-    return {
-        name,
-        email,
-        username,
-        gender,
-        dob,
-        phone,
-        login,
-        logout,
-        refreshToken,
-        clearUser,
-    }
+  return {
+    user,
+    login,
+    logout,
+    refreshToken,
+    clearUser
+  }
 }, {
-    persist: true,
-});
+  persist: true
+})

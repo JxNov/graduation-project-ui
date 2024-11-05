@@ -2,92 +2,94 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import type { Generation } from '~/schema'
 import { generationSchema } from '~/schema'
-import { createColumns } from '~/components/custom/table/columns'
-import { GenerationDialogCreateEdit } from '~/components/custom/dialog/generation'
-import { toast } from 'vue-sonner'
+import { createColumns } from '~/composables/columns'
+import { GenerationDialogCreateEdit, GenerationDialogDelete } from '~/components/common/dialog/generation'
 import { useThrottle } from '~/composables/useThrottle'
 import { extractValue } from '~/utils/extractValue'
 import { showElement } from '~/utils/showElement'
 
-const { $generalStore, $generationStore, $bus } = useNuxtApp()
+const { $authStore, $generationStore, $bus } = useNuxtApp()
+
+const isCreating = ref<boolean>(false)
+const isEditing = ref<boolean>(false)
+const isDeleting = ref<boolean>(false)
+const selectedValue = ref<Generation | object>({})
 
 onMounted(async () => {
+  $bus.on('open-dialog-edit', (row: Generation) => {
+    isEditing.value = true
+    selectedValue.value = row
+  })
+
+  $bus.on('open-dialog-delete', (row: Generation) => {
+    isDeleting.value = true
+    selectedValue.value = row
+  })
+
+  $bus.on('close-dialog-create-edit', (value: boolean) => {
+    isCreating.value = value
+    isEditing.value = value
+    selectedValue.value = {}
+  })
+
+  $bus.on('close-dialog-delete', (value: boolean) => {
+    isDeleting.value = value
+    selectedValue.value = {}
+  })
+
+  $bus.on('delete-rows', (values: Generation[]) => {
+    const slugs = values.map((value) => value.slug)
+    console.log(slugs)
+  })
+
   if (!$generationStore.generations.length) {
     await $generationStore.fetchGenerations()
   }
 })
 
-const isCreating = ref<boolean>(false)
-const isEditing = ref(false)
-const isDeleting = ref(false)
-let selectedGeneration = reactive<Generation | object>({})
-
-$bus.on('open-dialog-edit-generation', (row: Generation) => {
-  isEditing.value = true
-  selectedGeneration = row
-})
-
-$bus.on('open-dialog-delete-generation', (row: Generation) => {
-  isDeleting.value = true
-  selectedGeneration = row
-})
-
-$bus.on('close-dialog-create-edit-generation', (value: boolean) => {
-  isCreating.value = value
-  isEditing.value = value
-  selectedGeneration = {}
-})
-
-$bus.on('close-dialog-delete-generation', (value: boolean) => {
-  isDeleting.value = value
-  selectedGeneration = {}
-})
-
-$bus.on('delete-rows-generation', (value: Generation[]) => {
-  console.log(value)
+onBeforeUnmount(() => {
+  $bus.off('open-dialog-edit')
+  $bus.off('open-dialog-delete')
+  $bus.off('close-dialog-create-edit')
+  $bus.off('close-dialog-delete')
+  $bus.off('delete-rows')
 })
 
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Generation', 'w-1/3'],
-    ['year', 'Year', 'w-1/3'],
-    ['start_date', 'Start Date', 'w-1/3'],
-    ['end_date', 'End Date', 'w-1/3'],
-    ['actions']
+    ['name', 'Generation'],
+    ['startDate', 'Start Date'],
+    ['endDate', 'End Date'],
+    ['actions', '', '', {
+      enableSorting: false,
+      enableHiding: false
+    }]
   ],
   generationSchema,
   [],
-  'open-dialog-edit-generation',
-  'open-dialog-delete-generation',
-  'users.edit',
+  'users.update',
   'users.delete'
 ) as ColumnDef<Generation>[]
 
-const valueStartDate = extractValue($generationStore.generations, 'start_date')
-const valueEndDate = extractValue($generationStore.generations, 'end_date')
+const valueStartDate = extractValue($generationStore.generations, 'startDate')
+const valueEndDate = extractValue($generationStore.generations, 'endDate')
 
 const filters = [
   {
-    name: 'start_date',
+    name: 'startDate',
     label: 'Start Date',
     values: valueStartDate
   },
   {
-    name: 'end_date',
+    name: 'endDate',
     label: 'End Date',
     values: valueEndDate
   }
 ]
 
 const reloadData = useThrottle(() => {
-  const promise = () => $generationStore.reloadData()
-
-  return toast.promise(promise, {
-    loading: 'Reloading data...',
-    success: 'Data reloaded successfully',
-    error: 'Data reloaded failed'
-  })
+  $generationStore.reloadData()
 }, 60000, 'generation')
 
 const handleInteractOutside = (event: Event) => {
@@ -96,14 +98,14 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($generalStore.userPermissions, ['users.create'])
+  return showElement($authStore.user.permissions, ['users.create'])
 })
 
 const handleCloseDialog = () => {
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
-  selectedGeneration = {}
+  selectedValue.value = {}
 }
 </script>
 
@@ -121,7 +123,6 @@ const handleCloseDialog = () => {
       :columns="columns"
       :filters="filters"
       :reload-data="reloadData"
-      emit-delete-rows="delete-rows-generation"
     />
   </div>
 
@@ -131,15 +132,15 @@ const handleCloseDialog = () => {
     </DialogContent>
   </Dialog>
 
-  <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <GenerationDialogCreateEdit :data="selectedGeneration" edit/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isEditing" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <GenerationDialogCreateEdit :data="selectedValue" edit />
+    </DialogContent>
+  </Dialog>
 
-  <!--  <Dialog :open="isDeleting" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">-->
-  <!--      <GenerationDialogDelete :data="selectedGeneration"/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isDeleting" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <GenerationDialogDelete :data="selectedValue" />
+    </DialogContent>
+  </Dialog>
 </template>

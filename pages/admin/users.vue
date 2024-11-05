@@ -3,48 +3,63 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { User } from '~/schema'
 import { userSchema } from '~/schema'
 import type { TableFilter } from '~/types/table'
-import { createColumns } from '~/components/custom/table/columns'
+import { createColumns } from '~/composables/columns'
 import { useThrottle } from '~/composables/useThrottle'
 import { showElement } from '~/utils/showElement'
 import { extractValue } from '~/utils/extractValue'
-import { toast } from 'vue-sonner'
 import { Badge } from '~/components/ui/badge'
+import { UserDialogAssign } from '~/components/common/dialog/user'
 
-const { $generalStore, $userStore, $bus } = useNuxtApp()
+const { $authStore, $userStore, $bus } = useNuxtApp()
 
-$userStore.fetchUsers()
+const isAssigning = ref<boolean>(false)
+const isCreating = ref<boolean>(false)
+const isEditing = ref<boolean>(false)
+const isDeleting = ref<boolean>(false)
+const selectedValue = ref<User | object>({})
 
 onMounted(async () => {
+  $bus.on('open-dialog-edit', (row: User) => {
+    isEditing.value = true
+    selectedValue.value = row
+  })
+
+  $bus.on('open-dialog-delete', (row: User) => {
+    isDeleting.value = true
+    selectedValue.value = row
+  })
+
+  $bus.on('close-dialog-assign', () => {
+    isAssigning.value = false
+  })
+
+  $bus.on('close-dialog-create-edit', (value: boolean) => {
+    isCreating.value = value
+    isEditing.value = value
+    selectedValue.value = {}
+  })
+
+  $bus.on('close-dialog-delete', (value: boolean) => {
+    isDeleting.value = value
+    selectedValue.value = {}
+  })
+
+  $bus.on('delete-rows', (values: User[]) => {
+    console.log(values)
+  })
+
+  if (!$userStore.users.length) {
+    await $userStore.fetchUsers()
+  }
 })
 
-const isCreating = ref<boolean>(false)
-const isEditing = ref(false)
-const isDeleting = ref(false)
-const selectedUser = ref<User | object>({})
-
-$bus.on('open-dialog-edit-user', (row: User) => {
-  isEditing.value = true
-  selectedUser.value = row
-})
-
-$bus.on('open-dialog-delete-user', (row: User) => {
-  isDeleting.value = true
-  selectedUser.value = row
-})
-
-$bus.on('close-dialog-create-edit-user', (value: boolean) => {
-  isCreating.value = value
-  isEditing.value = value
-  selectedUser.value = {}
-})
-
-$bus.on('close-dialog-delete-user', (value: boolean) => {
-  isDeleting.value = value
-  selectedUser.value = {}
-})
-
-$bus.on('delete-rows-user', (value: User[]) => {
-  console.log(value)
+onBeforeUnmount(() => {
+  $bus.off('open-dialog-edit')
+  $bus.off('open-dialog-delete')
+  $bus.off('close-dialog-assign')
+  $bus.off('close-dialog-create-edit')
+  $bus.off('close-dialog-delete')
+  $bus.off('delete-rows')
 })
 
 const columns = createColumns(
@@ -75,8 +90,6 @@ const columns = createColumns(
       before: 'actions'
     }
   ],
-  'open-dialog-edit-user',
-  'open-dialog-delete-user',
   'users.update',
   'users.delete'
 ) as ColumnDef<User>[]
@@ -98,14 +111,7 @@ const filters: TableFilter[] = [
 ]
 
 const reloadData = useThrottle(() => {
-  // const promise = () => $roleStore.reloadData();
-  const promise = () => Promise.resolve()
-
-  return toast.promise(promise, {
-    loading: 'Reloading data...',
-    success: 'Data reloaded successfully',
-    error: 'Data reloaded failed'
-  })
+  $userStore.reloadData()
 }, 60000, 'user')
 
 const handleInteractOutside = (event: Event) => {
@@ -114,14 +120,15 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const handleCloseDialog = () => {
+  isAssigning.value = false
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
-  selectedUser.value = {}
+  selectedValue.value = {}
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($generalStore.userPermissions, ['users.create'])
+  return showElement($authStore.user.permissions, ['users.create'])
 })
 </script>
 
@@ -129,9 +136,16 @@ const shouldShowElement = computed(() => {
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Manage Users</h2>
-      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Import Users
-      </Button>
+
+      <div class="flex gap-4">
+        <Button variant="default" @click="isAssigning = true" v-if="shouldShowElement">
+          Assign roles to users
+        </Button>
+
+        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+          Import Users
+        </Button>
+      </div>
     </div>
 
     <LayoutTable
@@ -139,9 +153,14 @@ const shouldShowElement = computed(() => {
       :columns="columns"
       :filters="filters"
       :reload-data="reloadData"
-      emit-delete-rows="delete-rows-user"
     />
   </div>
+
+  <Dialog :open="isAssigning" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <UserDialogAssign />
+    </DialogContent>
+  </Dialog>
 
   <!--  <Dialog :open="isCreating" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
@@ -151,13 +170,13 @@ const shouldShowElement = computed(() => {
 
   <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogCreateEdit :data="selectedUser" edit/>-->
+  <!--      <UserDialogCreateEdit :data="selectedValue" edit/>-->
   <!--    </DialogContent>-->
   <!--  </Dialog>-->
 
   <!--  <Dialog :open="isDeleting" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogDelete :data="selectedUser"/>-->
+  <!--      <UserDialogDelete :data="selectedValue"/>-->
   <!--    </DialogContent>-->
   <!--  </Dialog>-->
 </template>

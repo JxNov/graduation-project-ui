@@ -18,6 +18,15 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n'
   ],
 
+  piniaPluginPersistedstate: {
+    storage: 'cookies',
+    cookieOptions: {
+      maxAge: 60 * 60 * 24 * 30,
+      sameSite: 'lax'
+    },
+    debug: true
+  },
+
   i18n: {
     strategy: 'no_prefix',
     ...i18nConfig

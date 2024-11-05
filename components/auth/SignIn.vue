@@ -21,27 +21,16 @@ const { isFieldDirty, handleSubmit } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
-  try {
-    await $authStore.login(values)
-    if (!$generalStore.isLogged) {
-      throw new Error('Login failed!')
-    }
+  await $authStore.login(values)
 
+  if (!$generalStore.isLogged) {
+    toast.error('Invalid credentials')
     isLoading.value = false
-    toast.success('Login successful!', {
-      action: {
-        label: 'Undo'
-      }
-    })
-    navigateTo('/')
-  } catch (error) {
-    isLoading.value = false
-    toast.error('Login failed!', {
-      action: {
-        label: 'Undo'
-      }
-    })
+    return
   }
+
+  isLoading.value = false
+  navigateTo('/')
 })
 </script>
 

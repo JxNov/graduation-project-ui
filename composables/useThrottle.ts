@@ -16,7 +16,7 @@ export const useThrottle = (fn: Function, delay: number, key: string) => {
                 if (seconds < 60) {
                     toast.info(`Please wait ${seconds} seconds before reloading data`, {
                         action: {
-                            label: 'Undo',
+                            label: 'Close',
                         },
                     });
                 } else {
@@ -24,7 +24,7 @@ export const useThrottle = (fn: Function, delay: number, key: string) => {
                     const remainingSeconds = seconds % 60;
                     toast.info(`Please wait ${minutes} minutes and ${remainingSeconds} seconds before reloading data`, {
                         action: {
-                            label: 'Undo',
+                            label: 'Close',
                         },
                     });
                 }
