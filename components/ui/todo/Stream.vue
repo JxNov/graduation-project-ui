@@ -1,7 +1,7 @@
 <template>
   <div class="stream-wrapper">
     <div class="stream-header">
-        WEB2014.01
+        WEB2014
     </div>
     <div class="stream-body">
         <div class="btn-left">

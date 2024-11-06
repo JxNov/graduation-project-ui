@@ -49,6 +49,14 @@ export const navMenu: NavMenuItems = [
         link: '/admin/roles',
         permissions: [],
     },
+
+    {
+        title: 'Attendance',
+        icon: 'material-symbols-light:history-edu-outline',
+        link: '/admin/RallCall',
+        permissions: [],
+    },
+
     {
         title: 'Setting',
         icon: 'fluent:people-20-regular',
