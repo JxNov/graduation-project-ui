@@ -1,0 +1,1 @@
+export {default as UserDialogAssign} from './DialogAssign.vue'

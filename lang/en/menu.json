@@ -5,14 +5,21 @@
       "dashboard": "Dashboard",
       "general": "General",
       "generations": "Generations",
+      "academicYears": "Academic Years",
+      "semesters": "Semesters",
+      "blocks": "Blocks",
       "students": "Students",
       "teachers": "Teachers",
       "subjects": "Subjects",
       "classes": "Classes",
       "roles": "Roles",
       "users": "Users",
-      "help": "Help",
-      "account": "Account"
+      "classrooms": {
+        "index": "Classrooms",
+        "home": "Main Screen",
+        "registered": "Register",
+        "todos": "To Do"
+      }
     }
   }
 }

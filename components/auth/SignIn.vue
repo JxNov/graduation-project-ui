@@ -21,27 +21,16 @@ const { isFieldDirty, handleSubmit } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
-  try {
-    await $authStore.login(values)
-    if (!$generalStore.isLogged) {
-      throw new Error('Login failed!')
-    }
+  await $authStore.login(values)
 
+  if (!$generalStore.isLogged) {
+    toast.error('Invalid credentials')
     isLoading.value = false
-    toast.success('Login successful!', {
-      action: {
-        label: 'Undo'
-      }
-    })
-    navigateTo('/')
-  } catch (error) {
-    isLoading.value = false
-    toast.error('Login failed!', {
-      action: {
-        label: 'Undo'
-      }
-    })
+    return
   }
+
+  isLoading.value = false
+  navigateTo('/')
 })
 </script>
 
@@ -72,8 +61,9 @@ const onSubmit = handleSubmit(async (values) => {
       {{ $t('auth.login.title') }}
     </Button>
 
-    <Button variant="outline" class="w-full">
-      {{ $t('auth.login.google') }}
+    <Button type="button" variant="outline" class="w-full flex items-center justify-center gap-2">
+      <Icon name="devicon:google" size="18" />
+      <span>{{ $t('auth.login.google') }}</span>
     </Button>
   </form>
 </template>

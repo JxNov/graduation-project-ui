@@ -5,14 +5,21 @@
       "dashboard": "Bảng điều khiển",
       "general": "Chung",
       "generations": "Khóa học",
+      "academicYears": "Năm học",
+      "semesters": "Học kỳ",
+      "blocks": "Khối",
       "students": "Học sinh",
       "teachers": "Giáo viên",
       "subjects": "Môn học",
       "classes": "Lớp học",
       "roles": "Vai trò",
       "users": "Người dùng",
-      "help": "Trợ giúp",
-      "account": "Tài khoản"
+      "classrooms": {
+        "index": "Phòng học",
+        "home": "Màn hình chính",
+        "registered": "Đã Đăng ký",
+        "todos": "Việc cần làm"
+      }
     }
   }
 }

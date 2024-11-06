@@ -4,7 +4,7 @@ import type { NavLink } from '~/types/nav'
 import { hasPermission as checkPermission } from '~/utils/permissions'
 
 const route = useRoute()
-const { $generalStore } = useNuxtApp()
+const { $authStore } = useNuxtApp()
 
 defineProps<{
   item: NavLink
@@ -13,7 +13,7 @@ defineProps<{
 const { isOpen } = storeToRefs(useNavbar())
 
 const hasPermission = (permissions: string[] | undefined): boolean => {
-  return checkPermission(permissions, $generalStore.userPermissions)
+  return checkPermission(permissions, $authStore.user.permissions)
 }
 </script>
 

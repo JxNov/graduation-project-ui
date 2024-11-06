@@ -1,23 +1,24 @@
 <script setup lang="ts">
 import { CircleUser, Menu, Triangle } from 'lucide-vue-next'
 import { navMenu, navMenuBottom } from '~/constants/menus'
+import { navMenuClassroom, navMenuClassroomBottom } from '~/constants/classrooms'
 import type { NavGroup, NavLink, NavSectionTitle } from '~/types/nav'
 import { useMediaQuery } from '@vueuse/core'
+import Search from '~/components/base/Search.vue'
+import DarkToggle from '~/components/base/DarkToggle.vue'
+import LanguageSwitcher from '~/components/base/LanguageSwitcher.vue'
+import ThemePopover from '~/components/base/ThemePopover.vue'
+import ThemeDrawer from '~/components/base/ThemeDrawer.vue'
+
+defineProps<{
+  classroom?: boolean
+}>()
 
 const { $authStore, $generalStore } = useNuxtApp()
 
 const handleLogout = async () => {
-  try {
-    await $authStore.logout()
-
-    if ($generalStore.isLogged) {
-      throw new Error('Logout failed!!!')
-    }
-
-    navigateTo('/login')
-  } catch (error) {
-    console.error(error)
-  }
+  await $authStore.logout()
+  navigateTo('/login')
 }
 
 function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
@@ -53,21 +54,45 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
 
           <ScrollArea class="w-full">
             <nav class="grid gap-2">
-              <component
-                :is="resolveNavItemComponent(item)"
-                v-for="(item, index) in navMenu"
-                :key="index"
-                :item="item" />
+              <template v-if="classroom">
+                <component
+                  :is="resolveNavItemComponent(item)"
+                  v-for="(item, index) in navMenuClassroom"
+                  :key="index"
+                  :item="item"
+                />
+              </template>
+
+              <template v-else>
+                <component
+                  :is="resolveNavItemComponent(item)"
+                  v-for="(item, index) in navMenu"
+                  :key="index"
+                  :item="item"
+                />
+              </template>
             </nav>
           </ScrollArea>
 
           <div class="mt-auto">
             <nav class="grid gap-2">
-              <component
-                :is="resolveNavItemComponent(item)"
-                v-for="(item, index) in navMenuBottom"
-                :key="index"
-                :item="item" />
+              <template v-if="classroom">
+                <component
+                  :is="resolveNavItemComponent(item)"
+                  v-for="(item, index) in navMenuClassroomBottom"
+                  :key="index"
+                  :item="item"
+                />
+              </template>
+
+              <template v-else>
+                <component
+                  :is="resolveNavItemComponent(item)"
+                  v-for="(item, index) in navMenuBottom"
+                  :key="index"
+                  :item="item"
+                />
+              </template>
             </nav>
           </div>
         </SheetContent>
@@ -76,6 +101,9 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
       <Search />
 
       <div class="ml-auto flex items-center gap-4">
+        <ThemePopover v-if="isMediumScreen" />
+        <ThemeDrawer v-else />
+
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button id="radix-vue-dropdown-menu-trigger-1" variant="secondary" size="icon" class="rounded-full">
@@ -88,11 +116,11 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             <DropdownMenuLabel class="flex font-normal">
               <div class="flex flex-col space-y-1">
                 <p class="text-sm font-medium leading-none">
-                  {{ $authStore.name }}
+                  {{ $authStore.user.name }}
                 </p>
 
                 <p class="text-xs text-muted-foreground leading-none">
-                  {{ $authStore.email }}
+                  {{ $authStore.user.email }}
                 </p>
               </div>
             </DropdownMenuLabel>

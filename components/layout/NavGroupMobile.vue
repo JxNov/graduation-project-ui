@@ -3,7 +3,7 @@ import type { NavGroup } from '~/types/nav'
 import { hasPermission as checkPermission } from '~/utils/permissions'
 
 const route = useRoute()
-const { $generalStore } = useNuxtApp()
+const { $authStore } = useNuxtApp()
 
 defineProps<{
   item: NavGroup
@@ -12,7 +12,7 @@ defineProps<{
 const isOpenCollapsible = ref(false)
 
 const hasPermission = (permissions: string[] | undefined): boolean => {
-  return checkPermission(permissions, $generalStore.userPermissions)
+  return checkPermission(permissions, $authStore.user.permissions)
 }
 </script>
 
@@ -31,8 +31,11 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
       >
         <Icon v-if="item.icon" :name="item.icon" class="size-5" />
         <span>{{ $t(`menu.nav.${item.title}`) }}</span>
-        <Icon :name="isOpenCollapsible ? 'radix-icons:chevron-down' : 'radix-icons:chevron-right'"
-              class="ml-auto h-4 w-4" />
+        <Icon
+          name="radix-icons:chevron-right"
+          class="ml-auto h-4 w-4 transition-transform duration-200"
+          :class="isOpenCollapsible ? 'rotate-90' : 'rotate-0'"
+        />
       </Button>
     </CollapsibleTrigger>
     <CollapsibleContent class="space-y-2">

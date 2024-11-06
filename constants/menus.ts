@@ -15,7 +15,7 @@ export const navMenu: NavMenuItems = [
   },
   {
     title: 'general',
-    icon: 'fluent:hat-graduation-12-regular',
+    icon: 'gravity-ui:graduation-cap',
     children: [
       {
         title: 'generations',
@@ -24,21 +24,21 @@ export const navMenu: NavMenuItems = [
         permissions: []
       },
       {
-        title: 'students',
-        icon: 'ph:student',
-        link: '/admin/students',
+        title: 'academicYears',
+        icon: 'material-symbols:calendar-clock-outline-rounded',
+        link: '/admin/academic-years',
         permissions: []
       },
       {
-        title: 'teachers',
-        icon: 'hugeicons:teaching',
-        link: '/admin/teachers',
+        title: 'semesters',
+        icon: 'carbon:calendar',
+        link: '/admin/semesters',
         permissions: []
       },
       {
-        title: 'subjects',
-        icon: 'carbon:document-subject',
-        link: '/admin/subjects',
+        title: 'blocks',
+        icon: 'lucide:blocks',
+        link: '/admin/blocks',
         permissions: []
       },
       {
@@ -47,6 +47,24 @@ export const navMenu: NavMenuItems = [
         link: '/admin/classes',
         permissions: []
       }
+      // {
+      //   title: 'students',
+      //   icon: 'ph:student',
+      //   link: '/admin/students',
+      //   permissions: []
+      // },
+      // {
+      //   title: 'teachers',
+      //   icon: 'hugeicons:teaching',
+      //   link: '/admin/teachers',
+      //   permissions: []
+      // },
+      // {
+      //   title: 'subjects',
+      //   icon: 'carbon:document-subject',
+      //   link: '/admin/subjects',
+      //   permissions: []
+      // },
     ]
   },
   {
@@ -65,13 +83,9 @@ export const navMenu: NavMenuItems = [
 
 export const navMenuBottom: NavMenuItems = [
   {
-    title: 'help',
-    icon: 'i-lucide-life-buoy',
-    link: ''
-  },
-  {
-    title: 'account',
-    icon: 'i-lucide-square-user',
-    link: ''
+    title: 'classrooms.index',
+    icon: 'mdi:google-classroom',
+    link: '/classrooms',
+    permissions: []
   }
 ]

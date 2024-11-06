@@ -1,142 +1,146 @@
-import {defineStore} from 'pinia';
-import type {Module, Role, Permission} from "~/schema";
+import type { Module, Permission, Role } from '~/schema'
+import {
+  fetchModulesService,
+  fetchRolesService,
+  fetchPermissionsService,
+  createRoleService,
+  updateRoleService,
+  deleteRoleService
+} from '~/services/role'
+import { toast } from 'vue-sonner'
 
 export const useRoleStore = defineStore('role', () => {
-    const {$axios} = useNuxtApp();
+  const modules = ref<Module[]>([])
+  const roles = ref<Role[]>([])
+  const permissions = ref<Permission[]>([])
 
-    const modules = ref<Module[]>([]);
-    const roles = ref<Role[]>([]);
-    const permissions = ref<Permission[]>([]);
+  const fetchModules = async () => {
+    try {
+      modules.value = await fetchModulesService()
+    } catch (error) {
+      throw error
+    }
+  }
 
-    const fetchModules = async () => {
-        try {
-            const response = await $axios.get('/v1/modules');
+  const fetchRoles = async () => {
+    try {
+      roles.value = await fetchRolesService()
+    } catch (error) {
+      throw error
+    }
+  }
 
-            if (!response) {
-                throw new Error('Invalid response');
-            }
+  const fetchPermissions = async () => {
+    try {
+      permissions.value = await fetchPermissionsService()
+    } catch (error) {
+      throw error
+    }
+  }
 
-            return modules.value = response.data.data;
-        } catch (error) {
-            console.log(error);
+  const createRole = async (data: { name: string, items: string[] }) => {
+    try {
+      const response = await createRoleService(data)
+      replaceRoles(response)
+
+      toast.success('Role created successfully', {
+        action: {
+          label: 'Close'
         }
-    }
-
-    const fetchRoles = async () => {
-        try {
-            const response = await $axios.get('/v1/roles');
-
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            return roles.value = response.data.data;
-        } catch (error) {
-            console.log(error);
+      })
+    } catch (error) {
+      toast.error('Role created failed', {
+        action: {
+          label: 'Close'
         }
+      })
     }
+  }
 
-    const fetchPermissions = async () => {
-        try {
-            const response = await $axios.get('/v1/permissions');
+  const updateRole = async (slug: string, data: { name: string, items: string[] }) => {
+    try {
+      const response = await updateRoleService(slug, data)
+      replaceRoles(response)
 
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            return permissions.value = response.data.data;
-        } catch (error) {
-            console.log(error);
+      toast.success('Role updated successfully', {
+        action: {
+          label: 'Close'
         }
-    }
-
-    const createRole = async (role: { name: string, items: string[] }) => {
-        try {
-            const response = await $axios.post('/v1/roles', {
-                name: role.name.trim(),
-                permissions: role.items
-            });
-
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-            replaceRoles(response);
-            return response;
-        } catch (error) {
-            throw error;
+      })
+    } catch (error) {
+      toast.error('Role updated failed', {
+        action: {
+          label: 'Close'
         }
+      })
     }
+  }
 
-    const updateRole = async (slug: string, role: { name: string, items: string[] }) => {
-        try {
-            const response = await $axios.patch(`/v1/roles/${slug}`, {
-                name: role.name.trim(),
-                permissions: role.items
-            });
+  const deleteRole = async (slug: string) => {
+    try {
+      await deleteRoleService(slug)
+      roles.value = roles.value.filter(role => role.slug !== slug)
 
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-            replaceRoles(response);
-            return response;
-        } catch (error) {
-            console.log(error);
+      toast.success('Role deleted successfully', {
+        action: {
+          label: 'Close'
         }
-    }
-
-    const deleteRole = async (slug: string) => {
-        try {
-            const response = await $axios.delete(`/v1/roles/${slug}`);
-
-            if (!response) {
-                throw new Error('Invalid response');
-            }
-
-            roles.value = roles.value.filter(r => r.slug !== slug);
-            return response;
-        } catch (error) {
-            console.log(error);
+      })
+    } catch (error) {
+      toast.error('Failed to delete role', {
+        action: {
+          label: 'Close'
         }
+      })
     }
+  }
 
-    const reloadData = async () => {
-        await fetchModules();
-        await fetchRoles();
-        await fetchPermissions();
-    }
+  const reloadData = () => {
+    const promise = () => Promise.all([
+      fetchModules(),
+      fetchRoles(),
+      fetchPermissions()
+    ])
 
-    const clearRole = () => {
-        modules.value = [];
-        roles.value = [];
-        permissions.value = [];
-    }
+    toast.promise(promise, {
+      loading: 'Reloading data...',
+      success: 'Data reloaded successfully!!!',
+      error: 'Data reloaded failed!!!'
+    })
+  }
 
-    const replaceRoles = (response: any) => {
-        const index = roles.value.findIndex(r => r.slug === response.data.data.slug);
-        if (index !== -1) {
-            roles.value = [
-                ...roles.value.slice(0, index),
-                response.data.data,
-                ...roles.value.slice(index + 1)
-            ];
-        } else {
-            roles.value = [...roles.value, response.data.data];
-        }
+  const replaceRoles = (response: any) => {
+    const index = roles.value.findIndex(role => role.slug === response.slug)
+    if (index !== -1) {
+      roles.value = [
+        ...roles.value.slice(0, index),
+        response,
+        ...roles.value.slice(index + 1)
+      ]
+    } else {
+      roles.value = [...roles.value, response]
     }
+  }
 
-    return {
-        modules,
-        roles,
-        permissions,
-        fetchModules,
-        fetchRoles,
-        fetchPermissions,
-        createRole,
-        updateRole,
-        deleteRole,
-        reloadData,
-        clearRole,
-    }
+  const clearRoles = () => {
+    modules.value = []
+    roles.value = []
+    permissions.value = []
+  }
+
+  return {
+    modules,
+    roles,
+    permissions,
+    fetchModules,
+    fetchRoles,
+    fetchPermissions,
+    createRole,
+    updateRole,
+    deleteRole,
+    reloadData,
+    clearRoles
+  }
 }, {
-    persist: true,
-});
+  persist: true
+})

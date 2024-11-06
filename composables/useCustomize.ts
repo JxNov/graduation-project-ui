@@ -11,8 +11,9 @@ export function useCustomize() {
   const config = useCookie<Config>('config', {
     default: () => ({
       theme: 'zinc',
-      radius: 0.5,
+      radius: 0.5
     }),
+    maxAge: 60 * 60 * 24 * 365 * 10
   })
 
   const themeClass = computed(() => `theme-${config.value.theme}`)
@@ -41,6 +42,6 @@ export function useCustomize() {
     setTheme,
     radius,
     setRadius,
-    themePrimary,
+    themePrimary
   }
 }
