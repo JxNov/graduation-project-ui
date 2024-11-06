@@ -43,8 +43,8 @@ export const useAuthStore = defineStore('auth', () => {
 
   const logout = async () => {
     try {
-      await logoutService()
       clearStores()
+      await logoutService()
 
       setTimeout(() => {
         toast.success('Logout success!!!', {

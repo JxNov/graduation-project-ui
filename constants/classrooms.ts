@@ -6,18 +6,6 @@ export const navMenuClassroom: NavMenuItems = [
     icon: 'mdi:google-classroom',
     link: '/classrooms',
     permissions: []
-  },
-  {
-    title: 'classrooms.registered',
-    icon: 'gravity-ui:graduation-cap',
-    children: [
-      {
-        title: 'classrooms.todos',
-        icon: 'material-symbols:contextual-token-add-outline-sharp',
-        link: '/classrooms/todos',
-        permissions: []
-      }
-    ]
   }
 ]
 

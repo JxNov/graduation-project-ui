@@ -14,7 +14,7 @@ const { t } = useI18n()
 
 useServerHead({
   htmlAttrs: {
-    class: `theme-${theme.value}`,
+    class: `theme-${theme.value} [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border`,
     style: `--radius: ${radius.value}rem;`
   }
 })
@@ -26,7 +26,7 @@ defineShortcuts({
 
 onMounted(() => {
   const items = ref<NavMenuItems>([])
-  watch(router.currentRoute, () => {
+  watchEffect(() => {
     if (router.currentRoute.value.path.includes('/classrooms')) {
       items.value = navMenuClassroom
     } else {

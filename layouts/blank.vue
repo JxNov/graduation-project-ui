@@ -6,7 +6,7 @@ const { theme, radius } = useCustomize()
 
 useServerHead({
   htmlAttrs: {
-    class: `theme-${theme.value}`,
+    class: `theme-${theme.value} [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border`,
     style: `--radius: ${radius.value}rem;`
   }
 })
