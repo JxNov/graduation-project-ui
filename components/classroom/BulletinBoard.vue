@@ -1,27 +1,12 @@
 <script setup lang="ts">
-import { toast } from 'vue-sonner'
+import Code from './Code.vue'
+import BulletinBoardEditor from './BulletinBoardEditor.vue'
+import BulletinBoardCard from './BulletinBoardCard.vue'
 
-const copyToClipboard = (text: string) => {
-  navigator.clipboard.writeText(text)
-    .then(() => {
-      toast.success('Đã sao chép mã lớp vào clipboard', {
-        action: {
-          label: 'Đóng'
-        }
-      })
-    })
-    .catch(() => {
-      toast.error('Sao chép mã lớp vào clipboard thất bại', {
-        action: {
-          label: 'Đóng'
-        }
-      })
-    })
-}
 </script>
 
 <template>
-  <div class="w-full flex flex-col gap-4 lg:px-28 mt-10">
+  <div class="w-full flex flex-col gap-4 xl:px-28 mt-10">
     <div class="relative w-full h-56 rounded-lg overflow-hidden">
       <img
         src="https://images.unsplash.com/photo-1720048170996-40507a45c720?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8"
@@ -37,20 +22,7 @@ const copyToClipboard = (text: string) => {
 
     <div class="grid grid-cols-12 gap-4">
       <div class="hidden md:block col-span-3 space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Mã lớp</CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <p
-              class="text-lg text-gray-800 dark:text-white font-bold cursor-pointer"
-              @click="copyToClipboard('ABC123')"
-            >
-              ABC123
-            </p>
-          </CardContent>
-        </Card>
+        <Code />
 
         <Card>
           <CardHeader>
@@ -69,11 +41,11 @@ const copyToClipboard = (text: string) => {
 
       <div class="col-span-12 md:col-span-9">
         <div class="flex flex-col gap-4">
-          <ClassroomBulletinBoardEditor />
+          <BulletinBoardEditor />
 
-          <ClassroomBulletinBoardCard />
-          <ClassroomBulletinBoardCard />
-          <ClassroomBulletinBoardCard />
+          <BulletinBoardCard />
+          <BulletinBoardCard />
+          <BulletinBoardCard />
         </div>
       </div>
     </div>

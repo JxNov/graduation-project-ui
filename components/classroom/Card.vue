@@ -3,7 +3,7 @@
 
 <template>
   <Card
-    class="flex flex-col h-full transition-colors duration-300 hover:bg-muted/60 dark:hover:bg-muted/80 overflow-hidden cursor-pointer">
+    class="flex flex-col h-full transition-colors duration-300 hover:bg-muted/50 overflow-hidden cursor-pointer">
     <div class="relative h-28">
       <CardHeader class="relative">
         <div class="absolute inset-0">
@@ -33,7 +33,6 @@
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     </div>
-
 
     <CardContent class="mt-10 mb-4">
       <p class="text-sm text-gray-500 dark:text-white">

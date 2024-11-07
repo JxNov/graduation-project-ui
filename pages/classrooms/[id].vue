@@ -11,23 +11,27 @@ onMounted(() => {
 <template>
   <ConfigProvider :use-id="useIdFunction">
     <Tabs default-value="bulletin-board">
-      <TabsList class="grid grid-cols-4 w-[550px]">
-        <TabsTrigger value="bulletin-board">
-          Bulletin Board
-        </TabsTrigger>
+      <div class="flex justify-between items-center">
+        <TabsList>
+          <TabsTrigger value="bulletin-board">
+            Bulletin Board
+          </TabsTrigger>
 
-        <TabsTrigger value="classwork">
-          Classwork
-        </TabsTrigger>
+          <TabsTrigger value="classwork">
+            Classwork
+          </TabsTrigger>
 
-        <TabsTrigger value="people">
-          People
-        </TabsTrigger>
+          <TabsTrigger value="people">
+            People
+          </TabsTrigger>
 
-        <TabsTrigger value="grades">
-          Grades
-        </TabsTrigger>
-      </TabsList>
+          <TabsTrigger value="grades">
+            Grades
+          </TabsTrigger>
+        </TabsList>
+
+        <ClassroomCodeMobile />
+      </div>
 
       <TabsContent value="bulletin-board">
         <ClassroomBulletinBoard />
