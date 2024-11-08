@@ -10,7 +10,7 @@ const { $userStore, $roleStore, $bus } = useNuxtApp()
 const isLoading = ref<boolean>(false)
 const selectAll = ref<boolean>(false)
 const selectItems = ref<string[]>([])
-const users = $userStore.users.map(user => ({ label: user.name, value: user.username }))
+const users = $userStore.users.map(user => ({ label: user.name, value: user.email }))
 
 const items = [
   {
@@ -127,43 +127,31 @@ const handleChange = (checked: boolean, value: string) => {
 
       <div class="space-y-2">
         <p class="text-md font-semibold">List of roles</p>
-        <div class="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableCell>
-                  Role
-                </TableCell>
-              </TableRow>
-            </TableHeader>
 
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <FormField name="roles">
-                    <FormItem class="flex flex-row items-start space-x-3 space-y-0">
-                      <FormField v-for="role in $roleStore.roles" v-slot="{ handleChange }" :key="role.slug"
-                                 type="checkbox"
-                                 :value="role.slug" :unchecked-value="false" name="roles">
-                        <FormItem class="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              @update:checked="handleChange"
-                            />
-                          </FormControl>
-                          <FormLabel class="font-normal">
-                            {{ role.name }}
-                          </FormLabel>
-                        </FormItem>
-                      </FormField>
-                      <FormMessage />
-                    </FormItem>
-                  </FormField>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </div>
+        <FormField name="roles">
+          <FormItem>
+            <div class="grid grid-cols-4 gap-4">
+              <FormField
+                v-for="role in $roleStore.roles" v-slot="{ handleChange }"
+                :key="role.slug" type="checkbox"
+                :value="role.slug" :unchecked-value="false" name="roles"
+              >
+                <FormItem class="flex flex-row items-start space-x-3 space-y-0">
+                  <FormControl>
+                    <Checkbox
+                      @update:checked="handleChange"
+                    />
+                  </FormControl>
+
+                  <FormLabel class="font-normal">
+                    {{ role.name }}
+                  </FormLabel>
+                </FormItem>
+              </FormField>
+            </div>
+            <FormMessage />
+          </FormItem>
+        </FormField>
       </div>
 
       <div class="space-y-2">
@@ -180,7 +168,7 @@ const handleChange = (checked: boolean, value: string) => {
                   Permissions
                 </TableCell>
 
-                <TableCell>
+                <TableCell class="w-24">
                   <Checkbox
                     :disabled="isLoading"
                     :checked="selectAll"
@@ -236,7 +224,7 @@ const handleChange = (checked: boolean, value: string) => {
       </div>
     </div>
 
-    <DialogFooter>
+    <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
         Cancel
       </Button>

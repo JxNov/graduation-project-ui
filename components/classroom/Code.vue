@@ -48,7 +48,7 @@ const copyToClipboard = (text: string) => {
       <Dialog>
         <DialogTrigger as-child>
           <EnterFullScreenIcon
-            class="w-6 h-6 ml-2 cursor-pointer text-gray-800 dark:text-white transition-transform duration-300 hover:scale-125"
+            class="w-6 h-6 ml-2 text-primary cursor-pointer transition-transform duration-300 hover:scale-125"
           />
         </DialogTrigger>
 

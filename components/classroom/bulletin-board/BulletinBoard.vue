@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import Code from './Code.vue'
+import Code from '../Code.vue'
 import BulletinBoardEditor from './BulletinBoardEditor.vue'
-import BulletinBoardCard from './BulletinBoardCard.vue'
+import BulletinBoardClasswork from './BulletinBoardClasswork.vue'
+import BulletinBoardComment from './BulletinBoardComment.vue'
+import BulletinBoardNotification from './BulletinBoardNotification.vue'
 
 </script>
 
@@ -43,9 +45,12 @@ import BulletinBoardCard from './BulletinBoardCard.vue'
         <div class="flex flex-col gap-4">
           <BulletinBoardEditor />
 
-          <BulletinBoardCard />
-          <BulletinBoardCard />
-          <BulletinBoardCard />
+          <BulletinBoardClasswork />
+
+          <BulletinBoardNotification>
+            <BulletinBoardComment />
+          </BulletinBoardNotification>
+          <BulletinBoardNotification />
         </div>
       </div>
     </div>

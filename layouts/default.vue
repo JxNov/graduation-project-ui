@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { cn } from '~/lib/utils'
-import { Toaster } from '~/components/ui/sonner'
-import type { NavMenuItems } from '~/types/nav'
-import { navMenu } from '~/constants/menus'
-import { navMenuClassroom } from '~/constants/classrooms'
 
 const store = useNavbar()
 const { isOpen } = storeToRefs(store)
 const { isBgWhite } = storeToRefs(useAppConf())
 const { theme, radius } = useCustomize()
 const router = useRouter()
-const { t } = useI18n()
 
 useServerHead({
   htmlAttrs: {
@@ -22,38 +17,6 @@ useServerHead({
 defineShortcuts({
   'Meta_B': () => store.toggle(),
   'G-H': () => router.push('/')
-})
-
-onMounted(() => {
-  const items = ref<NavMenuItems>([])
-  watchEffect(() => {
-    if (router.currentRoute.value.path.includes('/classrooms')) {
-      items.value = navMenuClassroom
-    } else {
-      items.value = navMenu
-    }
-  })
-
-  const menus = computed(() => items.value)
-
-  watchEffect(() => {
-    const links = menus.value.flatMap(item => {
-      if ('heading' in item) {
-        return item
-      } else if ('children' in item) {
-        return item.children
-      } else {
-        return item
-      }
-    })
-
-    links.find(link => {
-      if ('link' in link) {
-        document.title = t(`menu.nav.${link.title}`)
-        return link.link === router.currentRoute.value.path
-      }
-    })
-  })
 })
 </script>
 
@@ -74,6 +37,4 @@ onMounted(() => {
       </main>
     </div>
   </div>
-
-  <Toaster position="top-right" class="pointer-events-auto" :duration="3000" />
 </template>

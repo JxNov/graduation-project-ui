@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { ConfigProvider } from 'radix-vue'
+import { ClassroomBulletinBoard } from '~/components/classroom/bulletin-board'
 
 const useIdFunction = () => useId()
 
-onMounted(() => {
-  document.title = 'Chi tiết lớp học'
+const title = 'Chi tiết lớp học'
+const description = 'Chi tiết lớp học'
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  ogImage: '',
+  twitterImage: '',
+  twitterCard: 'summary_large_image'
 })
 </script>
 

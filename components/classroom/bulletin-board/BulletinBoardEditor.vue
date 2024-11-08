@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Editor from './Editor.vue'
+import Editor from '../Editor.vue'
 
-const isOpen = ref(false)
+const isOpen = ref<boolean>(false)
 </script>
 
 <template>

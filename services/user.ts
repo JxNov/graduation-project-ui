@@ -25,9 +25,9 @@ export const assignRolePermissionService = async (data: {
 
   try {
     const response = await $axios.patch('/v1/users/assign-roles-permissions', {
-      username: data.users,
-      roles_slug: data.roles,
-      permissions_slug: data.items
+      users: data.users,
+      roles: data.roles,
+      permissions: data.items
     })
 
     if (!response) {
