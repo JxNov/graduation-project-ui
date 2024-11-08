@@ -33,7 +33,7 @@ const handleDelete = async () => {
     </DialogDescription>
   </DialogHeader>
 
-  <DialogFooter>
+  <DialogFooter class="gap-2">
     <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
       Cancel
     </Button>

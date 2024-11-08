@@ -158,7 +158,7 @@ const shouldShowElement = computed(() => {
 
   <Dialog :open="isAssigning" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
-      <UserDialogAssign />
+      <UserDialogAssign @click="$bus.emit('close-tags-combobox', false)" />
     </DialogContent>
   </Dialog>
 

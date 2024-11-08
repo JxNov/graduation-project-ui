@@ -154,7 +154,7 @@ const onSubmit = handleSubmit(async (values) => {
       </FormField>
     </div>
 
-    <DialogFooter>
+    <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
         Cancel
       </Button>

@@ -155,7 +155,7 @@ const handleChange = (checked: boolean, value: string) => {
                   Permissions
                 </TableCell>
 
-                <TableCell>
+                <TableCell class="w-24">
                   <Checkbox
                     :disabled="isLoading"
                     :checked="selectAll"
@@ -206,7 +206,7 @@ const handleChange = (checked: boolean, value: string) => {
       </div>
     </div>
 
-    <DialogFooter>
+    <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
         Cancel
       </Button>

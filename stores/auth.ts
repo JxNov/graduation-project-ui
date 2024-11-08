@@ -25,13 +25,11 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = await profileService()
       $generalStore.isLogged = true
 
-      setTimeout(() => {
-        toast.success('Login success!!!', {
-          action: {
-            label: 'Close'
-          }
-        })
-      }, 300)
+      toast.success('Login success!!!', {
+        action: {
+          label: 'Close'
+        }
+      })
     } catch (error) {
       toast.error('Login failed!!!', {
         action: {
@@ -43,16 +41,14 @@ export const useAuthStore = defineStore('auth', () => {
 
   const logout = async () => {
     try {
-      await logoutService()
       clearStores()
+      await logoutService()
 
-      setTimeout(() => {
-        toast.success('Logout success!!!', {
-          action: {
-            label: 'Close'
-          }
-        })
-      }, 300)
+      toast.success('Logout success!!!', {
+        action: {
+          label: 'Close'
+        }
+      })
     } catch (error) {
       toast.error('Logout failed!!!', {
         action: {

@@ -9,7 +9,7 @@ export const navMenu: NavMenuItems = [
   },
   {
     title: 'dashboard',
-    icon: 'mage:dashboard',
+    icon: 'material-symbols:space-dashboard-outline',
     link: '/admin',
     permissions: []
   },

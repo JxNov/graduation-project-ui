@@ -11,6 +11,8 @@ import {
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
 import { useVModel } from '@vueuse/core'
 
+const { $bus } = useNuxtApp()
+
 const props = defineProps<{
   placeholder: string;
   data: {
@@ -29,8 +31,8 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   defaultValue: []
 })
 
-const open = ref(false)
-const searchTerm = ref('')
+const open = ref<boolean>(false)
+const searchTerm = ref<string>('')
 
 const filteredData = computed(() =>
   props.data.filter(i => !modelValue.value.includes(i.value))
@@ -40,10 +42,20 @@ const getLabelByValue = (value: string) => {
   const item = props.data.find(i => i.value === value)
   return item ? item.label : value
 }
+
+onMounted(() => {
+  $bus.on('close-tags-combobox', (value: boolean) => {
+    open.value = value
+  })
+})
+
+onBeforeUnmount(() => {
+  $bus.off('close-tags-combobox')
+})
 </script>
 
 <template>
-  <TagsInput class="px-0 gap-0 w-80" :model-value="modelValue" @click="open = true">
+  <TagsInput class="px-0 gap-0 w-full" :model-value="modelValue">
     <div class="flex gap-2 flex-wrap items-center px-3">
       <TagsInputItem v-for="item in modelValue" :key="item" :value="getLabelByValue(item)">
         <TagsInputItemText />
@@ -79,7 +91,7 @@ const getLabelByValue = (value: string) => {
                   }
                 }"
               >
-                {{ val.label }}
+                {{ val.label }} - {{ val.value }}
               </CommandItem>
             </CommandGroup>
           </CommandList>

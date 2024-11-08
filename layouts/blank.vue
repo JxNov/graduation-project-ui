@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { Toaster } from '~/components/ui/sonner'
-
 const store = useNavbar()
 const { theme, radius } = useCustomize()
 
 useServerHead({
   htmlAttrs: {
-    class: `theme-${theme.value}`,
+    class: `theme-${theme.value} [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border`,
     style: `--radius: ${radius.value}rem;`
   }
 })
@@ -23,6 +21,4 @@ defineShortcuts({
   <div>
     <slot />
   </div>
-
-  <Toaster position="top-right" class="pointer-events-auto" :duration="3000" />
 </template>

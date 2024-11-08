@@ -1,6 +1,10 @@
 import i18nConfig from './config/i18n.config'
 
 export default defineNuxtConfig({
+  $production: {
+    devtools: { enabled: false }
+  },
+
   runtimeConfig: {
     public: {
       baseApi: process.env.NUXT_BASE_API_URL,

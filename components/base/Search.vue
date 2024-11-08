@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { navMenu, navMenuBottom } from '~/constants/menus'
+import { navMenuClassroom, navMenuClassroomBottom } from '~/constants/classrooms'
 import { hasPermission as checkPermission } from '~/utils/permissions'
 
 const { metaSymbol } = useShortcuts()
@@ -13,10 +14,18 @@ defineShortcuts({
 const openCommand = ref(false)
 
 const navMenuGroup = computed(() => {
+  if (router.currentRoute.value.path.includes('/classroom')) {
+    return navMenuClassroom.map((nav: any) => nav)
+  }
+
   return navMenu.map((nav: any) => nav)
 })
 
 const navMenuGroupBottom = computed(() => {
+  if (router.currentRoute.value.path.includes('/classroom')) {
+    return navMenuClassroomBottom.map((nav: any) => nav)
+  }
+
   return navMenuBottom.map((nav: any) => nav)
 })
 
