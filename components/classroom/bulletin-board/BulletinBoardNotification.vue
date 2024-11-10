@@ -9,8 +9,8 @@ const useIdFunction = () => useId()
 <template>
   <Card
     class="transition-shadow duration-300 ease-in-out shadow-md hover:shadow-xl">
-    <CardHeader class="flex flex-row justify-between items-center gap-4">
-      <div class="flex flex-row items-center gap-4">
+    <CardHeader class="flex flex-row justify-between items-start gap-4">
+      <div class="flex flex-row items-start gap-4">
         <Avatar>
           <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
           <AvatarFallback>CN</AvatarFallback>

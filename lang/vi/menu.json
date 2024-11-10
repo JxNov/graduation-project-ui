@@ -12,6 +12,7 @@
       "teachers": "Giáo viên",
       "subjects": "Môn học",
       "classes": "Lớp học",
+      "attendances": "Điểm danh",
       "roles": "Vai trò",
       "users": "Người dùng",
       "classrooms": {

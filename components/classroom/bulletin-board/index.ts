@@ -1,6 +1,0 @@
-export { default as ClassroomBulletinBoard } from './BulletinBoard.vue'
-export { default as ClassroomBulletinBoardEditor } from './BulletinBoardEditor.vue'
-export { default as ClassroomBulletinBoardClasswork } from './BulletinBoardClasswork.vue'
-export { default as ClassroomBulletinBoardComment } from './BulletinBoardComment.vue'
-export { default as ClassroomBulletinBoardNotification } from './BulletinBoardNotification.vue'
-export { default as ClassroomBulletinBoardNotificationEditor } from './BulletinBoardNotificationEditor.vue'

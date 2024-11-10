@@ -9,7 +9,7 @@ export const navMenu: NavMenuItems = [
   },
   {
     title: 'dashboard',
-    icon: 'material-symbols:space-dashboard-outline',
+    icon: 'hugeicons:dashboard-square-01',
     link: '/admin',
     permissions: []
   },
@@ -66,6 +66,12 @@ export const navMenu: NavMenuItems = [
       //   permissions: []
       // },
     ]
+  },
+  {
+    title: 'attendances',
+    icon: 'material-symbols:person-raised-hand-outline',
+    link: '/admin/attendances',
+    permissions: []
   },
   {
     title: 'roles',
