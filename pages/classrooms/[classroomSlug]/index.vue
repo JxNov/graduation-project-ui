@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ConfigProvider } from 'radix-vue'
-import { ClassroomBulletinBoard } from '~/components/classroom/bulletin-board'
+import BulletinBoard from '~/components/classroom/bulletin-board/BulletinBoard.vue'
+import Homework from '~/components/classroom/homework/Homework.vue'
+import People from '~/components/classroom/people/People.vue'
 
 const useIdFunction = () => useId()
 
@@ -27,8 +29,8 @@ useSeoMeta({
             Bulletin Board
           </TabsTrigger>
 
-          <TabsTrigger value="classwork">
-            Classwork
+          <TabsTrigger value="homework">
+            Homework
           </TabsTrigger>
 
           <TabsTrigger value="people">
@@ -43,19 +45,19 @@ useSeoMeta({
         <ClassroomCodeMobile />
       </div>
 
-      <TabsContent value="bulletin-board">
-        <ClassroomBulletinBoard />
+      <TabsContent value="bulletin-board" class="focus-visible:ring-0 focus-visible:ring-offset-0">
+        <BulletinBoard />
       </TabsContent>
 
-      <TabsContent value="classwork">
-        2
+      <TabsContent value="homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
+        <Homework />
       </TabsContent>
 
-      <TabsContent value="people">
-        3
+      <TabsContent value="people" class="focus-visible:ring-0 focus-visible:ring-offset-0">
+        <People />
       </TabsContent>
 
-      <TabsContent value="grades">
+      <TabsContent value="grades" class="focus-visible:ring-0 focus-visible:ring-offset-0">
         4
       </TabsContent>
     </Tabs>

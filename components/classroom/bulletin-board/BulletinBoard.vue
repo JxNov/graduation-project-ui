@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import Code from '../Code.vue'
 import BulletinBoardEditor from './BulletinBoardEditor.vue'
-import BulletinBoardClasswork from './BulletinBoardClasswork.vue'
-import BulletinBoardComment from './BulletinBoardComment.vue'
+import BulletinBoardHomework from './BulletinBoardHomework.vue'
+import BulletinBoardHomeworkComment from './BulletinBoardHomeworkComment.vue'
 import BulletinBoardNotification from './BulletinBoardNotification.vue'
-
+import BulletinBoardNotificationComment from './BulletinBoardNotificationComment.vue'
+import BulletinBoardHomeworkDueDate from './BulletinBoardHomeworkDueDate.vue'
+import { scrollToFragment } from '@/utils/scrollToFragment'
 </script>
 
 <template>
@@ -29,15 +31,13 @@ import BulletinBoardNotification from './BulletinBoardNotification.vue'
         <Card>
           <CardHeader>
             <CardTitle>Sắp đến hạn</CardTitle>
-            <CardDescription>Tuyệt vời, không có bài tập nào sắp đến hạn!</CardDescription>
+            <!--            <CardDescription>Tuyệt vời, không có bài tập nào sắp đến hạn!</CardDescription>-->
           </CardHeader>
 
-          <CardContent>
+          <CardContent class="flex flex-col gap-4">
+            <BulletinBoardHomeworkDueDate @click="scrollToFragment('1')" />
+            <BulletinBoardHomeworkDueDate @click="scrollToFragment('2')" />
           </CardContent>
-
-          <CardFooter class="flex justify-end">
-            <Button variant="default" color="primary">Xem tất cả</Button>
-          </CardFooter>
         </Card>
       </div>
 
@@ -45,11 +45,17 @@ import BulletinBoardNotification from './BulletinBoardNotification.vue'
         <div class="flex flex-col gap-4">
           <BulletinBoardEditor />
 
-          <BulletinBoardClasswork />
+          <BulletinBoardHomework id="1">
+            <BulletinBoardHomeworkComment />
+          </BulletinBoardHomework>
+
+          <BulletinBoardHomework id="2" />
+          <BulletinBoardHomework id="3" />
 
           <BulletinBoardNotification>
-            <BulletinBoardComment />
+            <BulletinBoardNotificationComment />
           </BulletinBoardNotification>
+
           <BulletinBoardNotification />
         </div>
       </div>

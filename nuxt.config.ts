@@ -19,7 +19,8 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/icon',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    'nuxt-tiptap-editor'
   ],
 
   piniaPluginPersistedstate: {
@@ -55,6 +56,10 @@ export default defineNuxtConfig({
     classSuffix: '',
     storage: 'localStorage', // or 'sessionStorage' or 'cookie'
     storageKey: 'nuxt-color-mode'
+  },
+
+  tiptap: {
+    prefix: 'Tiptap' //prefix for Tiptap imports, composables not included
   },
 
   vite: {

@@ -12,6 +12,7 @@
       "teachers": "Teachers",
       "subjects": "Subjects",
       "classes": "Classes",
+      "attendances": "Attendances",
       "roles": "Roles",
       "users": "Users",
       "classrooms": {

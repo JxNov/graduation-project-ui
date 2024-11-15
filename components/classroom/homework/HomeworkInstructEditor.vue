@@ -43,14 +43,16 @@ const closeAll = () => {
 
 <template>
   <Collapsible v-model:open="isOpen">
-    <Card class="select-none transition-shadow duration-300 ease-in-out shadow-md hover:shadow-xl">
-      <CardHeader class="flex flex-row items-center gap-4 cursor-pointer" @click="toggleCollapsible">
+    <Card class="cursor-pointer select-none rounded-t-none shadow-none border-none">
+      <CardHeader class="flex flex-row items-center gap-4" @click="toggleCollapsible">
         <Avatar>
           <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
 
-        <CardDescription>Thông báo nội dung nào đó cho lớp học của bạn</CardDescription>
+        <CardDescription>
+          Thêm nhận xét trong lớp học...
+        </CardDescription>
       </CardHeader>
 
       <CollapsibleContent>

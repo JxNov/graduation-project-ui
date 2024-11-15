@@ -1,11 +1,12 @@
 const animate = require("tailwindcss-animate")
+const typography = require('@tailwindcss/typography')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   safelist: ["dark"],
   prefix: "",
-  
+
   theme: {
     container: {
       center: true,
@@ -80,7 +81,61 @@ module.exports = {
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            '--tw-prose-bullets': theme('colors.foreground'),
+            li: {
+              p: {
+                margin: 0
+              }
+            },
+            color: theme("colors.foreground"),
+            a: {
+              color: theme("colors.primary.DEFAULT"),
+              "&:hover": {
+                color: theme("colors.primary.foreground"),
+              },
+            },
+            strong: {
+              color: theme("colors.foreground"),
+            },
+            "ol > li::before": {
+              color: theme("colors.foreground"),
+            },
+            "ul > li::before": {
+              backgroundColor: theme("colors.foreground"),
+            },
+            blockquote: {
+              color: theme("colors.foreground"),
+              borderLeftColor: theme("colors.border"),
+            },
+            code: {
+              color: theme("colors.foreground"),
+              backgroundColor: theme("colors.background"),
+            },
+            "code::before": {
+              content: '""',
+            },
+            "code::after": {
+              content: '""',
+            },
+            pre: {
+              color: theme("colors.foreground"),
+              backgroundColor: theme("colors.background"),
+              borderColor: theme("colors.border"),
+            },
+            thead: {
+              color: theme("colors.foreground"),
+              borderBottomColor: theme("colors.border"),
+            },
+            "tbody tr": {
+              borderBottomColor: theme("colors.border"),
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [animate],
+  plugins: [animate, typography],
 }

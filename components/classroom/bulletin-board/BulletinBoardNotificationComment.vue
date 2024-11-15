@@ -14,7 +14,7 @@ const isOpen = ref<boolean>(false)
     </CollapsibleTrigger>
 
     <CollapsibleContent class="space-y-4">
-      <div class="flex flex-row items-center gap-4">
+      <div class="flex flex-row items-start gap-4">
         <Avatar>
           <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
           <AvatarFallback>CN</AvatarFallback>
@@ -33,7 +33,7 @@ const isOpen = ref<boolean>(false)
         </div>
       </div>
 
-      <div class="flex flex-row items-center gap-4">
+      <div class="flex flex-row items-start gap-4">
         <Avatar>
           <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
           <AvatarFallback>CN</AvatarFallback>
