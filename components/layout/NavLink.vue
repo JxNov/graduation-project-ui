@@ -15,6 +15,14 @@ const { isOpen } = storeToRefs(useNavbar())
 const hasPermission = (permissions: string[] | undefined): boolean => {
   return checkPermission(permissions, $authStore.user.permissions)
 }
+
+const checkActive = (link: string): boolean => {
+  if (link !== '/classrooms') {
+    return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+  }
+
+  return new RegExp(`^${link}(/.*)?$`).test(route.path)
+}
 </script>
 
 <template>
@@ -27,7 +35,8 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
             size="icon"
             class="w-full gap-3 rounded-lg px-4 font-normal"
             :class="[
-              { 'bg-muted': item.link === route.path },
+              // { 'bg-muted': item.link === route.path },
+              { 'bg-muted': checkActive(item.link) },
               cn('justify-center lg:justify-start', isOpen ? 'lg:justify-start' : 'lg:justify-center'),
             ]"
             :aria-label="$t(`menu.nav.${item.title}`)"

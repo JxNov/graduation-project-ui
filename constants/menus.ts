@@ -46,6 +46,18 @@ export const navMenu: NavMenuItems = [
         icon: 'eos-icons:product-classes-outlined',
         link: '/admin/classes',
         permissions: []
+      },
+      {
+        title: 'attendances',
+        icon: 'material-symbols:person-raised-hand-outline',
+        link: '/admin/attendances',
+        permissions: []
+      },
+      {
+        title: 'roles',
+        icon: 'eos-icons:role-binding-outlined',
+        link: '/admin/roles',
+        permissions: []
       }
       // {
       //   title: 'students',
@@ -68,21 +80,15 @@ export const navMenu: NavMenuItems = [
     ]
   },
   {
-    title: 'attendances',
-    icon: 'material-symbols:person-raised-hand-outline',
-    link: '/admin/attendances',
-    permissions: []
-  },
-  {
-    title: 'roles',
-    icon: 'eos-icons:role-binding-outlined',
-    link: '/admin/roles',
-    permissions: []
-  },
-  {
     title: 'users',
     icon: 'fluent:people-20-regular',
     link: '/admin/users',
+    permissions: []
+  },
+  {
+    title: 'attendances',
+    icon: 'material-symbols:person-raised-hand-outline',
+    link: '/attendances',
     permissions: []
   }
 ]

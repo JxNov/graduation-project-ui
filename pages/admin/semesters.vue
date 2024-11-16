@@ -109,7 +109,7 @@ const filters = [
 
 const reloadData = useThrottle(() => {
   $semesterStore.reloadData()
-}, 60000, 'academic-year')
+}, 60000, 'semester')
 
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement

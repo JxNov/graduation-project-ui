@@ -72,7 +72,7 @@ const columns = createColumns(
 
 const reloadData = useThrottle(() => {
   $blockStore.reloadData()
-}, 60000, 'academic-year')
+}, 60000, 'block')
 
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement

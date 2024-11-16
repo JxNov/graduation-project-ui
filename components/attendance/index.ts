@@ -1,0 +1,1 @@
+export { default as AttendanceDetail } from './Detail.vue'

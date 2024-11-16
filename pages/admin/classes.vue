@@ -80,7 +80,7 @@ const columns = createColumns(
 
 const reloadData = useThrottle(() => {
   $classStore.reloadData()
-}, 60000, 'generation')
+}, 60000, 'class')
 
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
