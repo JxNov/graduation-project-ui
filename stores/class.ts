@@ -116,5 +116,7 @@ export const useClassStore = defineStore('class', () => {
     clearClasses
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage()
+  }
 })

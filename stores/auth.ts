@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<Auth>({
     name: '',
     username: '',
+    image: '',
     dateOfBirth: '',
     gender: '',
     phoneNumber: '',
@@ -71,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = {
       name: '',
       username: '',
+      image: '',
       dateOfBirth: '',
       gender: '',
       phoneNumber: '',
@@ -88,5 +90,9 @@ export const useAuthStore = defineStore('auth', () => {
     clearUser
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.cookies({
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    })
+  }
 })

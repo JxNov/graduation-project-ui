@@ -26,12 +26,7 @@ export default defineNuxtConfig({
   ],
 
   piniaPluginPersistedstate: {
-    storage: 'cookies',
-    cookieOptions: {
-      maxAge: 60 * 60 * 24 * 30,
-      sameSite: 'lax'
-    },
-    debug: true
+    key: 'persist:%id'
   },
 
   i18n: {

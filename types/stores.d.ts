@@ -5,9 +5,9 @@ import { useUserStore } from '~/stores/user'
 import { useGenerationStore } from '~/stores/generation'
 import { useAcademicYearStore } from '~/stores/academicYear'
 import { useSemesterStore } from '~/stores/semester'
-import { useBlockStore } from '~/stores/block'
 import { useClassStore } from '~/stores/class'
 import { useTeacherStore } from '~/stores/teacher'
+import { useStudentStore } from '~/stores/student'
 
 declare module '#app' {
   interface NuxtApp {
@@ -18,9 +18,9 @@ declare module '#app' {
     $generationStore: ReturnType<typeof useGenerationStore>;
     $academicYearStore: ReturnType<typeof useAcademicYearStore>;
     $semesterStore: ReturnType<typeof useSemesterStore>;
-    $blockStore: ReturnType<typeof useBlockStore>;
     $classStore: ReturnType<typeof useClassStore>;
     $teacherStore: ReturnType<typeof useTeacherStore>;
+    $studentStore: ReturnType<typeof useStudentStore>;
   }
 }
 
@@ -33,8 +33,8 @@ declare module '@vue/runtime-core' {
     $generationStore: ReturnType<typeof useGenerationStore>;
     $academicYearStore: ReturnType<typeof useAcademicYearStore>;
     $semesterStore: ReturnType<typeof useSemesterStore>;
-    $blockStore: ReturnType<typeof useBlockStore>;
     $classStore: ReturnType<typeof useClassStore>;
     $teacherStore: ReturnType<typeof useTeacherStore>;
+    $studentStore: ReturnType<typeof useStudentStore>;
   }
 }

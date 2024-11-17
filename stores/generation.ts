@@ -28,6 +28,8 @@ export const useGenerationStore = defineStore('generation', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Failed to create generation', {
         action: {
@@ -51,6 +53,8 @@ export const useGenerationStore = defineStore('generation', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Failed to update generation', {
         action: {
@@ -118,5 +122,7 @@ export const useGenerationStore = defineStore('generation', () => {
     clearGenerations
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage()
+  }
 })

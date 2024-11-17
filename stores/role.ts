@@ -48,6 +48,8 @@ export const useRoleStore = defineStore('role', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Role created failed', {
         action: {
@@ -67,6 +69,8 @@ export const useRoleStore = defineStore('role', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Role updated failed', {
         action: {
@@ -142,5 +146,7 @@ export const useRoleStore = defineStore('role', () => {
     clearRoles
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage()
+  }
 })

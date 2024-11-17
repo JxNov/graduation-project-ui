@@ -1,37 +1,30 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { User } from '~/schema'
-import { userSchema } from '~/schema'
+import type { Student } from '~/schema'
+import { studentSchema } from '~/schema'
 import type { TableFilter } from '~/types/table'
 import { createColumns } from '~/composables/columns'
 import { useThrottle } from '~/composables/useThrottle'
 import { showElement } from '~/utils/showElement'
 import { extractValue } from '~/utils/extractValue'
-import { Badge } from '~/components/ui/badge'
-import { UserDialogAssign } from '~/components/common/dialog/user'
-import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-const { $authStore, $userStore, $bus } = useNuxtApp()
+const { $authStore, $studentStore, $bus } = useNuxtApp()
 
-const isAssigning = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
-const selectedValue = ref<User | object>({})
+const selectedValue = ref<Student | object>({})
 
 onMounted(async () => {
-  $bus.on('open-dialog-edit', (row: User) => {
+  $bus.on('open-dialog-edit', (row: Student) => {
     isEditing.value = true
     selectedValue.value = row
   })
 
-  $bus.on('open-dialog-delete', (row: User) => {
+  $bus.on('open-dialog-delete', (row: Student) => {
     isDeleting.value = true
     selectedValue.value = row
-  })
-
-  $bus.on('close-dialog-assign', () => {
-    isAssigning.value = false
   })
 
   $bus.on('close-dialog-create-edit', (value: boolean) => {
@@ -45,19 +38,18 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
-  $bus.on('delete-rows', (values: User[]) => {
+  $bus.on('delete-rows', (values: Student[]) => {
     console.log(values)
   })
 
-  if (!$userStore.users.length) {
-    await $userStore.fetchUsers()
+  if (!$studentStore.students.length) {
+    await $studentStore.fetchStudents()
   }
 })
 
 onBeforeUnmount(() => {
   $bus.off('open-dialog-edit')
   $bus.off('open-dialog-delete')
-  $bus.off('close-dialog-assign')
   $bus.off('close-dialog-create-edit')
   $bus.off('close-dialog-delete')
   $bus.off('delete-rows')
@@ -66,6 +58,7 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
+    // ['name', 'Name'],
     ['email', 'Email'],
     ['gender', 'Gender'],
     ['actions', '', '', {
@@ -73,7 +66,7 @@ const columns = createColumns(
       enableHiding: false
     }]
   ],
-  userSchema,
+  studentSchema,
   [
     {
       accessorKey: 'name',
@@ -89,7 +82,7 @@ const columns = createColumns(
                 }),
                 h(AvatarFallback, {}, {
                   default: () => [
-                    h('span', {}, row.getValue('name')[0])
+                    h('span', {}, row.getValue('name'))
                   ]
                 })
               ]
@@ -102,45 +95,25 @@ const columns = createColumns(
         enableSorting: false
       },
       before: 'email'
-    },
-    {
-      accessorKey: 'roles',
-      title: 'Roles',
-      render: (row) => h('div', { class: 'truncate w-80' },
-        row.original.roles.map((role: any) => h(Badge, {
-          variant: 'outline',
-          class: 'mr-1'
-        }, () => role))
-      ),
-      options: {
-        enableSorting: false
-      },
-      before: 'actions'
     }
   ],
-  'users.update',
-  'users.delete'
-) as ColumnDef<User>[]
+  'students.update',
+  'students.delete'
+) as ColumnDef<Student>[]
 
-const valueGender = extractValue($userStore.users, 'gender')
-const valueRoles = extractValue($userStore.users, 'roles')
+const valueGender = extractValue($studentStore.students, 'gender')
 
 const filters: TableFilter[] = [
   {
     name: 'gender',
     label: 'Gender',
     values: valueGender
-  },
-  {
-    name: 'roles',
-    label: 'Role',
-    values: valueRoles
   }
 ]
 
 const reloadData = useThrottle(() => {
-  $userStore.reloadData()
-}, 60000, 'user')
+  $studentStore.reloadData()
+}, 60000, 'student')
 
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
@@ -148,7 +121,6 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const handleCloseDialog = () => {
-  isAssigning.value = false
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
@@ -156,55 +128,45 @@ const handleCloseDialog = () => {
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['users.create'])
+  return showElement($authStore.user.permissions, ['student.create'])
 })
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Users</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Manage Students</h2>
 
       <div class="flex gap-4">
-        <Button variant="default" @click="isAssigning = true" v-if="shouldShowElement">
-          Assign roles to users
-        </Button>
-
         <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-          Import Users
+          Import Students
         </Button>
       </div>
     </div>
 
     <LayoutTable
-      :data="$userStore.users"
+      :data="$studentStore.students"
       :columns="columns"
       :filters="filters"
       :reload-data="reloadData"
     />
   </div>
 
-  <Dialog :open="isAssigning" @update:open="handleCloseDialog">
-    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
-      <UserDialogAssign @click="$bus.emit('close-tags-combobox', false)" />
-    </DialogContent>
-  </Dialog>
-
   <!--  <Dialog :open="isCreating" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogCreateEdit/>-->
+  <!--      <StudentDialogCreateEdit/>-->
   <!--    </DialogContent>-->
   <!--  </Dialog>-->
 
   <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogCreateEdit :data="selectedValue" edit/>-->
+  <!--      <StudentDialogCreateEdit :data="selectedValue" edit/>-->
   <!--    </DialogContent>-->
   <!--  </Dialog>-->
 
   <!--  <Dialog :open="isDeleting" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogDelete :data="selectedValue"/>-->
+  <!--      <StudentDialogDelete :data="selectedValue"/>-->
   <!--    </DialogContent>-->
   <!--  </Dialog>-->
 </template>

@@ -33,6 +33,8 @@ export const useSemesterStore = defineStore('semester', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Semester created failed', {
         action: {
@@ -57,6 +59,8 @@ export const useSemesterStore = defineStore('semester', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Semester updated failed', {
         action: {
@@ -124,5 +128,7 @@ export const useSemesterStore = defineStore('semester', () => {
     clearSemesters
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage()
+  }
 })

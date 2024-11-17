@@ -4,8 +4,10 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { toast } from 'vue-sonner'
+import { ConfigProvider } from 'radix-vue'
 
 const { $authStore, $generalStore } = useNuxtApp()
+const useIdFunction = () => useId()
 
 const isLoading = ref<boolean>(false)
 
@@ -35,35 +37,37 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <form class="grid gap-4" @submit.prevent="onSubmit">
-    <FormField v-slot="{ componentField }" name="email">
-      <FormItem class="mb-4">
-        <FormLabel>Email</FormLabel>
-        <FormControl>
-          <Input type="text" placeholder="example@mail.com" v-bind="componentField" :disabled="isLoading" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+  <ConfigProvider :use-id="useIdFunction">
+    <form class="grid gap-4" @submit.prevent="onSubmit">
+      <FormField v-slot="{ componentField }" name="email">
+        <FormItem class="mb-4">
+          <FormLabel>Email</FormLabel>
+          <FormControl>
+            <Input type="text" placeholder="example@mail.com" v-bind="componentField" :disabled="isLoading" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
 
-    <FormField v-slot="{ componentField }" name="password">
-      <FormItem>
-        <FormLabel>Password</FormLabel>
-        <FormControl>
-          <Input type="password" v-bind="componentField" :disabled="isLoading" />
-        </FormControl>
-        <FormMessage />
-      </FormItem>
-    </FormField>
+      <FormField v-slot="{ componentField }" name="password">
+        <FormItem>
+          <FormLabel>Password</FormLabel>
+          <FormControl>
+            <Input type="password" v-bind="componentField" :disabled="isLoading" />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
 
-    <Button type="submit" class="w-full" :disabled="isLoading">
-      <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-      {{ $t('auth.login.title') }}
-    </Button>
+      <Button type="submit" class="w-full" :disabled="isLoading">
+        <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+        {{ $t('auth.login.title') }}
+      </Button>
 
-    <Button type="button" variant="outline" class="w-full flex items-center justify-center gap-2">
-      <Icon name="devicon:google" size="18" />
-      <span>{{ $t('auth.login.google') }}</span>
-    </Button>
-  </form>
+      <Button type="button" variant="outline" class="w-full flex items-center justify-center gap-2">
+        <Icon name="devicon:google" size="18" />
+        <span>{{ $t('auth.login.google') }}</span>
+      </Button>
+    </form>
+  </ConfigProvider>
 </template>

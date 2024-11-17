@@ -45,17 +45,30 @@ const handleClose = () => {
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
-  if (!props.edit) {
-    await $classStore.createClass(values)
+  try {
+    if (!props.edit) {
+      const response = await $classStore.createClass(values)
+
+      if (!response) {
+        throw new Error('Failed to create class')
+      }
+
+      isLoading.value = false
+      handleClose()
+      return
+    }
+
+    const response = await $classStore.updateClass(props.data.slug, values)
+
+    if (!response) {
+      throw new Error('Failed to update class')
+    }
 
     isLoading.value = false
     handleClose()
-    return
+  } catch (error) {
+    isLoading.value = false
   }
-
-  await $classStore.updateClass(props.data.slug, values)
-  isLoading.value = false
-  handleClose()
 })
 </script>
 

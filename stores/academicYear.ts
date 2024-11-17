@@ -6,6 +6,7 @@ import {
   deleteAcademicYearService
 } from '~/services/academicYear'
 import { toast } from 'vue-sonner'
+import { skipHydrate } from 'pinia'
 
 export const useAcademicYearStore = defineStore('academic-year', () => {
   const academicYears = ref<AcademicYear[]>([])
@@ -33,6 +34,8 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Academic year created failed', {
         action: {
@@ -57,6 +60,8 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
           label: 'Close'
         }
       })
+
+      return response
     } catch (error) {
       toast.error('Academic year updated failed', {
         action: {
@@ -124,5 +129,7 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
     clearAcademicYears
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.localStorage()
+  }
 })

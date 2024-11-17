@@ -5,9 +5,9 @@ import { useUserStore } from './user'
 import { useGenerationStore } from './generation'
 import { useAcademicYearStore } from './academicYear'
 import { useSemesterStore } from './semester'
-import { useBlockStore } from './block'
 import { useClassStore } from './class'
 import { useTeacherStore } from '~/stores/teacher'
+import { useStudentStore } from '~/stores/student'
 
 export const clearStores = () => {
   useGeneralStore().clearGeneral()
@@ -17,7 +17,7 @@ export const clearStores = () => {
   useGenerationStore().clearGenerations()
   useAcademicYearStore().clearAcademicYears()
   useSemesterStore().clearSemesters()
-  useBlockStore().clearBlocks()
   useClassStore().clearClasses()
   useTeacherStore().clearTeachers()
+  useStudentStore().clearStudents()
 }
