@@ -67,7 +67,7 @@ const value = computed({
                 open = false
               }"
               >
-                {{ val.label }}
+                {{ val.label }} ({{ val.value }})
                 <CheckIcon
                   :class="cn(
                   'ml-auto h-4 w-4',

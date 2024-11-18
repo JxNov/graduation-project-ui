@@ -12,6 +12,7 @@ import {
 interface DropzoneProps {
   containerClass?: HTMLAttributes['class'],
   dropZoneClass?: HTMLAttributes['class'],
+  maxFiles?: number,
   maxSize?: number,
   showFilesList?: boolean,
   showErrorMessage?: boolean,
@@ -24,10 +25,19 @@ const props = withDefaults(defineProps<DropzoneProps>(), {
   showErrorMessage: true
 })
 
+const emits = defineEmits<{
+  (e: 'update:modelValue', value: File[]): void
+}>()
+
 const filesUploaded = ref<File[]>([])
 const errorMessage = ref<string>('')
 
 const onDrop = (acceptedFiles: File[], fileRejections: FileRejectReason[]) => {
+  if (props.maxFiles && filesUploaded.value.length + acceptedFiles.length > props.maxFiles) {
+    errorMessage.value = `You can only upload ${props.maxFiles} files`
+    return
+  }
+
   if (acceptedFiles.some(file => file.size > props.maxSize * 1024 * 1024)) {
     errorMessage.value = `File size exceeds the limit of ${props.maxSize} MB`
     return
@@ -42,6 +52,7 @@ const onDrop = (acceptedFiles: File[], fileRejections: FileRejectReason[]) => {
     props.onDrop(acceptedFiles, fileRejections)
   } else {
     filesUploaded.value.push(...acceptedFiles)
+
     if (fileRejections.length > 0) {
       let _errorMessage = `Could not upload ${fileRejections[0].file}`
       if (fileRejections.length > 1) {
@@ -54,6 +65,10 @@ const onDrop = (acceptedFiles: File[], fileRejections: FileRejectReason[]) => {
   }
 }
 
+watch(() => filesUploaded.value, (files) => {
+  emits('update:modelValue', files)
+}, { deep: true })
+
 const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
 const truncate = (text: string, length: number) => {
@@ -62,11 +77,12 @@ const truncate = (text: string, length: number) => {
 
 const deleteUploadedFile = (index: number) => {
   filesUploaded.value.splice(index, 1)
+  errorMessage.value = ''
 }
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-2 max-w-96', props.containerClass)">
+  <div :class="cn('flex flex-col gap-2', props.containerClass)">
     <div
       v-bind="getRootProps()"
       :class="cn('flex justify-center items-center w-full h-32 border-dashed border-2 border-gray-200 rounded-lg hover:bg-accent hover:text-accent-foreground transition-all select-none cursor-pointer', props.dropZoneClass)"

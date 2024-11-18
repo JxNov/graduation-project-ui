@@ -7,7 +7,7 @@ import { ClassDialogCreateEdit, ClassDialogDelete } from '~/components/common/di
 import { useThrottle } from '~/composables/useThrottle'
 import { showElement } from '~/utils/showElement'
 
-const { $authStore, $classStore, $teacherStore, $bus } = useNuxtApp()
+const { $authStore, $classStore, $teacherStore, $blockStore, $bus } = useNuxtApp()
 
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
@@ -43,6 +43,10 @@ onMounted(async () => {
 
   if (!$teacherStore.teachers.length) {
     await $teacherStore.fetchTeachers()
+  }
+
+  if (!$blockStore.blocks.length) {
+    await $blockStore.fetchBlocks()
   }
 
   if (!$classStore.classes.length) {

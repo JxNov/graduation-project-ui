@@ -26,36 +26,21 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = await profileService()
       $generalStore.isLogged = true
 
-      toast.success('Login success!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Login success!!!')
     } catch (error) {
-      toast.error('Login failed!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Login failed!!!')
     }
   }
 
   const logout = async () => {
     try {
       clearStores()
+      navigateTo('/login')
       await logoutService()
 
-      toast.success('Logout success!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Logout success!!!')
     } catch (error) {
-      toast.error('Logout failed!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Logout failed!!!')
     }
   }
 

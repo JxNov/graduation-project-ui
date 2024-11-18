@@ -18,7 +18,6 @@ const { $authStore, $generalStore } = useNuxtApp()
 
 const handleLogout = async () => {
   await $authStore.logout()
-  navigateTo('/login')
 }
 
 function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {

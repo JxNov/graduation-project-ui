@@ -69,5 +69,11 @@ useSeoMeta({
     <NuxtPage />
   </NuxtLayout>
 
-  <Toaster position="top-right" class="pointer-events-auto" :duration="3000" />
+  <Toaster
+    position="top-right"
+    class="pointer-events-auto"
+    :duration="3000"
+    rich-colors
+    close-button
+  />
 </template>

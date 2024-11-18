@@ -1,5 +1,5 @@
 import type { Student } from '~/schema'
-import { fetchStudentsService } from '~/services/student'
+import { fetchStudentsService, importStudentsService, exportSampleStudentsService } from '~/services/student'
 import { toast } from 'vue-sonner'
 
 export const useStudentStore = defineStore('student', () => {
@@ -10,6 +10,36 @@ export const useStudentStore = defineStore('student', () => {
       students.value = await fetchStudentsService()
     } catch (error) {
       throw error
+    }
+  }
+
+  const exportSampleStudents = async () => {
+    try {
+      const response = await exportSampleStudentsService()
+
+      if (!response) {
+        throw new Error('Students export failed!!!')
+      }
+
+      return response
+    } catch (error) {
+      toast.error('Students export failed!!!')
+    }
+  }
+
+  const importStudents = async (data: { file: File, generationSlug: string, academicYearSlug: string }) => {
+    try {
+      const response = await importStudentsService(data)
+
+      if (!response) {
+        throw new Error('Students import failed!!!')
+      }
+
+      toast.success('Students imported successfully!!!')
+
+      return response
+    } catch (error) {
+      toast.error('Students import failed!!!')
     }
   }
 
@@ -42,12 +72,14 @@ export const useStudentStore = defineStore('student', () => {
 
   return {
     students,
+    exportSampleStudents,
     fetchStudents,
+    importStudents,
     reloadData,
     clearStudents
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

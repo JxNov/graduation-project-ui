@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
                   }
                 }"
               >
-                {{ val.label }} - {{ val.value }}
+                {{ val.label }} ({{ val.value }})
               </CommandItem>
             </CommandGroup>
           </CommandList>

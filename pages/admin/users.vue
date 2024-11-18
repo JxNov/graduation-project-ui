@@ -11,7 +11,7 @@ import { Badge } from '~/components/ui/badge'
 import { UserDialogAssign } from '~/components/common/dialog/user'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 
-const { $authStore, $userStore, $bus } = useNuxtApp()
+const { $authStore, $userStore, $roleStore, $bus } = useNuxtApp()
 
 const isAssigning = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
@@ -30,8 +30,8 @@ onMounted(async () => {
     selectedValue.value = row
   })
 
-  $bus.on('close-dialog-assign', () => {
-    isAssigning.value = false
+  $bus.on('close-dialog-assign', (value: boolean) => {
+    isAssigning.value = value
   })
 
   $bus.on('close-dialog-create-edit', (value: boolean) => {
@@ -48,6 +48,14 @@ onMounted(async () => {
   $bus.on('delete-rows', (values: User[]) => {
     console.log(values)
   })
+
+  if (!$roleStore.roles.length) {
+    await $roleStore.fetchRoles()
+  }
+
+  if (!$roleStore.modules.length) {
+    await $roleStore.fetchModules()
+  }
 
   if (!$userStore.users.length) {
     await $userStore.fetchUsers()

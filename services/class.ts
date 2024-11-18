@@ -19,13 +19,17 @@ export const fetchClassesService = async (): Promise<Class[]> => {
 export const createClassService = async (data: {
   name: string
   username: string
+  academicYearSlug: string
+  blockSlug: string
 }): Promise<Class> => {
   const { $axios } = useNuxtApp()
 
   try {
     const response = await $axios.post('/v1/classes', {
       name: data.name,
-      username: data.username
+      username: data.username,
+      academic_year_slug: data.academicYearSlug,
+      block_slug: data.blockSlug
     })
 
     if (!response) {
@@ -41,13 +45,17 @@ export const createClassService = async (data: {
 export const updateClassService = async (slug: string, data: {
   name: string
   username: string
+  academicYearSlug: string
+  blockSlug: string
 }): Promise<Class> => {
   const { $axios } = useNuxtApp()
 
   try {
     const response = await $axios.patch(`/v1/classes/${slug}`, {
       name: data.name,
-      username: data.username
+      username: data.username,
+      academic_year_slug: data.academicYearSlug,
+      block_slug: data.blockSlug
     })
 
     if (!response) {

@@ -22,19 +22,11 @@ export const useUserStore = defineStore('user', () => {
       const response = await assignRolePermissionService(data)
       replaceUsers(response)
 
-      toast.success('Role permission assigned successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Role permission assigned successfully')
 
       return response
     } catch (error) {
-      toast.error('Failed to assign role permission', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to assign role permission')
     }
   }
 
@@ -74,6 +66,6 @@ export const useUserStore = defineStore('user', () => {
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

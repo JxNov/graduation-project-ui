@@ -29,19 +29,11 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
       const response = await createAcademicYearService(data)
       replaceAcademicYears(response)
 
-      toast.success('Academic year created successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Academic year created successfully')
 
       return response
     } catch (error) {
-      toast.error('Academic year created failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Academic year created failed')
     }
   }
 
@@ -55,19 +47,11 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
       const response = await updateAcademicYearService(slug, data)
       replaceAcademicYears(response)
 
-      toast.success('Academic year updated successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Academic year updated successfully')
 
       return response
     } catch (error) {
-      toast.error('Academic year updated failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Academic year updated failed')
     }
   }
 
@@ -76,17 +60,9 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
       await deleteAcademicYearService(slug)
       academicYears.value = academicYears.value.filter(academicYear => academicYear.slug !== slug)
 
-      toast.success('Academic year deleted successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Academic year deleted successfully')
     } catch (error) {
-      toast.error('Academic year deleted failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Academic year deleted failed')
     }
   }
 
@@ -130,6 +106,6 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

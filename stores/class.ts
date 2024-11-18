@@ -13,46 +13,35 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
-  const createClass = async (data: { name: string, username: string }) => {
+  const createClass = async (data: { name: string, username: string, academicYearSlug: string, blockSlug: string }) => {
     try {
       const response = await createClassService(data)
       replaceClasses(response)
 
-      toast.success('Class created successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Class created successfully')
 
       return response
     } catch (error) {
-      toast.error('Failed to create class', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to create class')
       throw error
     }
   }
 
-  const updateClass = async (slug: string, data: { name: string, username: string }) => {
+  const updateClass = async (slug: string, data: {
+    name: string,
+    username: string,
+    academicYearSlug: string,
+    blockSlug: string
+  }) => {
     try {
       const response = await updateClassService(slug, data)
       replaceClasses(response)
 
-      toast.success('Class updated successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Class updated successfully')
 
       return response
     } catch (error) {
-      toast.error('Failed to update class', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to update class')
       throw error
     }
   }
@@ -62,17 +51,9 @@ export const useClassStore = defineStore('class', () => {
       await deleteClassService(slug)
       classes.value = classes.value.filter(cls => cls.slug !== slug)
 
-      toast.success('Class deleted successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Class deleted successfully')
     } catch (error) {
-      toast.error('Failed to delete class', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to delete class')
       throw error
     }
   }
@@ -117,6 +98,6 @@ export const useClassStore = defineStore('class', () => {
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

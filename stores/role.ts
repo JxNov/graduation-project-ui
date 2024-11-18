@@ -43,19 +43,11 @@ export const useRoleStore = defineStore('role', () => {
       const response = await createRoleService(data)
       replaceRoles(response)
 
-      toast.success('Role created successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Role created successfully')
 
       return response
     } catch (error) {
-      toast.error('Role created failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Role created failed')
     }
   }
 
@@ -64,19 +56,11 @@ export const useRoleStore = defineStore('role', () => {
       const response = await updateRoleService(slug, data)
       replaceRoles(response)
 
-      toast.success('Role updated successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Role updated successfully')
 
       return response
     } catch (error) {
-      toast.error('Role updated failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Role updated failed')
     }
   }
 
@@ -85,17 +69,9 @@ export const useRoleStore = defineStore('role', () => {
       await deleteRoleService(slug)
       roles.value = roles.value.filter(role => role.slug !== slug)
 
-      toast.success('Role deleted successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Role deleted successfully')
     } catch (error) {
-      toast.error('Failed to delete role', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to delete role')
     }
   }
 
@@ -147,6 +123,6 @@ export const useRoleStore = defineStore('role', () => {
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

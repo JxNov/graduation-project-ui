@@ -28,19 +28,11 @@ export const useSemesterStore = defineStore('semester', () => {
       const response = await createSemesterService(data)
       replaceSemesters(response)
 
-      toast.success('Semester created successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Semester created successfully')
 
       return response
     } catch (error) {
-      toast.error('Semester created failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Semester created failed')
     }
   }
 
@@ -54,19 +46,11 @@ export const useSemesterStore = defineStore('semester', () => {
       const response = await updateSemesterService(slug, data)
       replaceSemesters(response)
 
-      toast.success('Semester updated successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Semester updated successfully')
 
       return response
     } catch (error) {
-      toast.error('Semester updated failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Semester updated failed')
     }
   }
 
@@ -75,17 +59,9 @@ export const useSemesterStore = defineStore('semester', () => {
       await deleteSemesterService(slug)
       semesters.value = semesters.value.filter(semester => semester.slug !== slug)
 
-      toast.success('Semester deleted successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Semester deleted successfully')
     } catch (error) {
-      toast.error('Semester deleted failed', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Semester deleted failed')
     }
   }
 
@@ -129,6 +105,6 @@ export const useSemesterStore = defineStore('semester', () => {
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

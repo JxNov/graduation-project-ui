@@ -10,7 +10,7 @@ export function useCustomize() {
   const isDark = color === 'dark'
   const config = useCookie<Config>('config', {
     default: () => ({
-      theme: 'zinc',
+      theme: 'blue',
       radius: 0.5
     }),
     maxAge: 60 * 60 * 24 * 365 * 10

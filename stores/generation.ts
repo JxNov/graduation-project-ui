@@ -23,19 +23,11 @@ export const useGenerationStore = defineStore('generation', () => {
       const response = await createGenerationService(data)
       replaceGenerations(response)
 
-      toast.success('Generation created successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Generation created successfully')
 
       return response
     } catch (error) {
-      toast.error('Failed to create generation', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to create generation')
     }
   }
 
@@ -48,19 +40,11 @@ export const useGenerationStore = defineStore('generation', () => {
       const response = await updateGenerationService(slug, data)
       replaceGenerations(response)
 
-      toast.success('Generation updated successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Generation updated successfully')
 
       return response
     } catch (error) {
-      toast.error('Failed to update generation', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to update generation')
     }
   }
 
@@ -69,17 +53,9 @@ export const useGenerationStore = defineStore('generation', () => {
       await deleteGenerationService(slug)
       generations.value = generations.value.filter(generation => generation.slug !== slug)
 
-      toast.success('Generation deleted successfully', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Generation deleted successfully')
     } catch (error) {
-      toast.error('Failed to delete generation', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Failed to delete generation')
     }
   }
 
@@ -123,6 +99,6 @@ export const useGenerationStore = defineStore('generation', () => {
   }
 }, {
   persist: {
-    storage: piniaPluginPersistedstate.localStorage()
+    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

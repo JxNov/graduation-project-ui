@@ -5,8 +5,9 @@ import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
 import DatePicker from '~/components/base/DatePicker.vue'
 import { type DateValue, parseDate, today, getLocalTimeZone } from '@internationalized/date'
+import Combobox from '~/components/base/Combobox.vue'
 
-const { $classStore, $teacherStore, $bus } = useNuxtApp()
+const { $classStore, $teacherStore, $academicYearStore, $blockStore, $bus } = useNuxtApp()
 
 interface DialogEditProps {
   data?: any,
@@ -15,22 +16,40 @@ interface DialogEditProps {
 
 const props = defineProps<DialogEditProps>()
 
+const dataTeachersCombobox = $teacherStore.teachers.map((teacher) => ({
+  value: teacher.username,
+  label: teacher.name
+}))
+const dataAcademicYearsCombobox = $academicYearStore.academicYears.map((academicYear) => ({
+  value: academicYear.slug,
+  label: academicYear.name
+}))
+const dataBlocksCombobox = $blockStore.blocks.map((block) => ({
+  value: block.slug,
+  label: block.name
+}))
 const isLoading = ref<boolean>(false)
 const initialValues = ref<any>({
   name: '',
-  username: ''
+  username: '',
+  academicYearSlug: '',
+  blockSlug: ''
 })
 
 if (props.edit) {
   initialValues.value = {
     name: props.data.name,
-    username: props.data.username
+    username: props.data.username,
+    academicYearSlug: props.data.academicYearSlug,
+    blockSlug: props.data.blockSlug
   }
 }
 
 const formSchema = toTypedSchema(z.object({
   name: z.string().min(3).max(50),
-  username: z.string().min(3).max(50)
+  username: z.string(),
+  academicYearSlug: z.string(),
+  blockSlug: z.string()
 }))
 
 const { setFieldValue, handleSubmit } = useForm({
@@ -97,28 +116,55 @@ const onSubmit = handleSubmit(async (values) => {
         </FormItem>
       </FormField>
 
-      <FormField v-slot="{ componentField }" name="username">
+      <FormField v-slot="{ value }" name="username">
         <FormItem>
           <FormLabel>Teacher</FormLabel>
 
-          <Select v-bind="componentField">
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select teacher..." />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem
-                  v-for="teacher in $teacherStore.teachers"
-                  :key="teacher.username"
-                  :value="teacher.username"
-                >
-                  {{ teacher.name }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <FormControl>
+            <Combobox
+              name="teacher"
+              :data="dataTeachersCombobox"
+              :disabled="isLoading"
+              :model-value="value"
+              @update:model-value="setFieldValue('username', $event)"
+            />
+          </FormControl>
+
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField v-slot="{ value }" name="academicYearSlug">
+        <FormItem>
+          <FormLabel>Academic year</FormLabel>
+
+          <FormControl>
+            <Combobox
+              name="academic year"
+              :data="dataAcademicYearsCombobox"
+              :disabled="isLoading"
+              :model-value="value"
+              @update:model-value="setFieldValue('academicYearSlug', $event)"
+            />
+          </FormControl>
+
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <FormField v-slot="{ value }" name="blockSlug">
+        <FormItem>
+          <FormLabel>Block</FormLabel>
+
+          <FormControl>
+            <Combobox
+              name="block"
+              :data="dataBlocksCombobox"
+              :disabled="isLoading"
+              :model-value="value"
+              @update:model-value="setFieldValue('blockSlug', $event)"
+            />
+          </FormControl>
 
           <FormMessage />
         </FormItem>

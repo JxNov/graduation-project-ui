@@ -8,9 +8,13 @@ import { useThrottle } from '~/composables/useThrottle'
 import { showElement } from '~/utils/showElement'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { StudentDialogImport } from '@/components/common/dialog/student'
+import { toast } from 'vue-sonner'
 
 const { $authStore, $studentStore, $bus } = useNuxtApp()
 
+const isLoaded = ref<boolean>(false)
+const isImporting = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
@@ -25,6 +29,10 @@ onMounted(async () => {
   $bus.on('open-dialog-delete', (row: Student) => {
     isDeleting.value = true
     selectedValue.value = row
+  })
+
+  $bus.on('close-dialog-import', (value: boolean) => {
+    isImporting.value = value
   })
 
   $bus.on('close-dialog-create-edit', (value: boolean) => {
@@ -82,7 +90,7 @@ const columns = createColumns(
                 }),
                 h(AvatarFallback, {}, {
                   default: () => [
-                    h('span', {}, row.getValue('name'))
+                    h('span', {}, row.getValue('name')[0])
                   ]
                 })
               ]
@@ -121,6 +129,7 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const handleCloseDialog = () => {
+  isImporting.value = false
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
@@ -130,6 +139,35 @@ const handleCloseDialog = () => {
 const shouldShowElement = computed(() => {
   return showElement($authStore.user.permissions, ['student.create'])
 })
+
+const downloadSampleStudents = async () => {
+  isLoaded.value = true
+
+  try {
+    const response = await $studentStore.exportSampleStudents()
+
+    if (!response) {
+      throw new Error('Export failed')
+    }
+
+    const url = URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'sample_students.xlsx'
+
+    document.body.appendChild(a)
+    a.click()
+    URL.revokeObjectURL(url)
+    document.body.removeChild(a)
+
+    toast.success('Download success!!!')
+
+    isLoaded.value = false
+  } catch (error) {
+    toast.error('Download failed!!!')
+    isLoaded.value = false
+  }
+}
 </script>
 
 <template>
@@ -138,7 +176,11 @@ const shouldShowElement = computed(() => {
       <h2 class="text-4xl font-bold tracking-tight">Manage Students</h2>
 
       <div class="flex gap-4">
-        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+        <Button variant="outline" @click="downloadSampleStudents" v-if="shouldShowElement" :disabled="isLoaded">
+          Download Sample Students
+        </Button>
+
+        <Button variant="default" @click="isImporting = true" v-if="shouldShowElement">
           Import Students
         </Button>
       </div>
@@ -152,11 +194,11 @@ const shouldShowElement = computed(() => {
     />
   </div>
 
-  <!--  <Dialog :open="isCreating" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <StudentDialogCreateEdit/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isImporting" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
+      <StudentDialogImport />
+    </DialogContent>
+  </Dialog>
 
   <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
