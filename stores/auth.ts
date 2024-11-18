@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<Auth>({
     name: '',
     username: '',
+    image: '',
     dateOfBirth: '',
     gender: '',
     phoneNumber: '',
@@ -25,36 +26,21 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = await profileService()
       $generalStore.isLogged = true
 
-      toast.success('Login success!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Login success!!!')
     } catch (error) {
-      toast.error('Login failed!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Login failed!!!')
     }
   }
 
   const logout = async () => {
     try {
       clearStores()
+      navigateTo('/login')
       await logoutService()
 
-      toast.success('Logout success!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.success('Logout success!!!')
     } catch (error) {
-      toast.error('Logout failed!!!', {
-        action: {
-          label: 'Close'
-        }
-      })
+      toast.error('Logout failed!!!')
     }
   }
 
@@ -71,6 +57,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = {
       name: '',
       username: '',
+      image: '',
       dateOfBirth: '',
       gender: '',
       phoneNumber: '',
@@ -88,5 +75,9 @@ export const useAuthStore = defineStore('auth', () => {
     clearUser
   }
 }, {
-  persist: true
+  persist: {
+    storage: piniaPluginPersistedstate.cookies({
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30)
+    })
+  }
 })

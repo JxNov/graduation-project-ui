@@ -9,8 +9,9 @@ import { showElement } from '~/utils/showElement'
 import { extractValue } from '~/utils/extractValue'
 import { Badge } from '~/components/ui/badge'
 import { UserDialogAssign } from '~/components/common/dialog/user'
+import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 
-const { $authStore, $userStore, $bus } = useNuxtApp()
+const { $authStore, $userStore, $roleStore, $bus } = useNuxtApp()
 
 const isAssigning = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
@@ -29,8 +30,8 @@ onMounted(async () => {
     selectedValue.value = row
   })
 
-  $bus.on('close-dialog-assign', () => {
-    isAssigning.value = false
+  $bus.on('close-dialog-assign', (value: boolean) => {
+    isAssigning.value = value
   })
 
   $bus.on('close-dialog-create-edit', (value: boolean) => {
@@ -47,6 +48,14 @@ onMounted(async () => {
   $bus.on('delete-rows', (values: User[]) => {
     console.log(values)
   })
+
+  if (!$roleStore.roles.length) {
+    await $roleStore.fetchRoles()
+  }
+
+  if (!$roleStore.modules.length) {
+    await $roleStore.fetchModules()
+  }
 
   if (!$userStore.users.length) {
     await $userStore.fetchUsers()
@@ -65,7 +74,6 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Name'],
     ['email', 'Email'],
     ['gender', 'Gender'],
     ['actions', '', '', {
@@ -75,6 +83,34 @@ const columns = createColumns(
   ],
   userSchema,
   [
+    {
+      accessorKey: 'name',
+      title: 'Name',
+      render: (row) => h('div', { class: 'flex items-center gap-2' }, {
+        default: () => {
+          return [
+            h(Avatar, {}, {
+              default: () => [
+                h(AvatarImage, {
+                  src: row.original.image || '',
+                  alt: row.getValue('name')
+                }),
+                h(AvatarFallback, {}, {
+                  default: () => [
+                    h('span', {}, row.getValue('name')[0])
+                  ]
+                })
+              ]
+            }),
+            h('div', {}, row.getValue('name'))
+          ]
+        }
+      }),
+      options: {
+        enableSorting: false
+      },
+      before: 'email'
+    },
     {
       accessorKey: 'roles',
       title: 'Roles',

@@ -5,8 +5,17 @@ definePageMeta({
   layout: 'blank'
 })
 
-onMounted(() => {
-  document.title = t('auth.login.title')
+const title = t('auth.login.title')
+const description = t('auth.login.title')
+
+useSeoMeta({
+  title,
+  description,
+  ogTitle: title,
+  ogDescription: description,
+  ogImage: '',
+  twitterImage: '',
+  twitterCard: 'summary_large_image'
 })
 </script>
 

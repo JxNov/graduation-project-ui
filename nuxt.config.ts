@@ -8,7 +8,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseApi: process.env.NUXT_BASE_API_URL,
-      apiUrl: process.env.NUXT_API_URL
+      apiUrl: process.env.NUXT_API_URL,
+      schoolNetworkIPv4: process.env.NUXT_SCHOOL_NETWORK_IPV4,
+      schoolNetworkSubnetMask: process.env.NUXT_SCHOOL_NETWORK_SUBNET_MASK
     }
   },
 
@@ -24,12 +26,7 @@ export default defineNuxtConfig({
   ],
 
   piniaPluginPersistedstate: {
-    storage: 'cookies',
-    cookieOptions: {
-      maxAge: 60 * 60 * 24 * 30,
-      sameSite: 'lax'
-    },
-    debug: true
+    key: 'persist:%id'
   },
 
   i18n: {
@@ -68,6 +65,6 @@ export default defineNuxtConfig({
     }
   },
 
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   compatibilityDate: '2024-10-07'
 })

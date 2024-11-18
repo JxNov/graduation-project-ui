@@ -66,18 +66,30 @@ const { setFieldValue, handleSubmit } = useForm({
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
-  if (!props.edit) {
-    await $roleStore.createRole(values)
+  try {
+    if (!props.edit) {
+      const response = await $roleStore.createRole(values)
+
+      if (!response) {
+        throw new Error('Failed to create role')
+      }
+
+      isLoading.value = false
+      handleClose()
+      return
+    }
+
+    const response = await $roleStore.updateRole(props.data.slug, values)
+
+    if (!response) {
+      throw new Error('Failed to update role')
+    }
 
     isLoading.value = false
     handleClose()
-    return
+  } catch (error) {
+    isLoading.value = false
   }
-
-  await $roleStore.updateRole(props.data.slug, values)
-
-  isLoading.value = false
-  handleClose()
 })
 
 const handleClose = () => {

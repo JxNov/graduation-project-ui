@@ -81,17 +81,30 @@ const onSubmit = handleSubmit(async (values) => {
     }
   }
 
-  if (!props.edit) {
-    await $generationStore.createGeneration(values)
+  try {
+    if (!props.edit) {
+      const response = await $generationStore.createGeneration(values)
+
+      if (!response) {
+        throw new Error('Create generation failed')
+      }
+
+      isLoading.value = false
+      handleClose()
+      return
+    }
+
+    const response = await $generationStore.updateGeneration(props.data.slug, values)
+
+    if (!response) {
+      throw new Error('Update generation failed')
+    }
 
     isLoading.value = false
     handleClose()
-    return
+  } catch (error) {
+    isLoading.value = false
   }
-
-  await $generationStore.updateGeneration(props.data.slug, values)
-  isLoading.value = false
-  handleClose()
 })
 </script>
 

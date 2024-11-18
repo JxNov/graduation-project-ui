@@ -1,9 +1,24 @@
 <script setup lang='ts'>
+import type { Classroom } from '~/schema'
+
+const props = defineProps<{
+  classroom: Classroom
+}>()
+
+console.log(props.classroom)
+
+const classroom = computed(() => props.classroom)
+
+const router = useRouter()
+
+const redirect = (path: string) => {
+  router.push(path)
+}
 </script>
 
 <template>
-  <Card
-    class="flex flex-col h-full transition-colors duration-300 hover:bg-muted/50 overflow-hidden cursor-pointer">
+  <div
+    class="rounded-xl border bg-card text-card-foreground shadow flex flex-col h-full transition-colors duration-300 hover:bg-muted/50 overflow-hidden cursor-pointer">
     <div class="relative h-28">
       <CardHeader class="relative">
         <div class="absolute inset-0">
@@ -18,33 +33,34 @@
         <div class="relative z-10">
           <CardTitle
             class="text-2xl text-white hover:underline mb-2"
+            @click="redirect(`/classrooms/${classroom.ClassSlug}`)"
           >
-            <NuxtLink to="/classrooms/1">Classroom</NuxtLink>
+            {{ classroom.className }}
           </CardTitle>
 
           <CardDescription class="flex items-center justify-between">
-            <span class="text-sm text-white hover:underline">Teacher</span>
+            <span class="text-sm text-white hover:underline">
+              {{ classroom.teacherName }}
+            </span>
           </CardDescription>
         </div>
       </CardHeader>
 
       <Avatar size="base" class="absolute -bottom-1/4 right-6">
-        <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
-        <AvatarFallback>CN</AvatarFallback>
+        <AvatarImage :src="classroom.teacherImage || ''" alt="@radix-vue" />
+        <AvatarFallback>{{ classroom.teacherName[0] }}</AvatarFallback>
       </Avatar>
     </div>
 
     <CardContent class="mt-10 mb-4">
       <p class="text-sm text-gray-500 dark:text-white">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed etiam, quam in
-        aliquet.
       </p>
     </CardContent>
 
     <CardFooter class="flex justify-end border-t pt-6">
-      <Button>
-        <NuxtLink to="/classrooms/1">Details</NuxtLink>
+      <Button type="button" @click="redirect(`/classrooms/${classroom.ClassSlug}`)">
+        Details
       </Button>
     </CardFooter>
-  </Card>
+  </div>
 </template>

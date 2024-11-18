@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useForm } from 'vee-validate'
 import DatePicker from '~/components/base/DatePicker.vue'
 import { type DateValue, parseDate, today, getLocalTimeZone } from '@internationalized/date'
+import Combobox from '~/components/base/Combobox.vue'
 
 const { $academicYearStore, $generationStore, $bus } = useNuxtApp()
 
@@ -14,6 +15,10 @@ interface DialogEditProps {
 
 const props = defineProps<DialogEditProps>()
 
+const dataCombobox = $generationStore.generations.map((generation) => ({
+  label: generation.name,
+  value: generation.slug
+}))
 const startDate = ref<DateValue>(today(getLocalTimeZone()))
 const endDate = ref<DateValue>(today(getLocalTimeZone()).add({ years: 1 }))
 const isLoading = ref<boolean>(false)
@@ -69,17 +74,30 @@ const handleClose = () => {
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
-  if (!props.edit) {
-    await $academicYearStore.createAcademicYear(values)
+  try {
+    if (!props.edit) {
+      const response = await $academicYearStore.createAcademicYear(values)
+
+      if (!response) {
+        throw new Error('Failed to create academic year')
+      }
+
+      isLoading.value = false
+      handleClose()
+      return
+    }
+
+    const response = await $academicYearStore.updateAcademicYear(props.data.slug, values)
+
+    if (!response) {
+      throw new Error('Failed to update academic year')
+    }
 
     isLoading.value = false
     handleClose()
-    return
+  } catch (error) {
+    isLoading.value = false
   }
-
-  await $academicYearStore.updateAcademicYear(props.data.slug, values)
-  isLoading.value = false
-  handleClose()
 })
 </script>
 
@@ -115,7 +133,7 @@ const onSubmit = handleSubmit(async (values) => {
         label="Start date"
         :model-value="startDate"
         :disabled="isLoading"
-        @update:modelValue="handleStartDateChange"
+        @update:model-value="handleStartDateChange"
       />
 
       <DatePicker
@@ -123,31 +141,22 @@ const onSubmit = handleSubmit(async (values) => {
         label="End date"
         :model-value="endDate"
         :disabled="isLoading"
-        @update:modelValue="handleEndDateChange"
+        @update:model-value="handleEndDateChange"
       />
 
-      <FormField v-slot="{ componentField }" name="generationSlug">
+      <FormField v-slot="{ value }" name="generationSlug">
         <FormItem>
           <FormLabel>Generation</FormLabel>
 
-          <Select v-bind="componentField">
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select generation..." />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem
-                  v-for="generation in $generationStore.generations"
-                  :key="generation.slug"
-                  :value="generation.slug"
-                >
-                  {{ generation.name }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <FormControl>
+            <Combobox
+              name="generation"
+              :data="dataCombobox"
+              :disabled="isLoading"
+              :model-value="value"
+              @update:model-value="setFieldValue('generationSlug', $event)"
+            />
+          </FormControl>
 
           <FormMessage />
         </FormItem>

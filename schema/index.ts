@@ -19,14 +19,20 @@ export type { Auth } from './auth'
 export { academicYearSchema } from './academicYear'
 export type { AcademicYear } from './academicYear'
 
+export { semesterSchema } from './semester'
+export type { Semester } from './semester'
+
 export { blockSchema } from './block'
 export type { Block } from './block'
 
 export { classSchema } from './class'
 export type { Class } from './class'
 
-export { semesterSchema } from './semester'
-export type { Semester } from './semester'
-
 export { teacherSchema } from './teacher'
 export type { Teacher } from './teacher'
+
+export { studentSchema } from './student'
+export type { Student } from './student'
+
+export { classroomSchema } from './classroom'
+export type { Classroom } from './classroom'

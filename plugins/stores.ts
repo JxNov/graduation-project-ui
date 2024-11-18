@@ -8,6 +8,8 @@ import { useSemesterStore } from '~/stores/semester'
 import { useBlockStore } from '~/stores/block'
 import { useClassStore } from '~/stores/class'
 import { useTeacherStore } from '~/stores/teacher'
+import { useStudentStore } from '~/stores/student'
+import { useClassroomStore } from '~/stores/classroom'
 
 export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('generalStore', useGeneralStore())
@@ -20,4 +22,6 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('blockStore', useBlockStore())
   NuxtApp.provide('classStore', useClassStore())
   NuxtApp.provide('teacherStore', useTeacherStore())
+  NuxtApp.provide('studentStore', useStudentStore())
+  NuxtApp.provide('classroomStore', useClassroomStore())
 })

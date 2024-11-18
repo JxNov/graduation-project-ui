@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
-import {
-  TagsInput,
-  TagsInputInput,
-  TagsInputItem,
-  TagsInputItemDelete,
-  TagsInputItemText
-} from '@/components/ui/tags-input'
 import { ComboboxAnchor, ComboboxContent, ComboboxInput, ComboboxPortal, ComboboxRoot } from 'radix-vue'
 import { useVModel } from '@vueuse/core'
 
@@ -91,7 +82,7 @@ onBeforeUnmount(() => {
                   }
                 }"
               >
-                {{ val.label }} - {{ val.value }}
+                {{ val.label }} ({{ val.value }})
               </CommandItem>
             </CommandGroup>
           </CommandList>

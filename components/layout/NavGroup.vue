@@ -21,6 +21,10 @@ const useIdFunction = () => useId()
 const hasPermission = (permissions: string[] | undefined): boolean => {
   return checkPermission(permissions, $authStore.user.permissions)
 }
+
+const checkActive = (link: string): boolean => {
+  return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+}
 </script>
 
 <template>
@@ -69,7 +73,8 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
                           size="icon"
                           class="w-full gap-4 rounded-lg px-5 font-normal"
                           :class="[
-                          { 'bg-muted': nav.link === route.path },
+                          // { 'bg-muted': nav.link === route.path },
+                          { 'bg-muted': checkActive(nav.link) },
                           cn('justify-center lg:justify-start', isOpen ? 'lg:justify-start' : 'lg:justify-center'),
                         ]"
                           :aria-label="$t(`menu.nav.${nav.title}`)"

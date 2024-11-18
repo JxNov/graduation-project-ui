@@ -8,6 +8,8 @@ import { useSemesterStore } from '~/stores/semester'
 import { useBlockStore } from '~/stores/block'
 import { useClassStore } from '~/stores/class'
 import { useTeacherStore } from '~/stores/teacher'
+import { useStudentStore } from '~/stores/student'
+import { useClassroomStore } from '~/stores/classroom'
 
 declare module '#app' {
   interface NuxtApp {
@@ -21,6 +23,8 @@ declare module '#app' {
     $blockStore: ReturnType<typeof useBlockStore>;
     $classStore: ReturnType<typeof useClassStore>;
     $teacherStore: ReturnType<typeof useTeacherStore>;
+    $studentStore: ReturnType<typeof useStudentStore>;
+    $classroomStore: ReturnType<typeof useClassroomStore>;
   }
 }
 
@@ -36,5 +40,7 @@ declare module '@vue/runtime-core' {
     $blockStore: ReturnType<typeof useBlockStore>;
     $classStore: ReturnType<typeof useClassStore>;
     $teacherStore: ReturnType<typeof useTeacherStore>;
+    $studentStore: ReturnType<typeof useStudentStore>;
+    $classroomStore: ReturnType<typeof useClassroomStore>;
   }
 }

@@ -46,23 +46,6 @@ const { setFieldValue, handleSubmit } = useForm({
   }
 })
 
-const onSubmit = handleSubmit(async (values) => {
-  isLoading.value = true
-
-  try {
-    const response = await $userStore.assignRolePermission(values)
-
-    if (!response) {
-      throw new Error('Failed to assign role and permission')
-    }
-
-    isLoading.value = false
-    handleClose()
-  } catch (error) {
-    isLoading.value = false
-  }
-})
-
 const handleClose = () => {
   $bus.emit('close-dialog-assign', false)
 }
@@ -95,6 +78,23 @@ const handleChange = (checked: boolean, value: string) => {
 
   setFieldValue('items', selectItems.value)
 }
+
+const onSubmit = handleSubmit(async (values) => {
+  isLoading.value = true
+
+  try {
+    const response = await $userStore.assignRolePermission(values)
+
+    if (!response) {
+      throw new Error('Failed to assign role and permission')
+    }
+
+    isLoading.value = false
+    handleClose()
+  } catch (error) {
+    isLoading.value = false
+  }
+})
 </script>
 
 <template>
