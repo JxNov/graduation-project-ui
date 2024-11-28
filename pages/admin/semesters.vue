@@ -49,7 +49,6 @@ onMounted(async () => {
   if (!$semesterStore.semesters.length) {
     await $semesterStore.fetchSemesters()
   }
-
 })
 
 onBeforeUnmount(() => {

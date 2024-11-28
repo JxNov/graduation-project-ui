@@ -12,7 +12,7 @@ const useIdFunction = () => useId()
 const isLoading = ref<boolean>(false)
 
 const formSchema = toTypedSchema(z.object({
-  password: z.string().min(8),
+  password: z.string(),
   email: z.string().email()
 }))
 

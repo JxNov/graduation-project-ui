@@ -14,7 +14,7 @@ import { ConfigProvider } from 'radix-vue'
 
 interface DataTableViewOptionsProps {
   table: Table<any>
-  reloadData: () => void
+  reloadData?: () => void
 }
 
 const { $bus } = useNuxtApp()
@@ -51,15 +51,15 @@ const handleDelete = () => {
       Delete ({{ selectedRows }})
     </Button>
 
-    <Button
-      variant="outline"
-      size="sm"
-      class="ml-auto hidden h-8 lg:flex"
-      @click="props.reloadData"
-    >
-      <ReloadIcon class="mr-2 h-4 w-4" />
-      Reload data
-    </Button>
+    <!--    <Button-->
+    <!--      variant="outline"-->
+    <!--      size="sm"-->
+    <!--      class="ml-auto hidden h-8 lg:flex"-->
+    <!--      @click="props.reloadData"-->
+    <!--    >-->
+    <!--      <ReloadIcon class="mr-2 h-4 w-4" />-->
+    <!--      Reload data-->
+    <!--    </Button>-->
 
     <ConfigProvider :use-id="useIdFunction">
       <DropdownMenu>
@@ -73,7 +73,7 @@ const handleDelete = () => {
             View
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" class="w-[150px]">
+        <DropdownMenuContent align="end">
           <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
           <DropdownMenuSeparator />
 

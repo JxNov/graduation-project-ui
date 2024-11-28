@@ -39,7 +39,7 @@ watchEffect(() => {
 
 <template>
   <div class="grid grid-cols-12 gap-4">
-    <div class="col-span-12 sm:col-span-6 lg:col-span-3 flex flex-row items-center gap-4">
+    <div class="col-span-12 sm:col-span-6 xl:col-span-3 flex flex-row items-center gap-4">
       <Avatar size="sm">
         <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
         <AvatarFallback>CN</AvatarFallback>
@@ -52,33 +52,74 @@ watchEffect(() => {
       </div>
     </div>
 
-    <div class="col-span-12 sm:col-span-6 lg:col-span-3 flex flex-row items-center gap-4">
-      <div class="flex items-center space-x-2 py-2 px-4 border rounded-md bg-muted/80">
+    <div
+      class="col-span-12 sm:col-span-6 xl:col-span-3 flex flex-row items-center sm:justify-end xl:justify-start gap-4">
+      <!--      <div class="flex items-center border rounded-md bg-muted/80 select-none overflow-hidden">-->
+      <!--        <Label-->
+      <!--          class="text-gray-400 px-4 py-2 cursor-pointer"-->
+      <!--          :class="{ 'bg-red-500 text-white transition-all': !isChecked }"-->
+      <!--          :for="isChecked ? `attendance-${student.username}` : ''"-->
+      <!--        >-->
+      <!--          Vắng mặt-->
+      <!--        </Label>-->
+
+      <!--        <Switch-->
+      <!--          class="hidden"-->
+      <!--          :id="`attendance-${student.username}`"-->
+      <!--          :checked="isChecked"-->
+      <!--          @update:checked="isChecked = $event"-->
+      <!--        />-->
+
+      <!--        <Label-->
+      <!--          class="text-gray-400 px-8 py-2 cursor-pointer"-->
+      <!--          :class="{ 'bg-green-500 text-white transition-all': isChecked }"-->
+      <!--          :for="!isChecked ? `attendance-${student.username}` : ''"-->
+      <!--        >-->
+      <!--          Đi học-->
+      <!--        </Label>-->
+      <!--      </div>-->
+
+      <div class="flex items-center border rounded-md bg-muted/80 select-none overflow-hidden relative">
         <Label
-          class="text-gray-400"
-          :class="{ 'text-red-500': !isChecked }"
+          class="text-gray-400 px-4 py-2 cursor-pointer z-10 transition-all duration-500"
+          :class="{'text-white': !isChecked}"
+          :for="isChecked ? `attendance-${student.username}` : ''"
         >
           Vắng mặt
         </Label>
 
-        <Switch :checked="isChecked" @update:checked="isChecked = $event" />
+        <Switch
+          class="hidden"
+          :id="`attendance-${student.username}`"
+          :checked="isChecked"
+          @update:checked="isChecked = $event"
+        />
 
         <Label
-          class="text-gray-400"
-          :class="{ 'text-green-500': isChecked }"
+          class="text-gray-400 px-8 py-2 cursor-pointer z-10 transition-all duration-500"
+          :class="{ 'text-white': isChecked }"
+          :for="!isChecked ? `attendance-${student.username}` : ''"
         >
           Đi học
         </Label>
+
+        <div
+          class="absolute w-1/2 h-full top-0 left-0 transition-all duration-500"
+          :class="{
+          'bg-red-500': !isChecked,
+          'bg-green-500 left-1/2': isChecked
+        }"
+        />
       </div>
     </div>
 
     <div
-      class="col-span-12 lg:col-span-3 flex flex-row items-center gap-4"
+      class="col-span-12 xl:col-span-2 flex flex-row items-center gap-4"
       :class="{ 'sm:col-span-6' : reasonChecked === '5' }"
       v-if="!isChecked"
     >
       <Select @update:modelValue="checkReason($event)">
-        <SelectTrigger class="lg:w-[180px]">
+        <SelectTrigger>
           <SelectValue placeholder="Lý do vắng" />
         </SelectTrigger>
 
@@ -93,7 +134,7 @@ watchEffect(() => {
     </div>
 
     <div
-      class="col-span-12 sm:col-span-6 lg:col-span-3 flex flex-row items-center gap-4"
+      class="col-span-12 sm:col-span-6 xl:col-span-4 flex flex-row items-center gap-4"
       v-if="!isChecked && reasonChecked === '5'"
     >
       <Input placeholder="Lý do khác" />

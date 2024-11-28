@@ -122,15 +122,15 @@ export const navMenu: NavMenuItems = [
     permissions: []
   },
   {
-    title: 'students',
-    icon: 'ph:student',
-    link: '/admin/students',
-    permissions: []
-  },
-  {
     title: 'teachers',
     icon: 'hugeicons:teaching',
     link: '/admin/teachers',
+    permissions: []
+  },
+  {
+    title: 'students',
+    icon: 'ph:student',
+    link: '/admin/students',
     permissions: []
   },
   {

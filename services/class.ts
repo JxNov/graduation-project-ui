@@ -81,3 +81,19 @@ export const deleteClassService = async (slug: string): Promise<void> => {
     throw error
   }
 }
+
+export const distributeStudentsService = async (academicYearSlug: string, blockSlug: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post(`/v1/excels/students-class/distributeStudents/${academicYearSlug}/${blockSlug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

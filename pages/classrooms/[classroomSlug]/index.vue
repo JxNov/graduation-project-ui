@@ -4,7 +4,9 @@ import BulletinBoard from '~/components/classroom/bulletin-board/BulletinBoard.v
 import Homework from '~/components/classroom/homework/Homework.vue'
 import People from '~/components/classroom/people/People.vue'
 
+const { $classroomStore, $bus } = useNuxtApp()
 const useIdFunction = () => useId()
+const route = useRoute()
 
 const title = 'Chi tiết lớp học'
 const description = 'Chi tiết lớp học'
@@ -17,6 +19,33 @@ useSeoMeta({
   ogImage: '',
   twitterImage: '',
   twitterCard: 'summary_large_image'
+})
+
+const classSlug = route.params.classroomSlug as string
+const className = ref<string>('')
+const articlesClassroom = ref<object[]>([])
+const code = ref<string>('')
+const teachersClassroom = ref<object[]>([])
+const studentsClassroom = ref<object[]>([])
+
+onMounted(async () => {
+  $bus.on('article:created', (article: any) => {
+    articlesClassroom.value.unshift(article)
+  })
+
+  $bus.on('article:commented', async () => {
+    const { articles } = await $classroomStore.fetchDetailClassroom(classSlug)
+    articlesClassroom.value = articles
+  })
+
+  const { className: name, classCode, articles } = await $classroomStore.fetchDetailClassroom(classSlug)
+  className.value = name
+  code.value = classCode
+  articlesClassroom.value = articles
+
+  const { teachers, students } = await $classroomStore.fetchPeopleClassroom(classSlug)
+  teachersClassroom.value = teachers
+  studentsClassroom.value = students
 })
 </script>
 
@@ -42,11 +71,16 @@ useSeoMeta({
           </TabsTrigger>
         </TabsList>
 
-        <ClassroomCodeMobile />
+        <ClassroomCodeMobile :class-name="className" :code="code" />
       </div>
 
       <TabsContent value="bulletin-board" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <BulletinBoard />
+        <BulletinBoard
+          :articles-classroom="articlesClassroom"
+          :class-name="className"
+          :class-slug="classSlug"
+          :code="code"
+        />
       </TabsContent>
 
       <TabsContent value="homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
@@ -54,7 +88,7 @@ useSeoMeta({
       </TabsContent>
 
       <TabsContent value="people" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <People />
+        <People :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
       </TabsContent>
 
       <TabsContent value="grades" class="focus-visible:ring-0 focus-visible:ring-offset-0">

@@ -11,7 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { StudentDialogImport } from '@/components/common/dialog/student'
 import { toast } from 'vue-sonner'
 
-const { $authStore, $studentStore, $bus } = useNuxtApp()
+const { $authStore, $generationStore, $academicYearStore, $studentStore, $bus } = useNuxtApp()
 
 const isLoaded = ref<boolean>(false)
 const isImporting = ref<boolean>(false)
@@ -49,6 +49,14 @@ onMounted(async () => {
   $bus.on('delete-rows', (values: Student[]) => {
     console.log(values)
   })
+
+  if (!$generationStore.generations.length) {
+    await $generationStore.fetchGenerations()
+  }
+
+  if (!$academicYearStore.academicYears.length) {
+    await $academicYearStore.fetchAcademicYears()
+  }
 
   if (!$studentStore.students.length) {
     await $studentStore.fetchStudents()
@@ -99,9 +107,6 @@ const columns = createColumns(
           ]
         }
       }),
-      options: {
-        enableSorting: false
-      },
       before: 'email'
     }
   ],

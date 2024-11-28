@@ -4,12 +4,17 @@ import { DotsVerticalIcon } from '@radix-icons/vue'
 
 const useIdFunction = () => useId()
 const router = useRouter()
+const route = useRoute()
 
 const isOpen = ref<boolean>(false)
 
 const redirect = (path: string) => {
   router.push(path)
 }
+
+onMounted(() => {
+  console.log(route)
+})
 </script>
 
 <template>
@@ -79,7 +84,7 @@ const redirect = (path: string) => {
 
         <CardFooter class="border-t pt-6 flex gap-2">
           <Button type="button" variant="outline" @click="isOpen = false">Đóng</Button>
-          <Button type="button" @click="redirect('/classrooms/1/homework/1')">
+          <Button type="button" @click="redirect(`/classrooms/${route.params.classroomSlug}/homeworks/1`)">
             Details
           </Button>
         </CardFooter>

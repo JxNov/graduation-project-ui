@@ -10,6 +10,9 @@ import { useClassStore } from '~/stores/class'
 import { useTeacherStore } from '~/stores/teacher'
 import { useStudentStore } from '~/stores/student'
 import { useClassroomStore } from '~/stores/classroom'
+import { useAttendanceStore } from '~/stores/attendance'
+import { useAssignmentStore } from '~/stores/assignment'
+import { useArticleStore } from '~/stores/article'
 
 declare module '#app' {
   interface NuxtApp {
@@ -25,6 +28,9 @@ declare module '#app' {
     $teacherStore: ReturnType<typeof useTeacherStore>;
     $studentStore: ReturnType<typeof useStudentStore>;
     $classroomStore: ReturnType<typeof useClassroomStore>;
+    $attendanceStore: ReturnType<typeof useAttendanceStore>;
+    $assignmentStore: ReturnType<typeof useAssignmentStore>;
+    $articleStore: ReturnType<typeof useArticleStore>;
   }
 }
 
@@ -42,5 +48,8 @@ declare module '@vue/runtime-core' {
     $teacherStore: ReturnType<typeof useTeacherStore>;
     $studentStore: ReturnType<typeof useStudentStore>;
     $classroomStore: ReturnType<typeof useClassroomStore>;
+    $attendanceStore: ReturnType<typeof useAttendanceStore>;
+    $assignmentStore: ReturnType<typeof useAssignmentStore>;
+    $articleStore: ReturnType<typeof useArticleStore>;
   }
 }

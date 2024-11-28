@@ -2,21 +2,18 @@
 import { toast } from 'vue-sonner'
 import { EnterFullScreenIcon } from '@radix-icons/vue'
 
+const props = defineProps<{
+  className: string
+  code: string
+}>()
+
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
     .then(() => {
-      toast.success('Đã sao chép mã lớp vào clipboard', {
-        action: {
-          label: 'Đóng'
-        }
-      })
+      toast.success('Đã sao chép mã lớp vào clipboard')
     })
     .catch(() => {
-      toast.error('Sao chép mã lớp vào clipboard thất bại', {
-        action: {
-          label: 'Đóng'
-        }
-      })
+      toast.error('Sao chép mã lớp vào clipboard thất bại')
     })
 }
 </script>
@@ -33,9 +30,9 @@ const copyToClipboard = (text: string) => {
           <TooltipTrigger>
             <p
               class="text-lg text-gray-800 dark:text-white font-bold transition-colors duration-300 cursor-pointer hover:text-primary"
-              @click="copyToClipboard('ABC123')"
+              @click="copyToClipboard(props.code)"
             >
-              ABC123
+              {{ props.code }}
             </p>
           </TooltipTrigger>
 
@@ -59,11 +56,11 @@ const copyToClipboard = (text: string) => {
 
           <div class="flex flex-col items-center justify-center py-16">
             <p class="text-9xl text-gray-800 dark:text-white font-bold">
-              ABC123
+              {{ props.code }}
             </p>
           </div>
 
-          <DialogTitle>Bulletin Board</DialogTitle>
+          <DialogTitle>{{ props.className }}</DialogTitle>
         </DialogContent>
       </Dialog>
     </CardContent>

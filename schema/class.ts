@@ -7,7 +7,8 @@ export const classSchema = z.object({
   teacherName: z.string(),
   username: z.string(),
   academicYearSlug: z.string(),
-  blockSlug: z.string()
+  blockSlug: z.string(),
+  numberOfStudents: z.number()
 })
 
 export type Class = z.infer<typeof classSchema>

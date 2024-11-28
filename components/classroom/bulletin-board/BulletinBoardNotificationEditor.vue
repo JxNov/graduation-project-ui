@@ -3,22 +3,45 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 
+const { $authStore, $articleStore, $bus } = useNuxtApp()
+
+const props = defineProps<{
+  articleId: number
+}>()
+
 const isOpen = ref<boolean>(false)
 const isOpenDialog = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
 
 const formSchema = toTypedSchema(z.object({
-  content: z.string().default('')
+  content: z.string().default(''),
+  articleId: z.number()
 }))
 
 const { handleSubmit, values, setFieldValue } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    content: ''
+    content: '',
+    articleId: props.articleId
   }
 })
 
-const onSubmit = handleSubmit((values) => {
-  console.log(values)
+const onSubmit = handleSubmit(async (values) => {
+  isLoading.value = true
+
+  try {
+    const response = await $articleStore.createComment(values)
+
+    if (!response) {
+      throw new Error('Failed to create article comment')
+    }
+
+    setFieldValue('content', '')
+    $bus.emit('article:commented', response)
+    isOpen.value = false
+  } catch (error) {
+    isLoading.value = false
+  }
 })
 
 const updateContent = (value: string) => {
@@ -46,11 +69,11 @@ const closeAll = () => {
     <slot />
 
     <Collapsible v-model:open="isOpen">
-      <Card class="cursor-pointer select-none rounded-t-none shadow-none border-none">
-        <CardHeader class="flex flex-row items-center gap-4" @click="toggleCollapsible">
+      <Card class="select-none rounded-t-none shadow-none border-none">
+        <CardHeader class="cursor-pointer flex flex-row items-center gap-4" @click="toggleCollapsible">
           <Avatar>
-            <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
+            <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
           </Avatar>
 
           <CardDescription>

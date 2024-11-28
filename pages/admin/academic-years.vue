@@ -124,7 +124,7 @@ const handleCloseDialog = () => {
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Manage academic years</h2>
-      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+      <Button variant="default" @click="isCreating = true">
         Create new academic year
       </Button>
     </div>

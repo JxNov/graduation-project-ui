@@ -10,6 +10,9 @@ import { useClassStore } from '~/stores/class'
 import { useTeacherStore } from '~/stores/teacher'
 import { useStudentStore } from '~/stores/student'
 import { useClassroomStore } from '~/stores/classroom'
+import { useAttendanceStore } from '~/stores/attendance'
+import { useAssignmentStore } from '~/stores/assignment'
+import { useArticleStore } from '~/stores/article'
 
 export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('generalStore', useGeneralStore())
@@ -24,4 +27,7 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('teacherStore', useTeacherStore())
   NuxtApp.provide('studentStore', useStudentStore())
   NuxtApp.provide('classroomStore', useClassroomStore())
+  NuxtApp.provide('attendanceStore', useAttendanceStore())
+  NuxtApp.provide('assignmentStore', useAssignmentStore())
+  NuxtApp.provide('articleStore', useArticleStore())
 })
