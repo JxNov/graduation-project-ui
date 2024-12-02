@@ -4,6 +4,7 @@ import { createColumns } from '~/composables/columns'
 import { useThrottle } from '~/composables/useThrottle'
 import type { TableFilter } from '~/types/table'
 import { Badge } from '~/components/ui/badge'
+import { toast } from 'vue-sonner'
 
 interface Attendance {
   id: number
@@ -122,7 +123,7 @@ const handleAttendance = async () => {
             return
           }
 
-          console.log('Attendance not marked')
+          toast.error('You are not connected to the school network')
         }
       })
     })

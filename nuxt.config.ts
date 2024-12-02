@@ -22,8 +22,22 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxt/icon',
     '@nuxtjs/i18n',
-    'nuxt-tiptap-editor'
+    'nuxt-tiptap-editor',
+    'nuxt-laravel-echo'
   ],
+
+  echo: {
+    broadcaster: 'pusher',
+    key: process.env.NUXT_PUSHER_APP_KEY,
+    cluster: process.env.NUXT_PUSHER_APP_CLUSTER,
+    authentication: {
+      baseUrl: `${process.env.NUXT_BASE_API_URL}`,
+      authEndpoint: process.env.NUXT_PUSHER_AUTH_ENDPOINT,
+      csrfEndpoint: process.env.NUXT_CSRF_ENDPOINT,
+      csrfCookie: 'XSRF-TOKEN',
+      csrfHeader: 'X-XSRF-TOKEN'
+    }
+  },
 
   piniaPluginPersistedstate: {
     key: 'persist:%id'
@@ -61,7 +75,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      include: ['@intlify/core-base']
+      include: ['@intlify/core-base', 'pusher-js']
     }
   },
 

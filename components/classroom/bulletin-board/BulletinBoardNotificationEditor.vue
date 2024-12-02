@@ -3,7 +3,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { useForm } from 'vee-validate'
 import { z } from 'zod'
 
-const { $authStore, $articleStore, $bus } = useNuxtApp()
+const { $authStore, $articleStore } = useNuxtApp()
 
 const props = defineProps<{
   articleId: number
@@ -37,8 +37,8 @@ const onSubmit = handleSubmit(async (values) => {
     }
 
     setFieldValue('content', '')
-    $bus.emit('article:commented', response)
     isOpen.value = false
+    isLoading.value = false
   } catch (error) {
     isLoading.value = false
   }
@@ -70,7 +70,10 @@ const closeAll = () => {
 
     <Collapsible v-model:open="isOpen">
       <Card class="select-none rounded-t-none shadow-none border-none">
-        <CardHeader class="cursor-pointer flex flex-row items-center gap-4" @click="toggleCollapsible">
+        <CardHeader
+          class="cursor-pointer flex flex-row items-center gap-4"
+          @click="toggleCollapsible"
+        >
           <Avatar>
             <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
             <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
@@ -97,9 +100,16 @@ const closeAll = () => {
             </CardContent>
 
             <CardFooter class="flex justify-end space-x-2">
-              <Button type="button" variant="outline" @click="toggleCollapsible">Hủy</Button>
+              <Button
+                type="button"
+                variant="outline"
+                @click="toggleCollapsible"
+                :disabled="isLoading"
+              >
+                Hủy
+              </Button>
 
-              <Button type="submit">Submit</Button>
+              <Button type="submit" :disabled="isLoading">Submit</Button>
             </CardFooter>
           </form>
         </CollapsibleContent>

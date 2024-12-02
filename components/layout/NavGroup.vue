@@ -3,6 +3,7 @@ import { ConfigProvider } from 'radix-vue'
 import type { NavGroup } from '~/types/nav'
 import { cn } from '~/lib/utils'
 import { hasPermission as checkPermission } from '~/utils/permissions'
+import { useMediaQuery } from '@vueuse/core'
 
 const route = useRoute()
 const { $authStore } = useNuxtApp()
@@ -25,6 +26,8 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
 const checkActive = (link: string): boolean => {
   return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
 }
+
+const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 </script>
 
 <template>
@@ -97,7 +100,7 @@ const checkActive = (link: string): boolean => {
           </Collapsible>
         </TooltipTrigger>
 
-        <TooltipContent v-if="!isOpen && !isOpenCollapsible" side="right" :side-offset="5">
+        <TooltipContent v-if="(!isOpen && !isOpenCollapsible) || !isLargeScreen" side="right" :side-offset="5">
           {{ $t(`menu.nav.${item.title}`) }}
         </TooltipContent>
       </Tooltip>

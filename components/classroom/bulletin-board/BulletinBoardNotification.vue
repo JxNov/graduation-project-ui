@@ -1,23 +1,33 @@
 <script setup lang="ts">
-import { ConfigProvider } from 'radix-vue'
-import { DotsVerticalIcon } from '@radix-icons/vue'
 import BulletinBoardNotificationEditor from './BulletinBoardNotificationEditor.vue'
 import BulletinBoardNotificationComment from './BulletinBoardNotificationComment.vue'
-
-const { locale } = useI18n()
 
 defineProps<{
   article: any
 }>()
 
-const useIdFunction = () => useId()
+const countDateDays = (date: string) => {
+  const date1 = new Date(date)
+  const date2 = new Date()
 
-const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString(locale.value, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  })
+  const diffTime = Math.abs(date2.getTime() - date1.getTime())
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+  if (diffDays > 1) {
+    return `${diffDays} ngày`
+  } else {
+    const diffHours = Math.ceil(diffTime / (1000 * 60 * 60))
+    if (diffHours > 1) {
+      return `${diffHours} giờ`
+    } else {
+      const diffMinutes = Math.ceil(diffTime / (1000 * 60))
+      if (diffMinutes > 1) {
+        return `${diffMinutes} phút`
+      } else {
+        return `${Math.ceil(diffTime / 1000)} giây`
+      }
+    }
+  }
 }
 </script>
 
@@ -33,33 +43,33 @@ const formatDate = (date: string) => {
 
         <div>
           <CardTitle>{{ article.teacherName }}</CardTitle>
-          <CardDescription>{{ article.publishedAt }}</CardDescription>
+          <CardDescription>{{ countDateDays(article.createdAt) }} trước</CardDescription>
         </div>
       </div>
 
-      <ConfigProvider :use-id="useIdFunction">
-        <DropdownMenu>
-          <DropdownMenuTrigger as-child>
-            <Button
-              variant="ghost"
-              class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-            >
-              <DotsVerticalIcon class="h-4 w-4" />
-              <span class="sr-only">Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" class="w-[160px]">
-            <DropdownMenuItem>
-              Edit
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+      <!--      <ConfigProvider :use-id="useIdFunction">-->
+      <!--        <DropdownMenu>-->
+      <!--          <DropdownMenuTrigger as-child>-->
+      <!--            <Button-->
+      <!--              variant="ghost"-->
+      <!--              class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"-->
+      <!--            >-->
+      <!--              <DotsVerticalIcon class="h-4 w-4" />-->
+      <!--              <span class="sr-only">Open menu</span>-->
+      <!--            </Button>-->
+      <!--          </DropdownMenuTrigger>-->
+      <!--          <DropdownMenuContent align="end" class="w-[160px]">-->
+      <!--            <DropdownMenuItem>-->
+      <!--              Edit-->
+      <!--            </DropdownMenuItem>-->
+      <!--            <DropdownMenuSeparator />-->
 
-            <DropdownMenuItem>
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </ConfigProvider>
+      <!--            <DropdownMenuItem>-->
+      <!--              Delete-->
+      <!--            </DropdownMenuItem>-->
+      <!--          </DropdownMenuContent>-->
+      <!--        </DropdownMenu>-->
+      <!--      </ConfigProvider>-->
     </CardHeader>
 
     <CardContent v-html="article.content" />

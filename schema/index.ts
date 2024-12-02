@@ -45,3 +45,6 @@ export type { Assignment } from './assignment'
 
 export { articleSchema } from './article'
 export type { Article } from './article'
+
+export { commentSchema } from './comment'
+export type { Comment } from './comment'

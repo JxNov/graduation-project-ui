@@ -2,6 +2,7 @@
 import { cn } from '~/lib/utils'
 import type { NavLink } from '~/types/nav'
 import { hasPermission as checkPermission } from '~/utils/permissions'
+import { useMediaQuery } from '@vueuse/core'
 
 const route = useRoute()
 const { $authStore } = useNuxtApp()
@@ -23,6 +24,8 @@ const checkActive = (link: string): boolean => {
 
   return new RegExp(`^${link}(/.*)?$`).test(route.path)
 }
+
+const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 </script>
 
 <template>
@@ -49,7 +52,7 @@ const checkActive = (link: string): boolean => {
         </NuxtLink>
       </TooltipTrigger>
 
-      <TooltipContent side="right" :side-offset="5" v-if="!isOpen">
+      <TooltipContent side="right" :side-offset="5" v-if="!isOpen || !isLargeScreen">
         {{ $t(`menu.nav.${item.title}`) }}
       </TooltipContent>
     </Tooltip>

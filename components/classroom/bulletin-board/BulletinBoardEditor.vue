@@ -39,6 +39,7 @@ const onSubmit = handleSubmit(async (values) => {
     setFieldValue('content', '')
     $bus.emit('article:created', response)
     isOpen.value = false
+    isLoading.value = false
   } catch (error) {
     isLoading.value = false
   }
@@ -67,7 +68,10 @@ const closeAll = () => {
 <template>
   <Collapsible v-model:open="isOpen">
     <Card class="select-none transition-shadow duration-300 ease-in-out shadow-md hover:shadow-xl">
-      <CardHeader class="flex flex-row items-center gap-4 cursor-pointer" @click="toggleCollapsible">
+      <CardHeader
+        class="flex flex-row items-center gap-4 cursor-pointer"
+        @click="toggleCollapsible"
+      >
         <Avatar>
           <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
           <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
@@ -92,9 +96,16 @@ const closeAll = () => {
           </CardContent>
 
           <CardFooter class="flex justify-end space-x-2">
-            <Button type="button" variant="outline" @click="toggleCollapsible">Hủy</Button>
+            <Button
+              type="button"
+              variant="outline"
+              @click="toggleCollapsible"
+              :disabled="isLoading"
+            >
+              Hủy
+            </Button>
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit" :disabled="isLoading">Submit</Button>
           </CardFooter>
         </form>
       </CollapsibleContent>
