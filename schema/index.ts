@@ -36,3 +36,15 @@ export type { Student } from './student'
 
 export { classroomSchema } from './classroom'
 export type { Classroom } from './classroom'
+
+export { attendanceSchema } from './attendance'
+export type { Attendance } from './attendance'
+
+export { assignmentSchema } from './assignment'
+export type { Assignment } from './assignment'
+
+export { articleSchema } from './article'
+export type { Article } from './article'
+
+export { commentSchema } from './comment'
+export type { Comment } from './comment'

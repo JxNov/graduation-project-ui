@@ -121,8 +121,4 @@ export const useRoleStore = defineStore('role', () => {
     reloadData,
     clearRoles
   }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
-  }
 })

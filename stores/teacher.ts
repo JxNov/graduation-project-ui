@@ -78,9 +78,4 @@ export const useTeacherStore = defineStore('teacher', () => {
     reloadData,
     clearTeachers
   }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage
-    ()
-  }
 })

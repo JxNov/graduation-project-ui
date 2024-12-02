@@ -4,6 +4,7 @@ import { createColumns } from '~/composables/columns'
 import { useThrottle } from '~/composables/useThrottle'
 import type { TableFilter } from '~/types/table'
 import { Badge } from '~/components/ui/badge'
+import { toast } from 'vue-sonner'
 
 interface Attendance {
   id: number
@@ -114,7 +115,15 @@ const handleAttendance = async () => {
         if (family === 'IPv4') {
           const { address, netmask, cidr } = network
 
-          console.log(address, netmask, cidr)
+          if (address === schoolNetworkIPv4 && netmask === schoolNetworkSubnetMask) {
+            console.log(address, netmask, cidr)
+            console.log(schoolNetworkIPv4, schoolNetworkSubnetMask)
+            console.log('Attendance marked')
+
+            return
+          }
+
+          toast.error('You are not connected to the school network')
         }
       })
     })
@@ -125,6 +134,8 @@ const handleAttendance = async () => {
 </script>
 
 <template>
+  <!--  <AttendanceCamera />-->
+
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Attendances</h2>

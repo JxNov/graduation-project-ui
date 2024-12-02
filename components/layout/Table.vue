@@ -11,7 +11,5 @@ defineProps<{
 </script>
 
 <template>
-  <ClientOnly>
-    <DataTable :data="data" :columns="columns" :filters="filters" :reload-data="reloadData" />
-  </ClientOnly>
+  <DataTable :data="data" :columns="columns" :filters="filters" :reload-data="reloadData" />
 </template>

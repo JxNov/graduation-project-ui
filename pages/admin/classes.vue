@@ -3,12 +3,13 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { Class } from '~/schema'
 import { classSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
-import { ClassDialogCreateEdit, ClassDialogDelete } from '~/components/common/dialog/class'
+import { ClassDialogDistribution, ClassDialogCreateEdit, ClassDialogDelete } from '~/components/common/dialog/class'
 import { useThrottle } from '~/composables/useThrottle'
 import { showElement } from '~/utils/showElement'
 
-const { $authStore, $classStore, $teacherStore, $blockStore, $bus } = useNuxtApp()
+const { $authStore, $academicYearStore, $classStore, $teacherStore, $blockStore, $bus } = useNuxtApp()
 
+const isDistribution = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
@@ -36,6 +37,10 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
+  $bus.on('close-dialog-distribution', (value: boolean) => {
+    isDistribution.value = value
+  })
+
   $bus.on('delete-rows', (values: Class[]) => {
     const slugs = values.map((value) => value.slug)
     console.log(slugs)
@@ -47,6 +52,10 @@ onMounted(async () => {
 
   if (!$blockStore.blocks.length) {
     await $blockStore.fetchBlocks()
+  }
+
+  if (!$academicYearStore.academicYears.length) {
+    await $academicYearStore.fetchAcademicYears()
   }
 
   if (!$classStore.classes.length) {
@@ -67,9 +76,9 @@ const columns = createColumns(
     ['select'],
     ['name', 'Class'],
     ['teacherName', 'Teacher'],
+    ['numberOfStudents', 'Number of students'],
     ['code', 'Invite code', '', {
-      enableSorting: false,
-      enableHiding: false
+      enableSorting: false
     }],
     ['actions', '', '', {
       enableSorting: false,
@@ -96,6 +105,7 @@ const shouldShowElement = computed(() => {
 })
 
 const handleCloseDialog = () => {
+  isDistribution.value = false
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
@@ -107,9 +117,16 @@ const handleCloseDialog = () => {
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Manage classes</h2>
-      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new class
-      </Button>
+
+      <div class="flex gap-2">
+        <Button variant="outline" @click="isDistribution = true" v-if="shouldShowElement">
+          Distribution students
+        </Button>
+
+        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+          Create new class
+        </Button>
+      </div>
     </div>
 
     <LayoutTable
@@ -119,6 +136,12 @@ const handleCloseDialog = () => {
       :reload-data="reloadData"
     />
   </div>
+
+  <Dialog :open="isDistribution" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <ClassDialogDistribution />
+    </DialogContent>
+  </Dialog>
 
   <Dialog :open="isCreating" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">

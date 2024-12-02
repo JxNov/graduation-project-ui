@@ -10,6 +10,9 @@ import { useClassStore } from './class'
 import { useTeacherStore } from '~/stores/teacher'
 import { useStudentStore } from '~/stores/student'
 import { useClassroomStore } from '~/stores/classroom'
+import { useAttendanceStore } from '~/stores/attendance'
+import { useAssignmentStore } from '~/stores/assignment'
+import { useArticleStore } from '~/stores/article'
 
 export const clearStores = () => {
   useGeneralStore().clearGeneral()
@@ -24,4 +27,7 @@ export const clearStores = () => {
   useTeacherStore().clearTeachers()
   useStudentStore().clearStudents()
   useClassroomStore().clearClassrooms()
+  useAttendanceStore().clearAttendances()
+  useAssignmentStore().clearAssignments()
+  useArticleStore().clearArticles()
 }

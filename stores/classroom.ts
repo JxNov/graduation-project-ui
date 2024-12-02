@@ -1,5 +1,5 @@
 import type { Classroom } from '~/schema'
-import { fetchClassroomsService } from '~/services/classroom'
+import { fetchClassroomsService, fetchDetailClassroomService, fetchPeopleClassroomService } from '~/services/classroom'
 import { toast } from 'vue-sonner'
 
 export const useClassroomStore = defineStore('classroom', () => {
@@ -13,6 +13,22 @@ export const useClassroomStore = defineStore('classroom', () => {
     }
   }
 
+  const fetchDetailClassroom = async (classSlug: string) => {
+    try {
+      return await fetchDetailClassroomService(classSlug)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const fetchPeopleClassroom = async (classSlug: string) => {
+    try {
+      return await fetchPeopleClassroomService(classSlug)
+    } catch (error) {
+      throw error
+    }
+  }
+
   const clearClassrooms = () => {
     classrooms.value = []
   }
@@ -20,10 +36,8 @@ export const useClassroomStore = defineStore('classroom', () => {
   return {
     classrooms,
     fetchClassrooms,
+    fetchDetailClassroom,
+    fetchPeopleClassroom,
     clearClassrooms
-  }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

@@ -97,8 +97,4 @@ export const useGenerationStore = defineStore('generation', () => {
     reloadData,
     clearGenerations
   }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
-  }
 })

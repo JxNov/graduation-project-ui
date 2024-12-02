@@ -1,5 +1,11 @@
 import type { Class } from '~/schema'
-import { fetchClassesService, createClassService, updateClassService, deleteClassService } from '~/services/class'
+import {
+  fetchClassesService,
+  createClassService,
+  updateClassService,
+  deleteClassService,
+  distributeStudentsService
+} from '~/services/class'
 import { toast } from 'vue-sonner'
 
 export const useClassStore = defineStore('class', () => {
@@ -58,6 +64,24 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const distributeStudents = async (academicYearSlug: string, blockSlug: string) => {
+    try {
+      const response = await distributeStudentsService(academicYearSlug, blockSlug)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      await fetchClasses()
+      toast.success('Students distributed successfully')
+
+      return response
+    } catch (error) {
+      toast.error('Failed to distribute students')
+      throw error
+    }
+  }
+
   const reloadData = async () => {
     const promise = () => Promise.all([
       fetchClasses()
@@ -93,11 +117,8 @@ export const useClassStore = defineStore('class', () => {
     createClass,
     updateClass,
     deleteClass,
+    distributeStudents,
     reloadData,
     clearClasses
-  }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
   }
 })

@@ -2,6 +2,11 @@
 import { toast } from 'vue-sonner'
 import { DotsVerticalIcon, CopyIcon } from '@radix-icons/vue'
 
+const props = defineProps<{
+  className: string
+  code: string
+}>()
+
 const open = ref<boolean>(false)
 
 const handleInteractOutside = (event: Event) => {
@@ -12,18 +17,10 @@ const handleInteractOutside = (event: Event) => {
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text)
     .then(() => {
-      toast.success('Đã sao chép mã lớp vào clipboard', {
-        action: {
-          label: 'Đóng'
-        }
-      })
+      toast.success('Đã sao chép mã lớp vào clipboard')
     })
     .catch(() => {
-      toast.error('Sao chép mã lớp vào clipboard thất bại', {
-        action: {
-          label: 'Đóng'
-        }
-      })
+      toast.error('Sao chép mã lớp vào clipboard thất bại')
     })
 }
 </script>
@@ -53,14 +50,14 @@ const copyToClipboard = (text: string) => {
 
         <div class="flex flex-col items-center justify-center py-16">
           <p class="text-7xl text-gray-800 dark:text-white font-bold">
-            ABC123
+            {{ props.code }}
           </p>
         </div>
 
         <div class="flex justify-between items-center">
-          <DialogTitle>Bulletin Board</DialogTitle>
+          <DialogTitle>{{ props.className }}</DialogTitle>
 
-          <p class="text-primary cursor-pointer flex items-center" @click="copyToClipboard('ABC123')">
+          <p class="text-primary cursor-pointer flex items-center" @click="copyToClipboard(props.code)">
             <CopyIcon class="h-4 w-4 mr-2" />
             Copy
           </p>

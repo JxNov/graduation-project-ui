@@ -49,16 +49,16 @@ onMounted(async () => {
     console.log(values)
   })
 
-  if (!$roleStore.roles.length) {
-    await $roleStore.fetchRoles()
+  if (!$userStore.users.length) {
+    await $userStore.fetchUsers()
   }
 
   if (!$roleStore.modules.length) {
     await $roleStore.fetchModules()
   }
 
-  if (!$userStore.users.length) {
-    await $userStore.fetchUsers()
+  if (!$roleStore.roles.length) {
+    await $roleStore.fetchRoles()
   }
 })
 
@@ -106,9 +106,6 @@ const columns = createColumns(
           ]
         }
       }),
-      options: {
-        enableSorting: false
-      },
       before: 'email'
     },
     {
@@ -176,10 +173,6 @@ const shouldShowElement = computed(() => {
       <div class="flex gap-4">
         <Button variant="default" @click="isAssigning = true" v-if="shouldShowElement">
           Assign roles to users
-        </Button>
-
-        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-          Import Users
         </Button>
       </div>
     </div>

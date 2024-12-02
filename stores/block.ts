@@ -21,8 +21,4 @@ export const useBlockStore = defineStore('block', () => {
     fetchBlocks,
     clearBlocks
   }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
-  }
 })

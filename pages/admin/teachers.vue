@@ -99,9 +99,6 @@ const columns = createColumns(
           ]
         }
       }),
-      options: {
-        enableSorting: false
-      },
       before: 'email'
     }
   ],

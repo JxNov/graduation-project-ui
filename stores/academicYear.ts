@@ -104,8 +104,4 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
     reloadData,
     clearAcademicYears
   }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
-  }
 })

@@ -114,7 +114,7 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
           <DropdownMenuContent class="w-56" align="end">
             <DropdownMenuLabel class="flex items-center gap-2 font-normal">
               <Avatar>
-                <AvatarImage :src="$authStore.user.image" alt="@radix-vue" />
+                <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
                 <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
               </Avatar>
 

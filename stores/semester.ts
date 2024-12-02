@@ -103,8 +103,4 @@ export const useSemesterStore = defineStore('semester', () => {
     reloadData,
     clearSemesters
   }
-}, {
-  persist: {
-    storage: piniaPluginPersistedstate.sessionStorage()
-  }
 })
