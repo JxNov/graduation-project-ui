@@ -32,7 +32,7 @@ interface DataTableProps {
   columns: ColumnDef<any, any>[]
   data: any[],
   filters: TableFilter[]
-  reloadData: () => void
+  reloadData?: () => void
 }
 
 const props = defineProps<DataTableProps>()

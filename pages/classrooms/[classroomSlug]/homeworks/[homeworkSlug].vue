@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ConfigProvider } from 'radix-vue'
 import HomeworkInstruct from '~/components/classroom/homework/HomeworkInstruct.vue'
+import HomeworkStudent from '~/components/classroom/homework/HomeworkStudent.vue'
 
 const { $classroomStore } = useNuxtApp()
 const useIdFunction = () => useId()
@@ -52,7 +53,7 @@ onMounted(async () => {
       </TabsContent>
 
       <TabsContent value="student-homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        Bài tập của học sinh
+        <HomeworkStudent />
       </TabsContent>
     </Tabs>
   </ConfigProvider>

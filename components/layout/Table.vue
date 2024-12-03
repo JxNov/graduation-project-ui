@@ -6,7 +6,7 @@ defineProps<{
   data: any[]
   columns: any[]
   filters: TableFilter[]
-  reloadData: () => void
+  reloadData?: () => void
 }>()
 </script>
 

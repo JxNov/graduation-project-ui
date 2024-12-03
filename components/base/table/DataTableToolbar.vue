@@ -11,7 +11,7 @@ import { refDebounced } from '@vueuse/core'
 interface DataTableToolbarProps {
   table: Table<any>,
   filters: TableFilter[]
-  reloadData: () => void
+  reloadData?: () => void
 }
 
 const { $bus } = useNuxtApp()

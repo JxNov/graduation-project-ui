@@ -103,10 +103,6 @@ onBeforeUnmount(() => {
           <TabsTrigger value="people">
             People
           </TabsTrigger>
-
-          <TabsTrigger value="grades">
-            Grades
-          </TabsTrigger>
         </TabsList>
 
         <ClassroomCodeMobile :class-name="className" :code="code" />
@@ -127,10 +123,6 @@ onBeforeUnmount(() => {
 
       <TabsContent value="people" class="focus-visible:ring-0 focus-visible:ring-offset-0">
         <People :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
-      </TabsContent>
-
-      <TabsContent value="grades" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        4
       </TabsContent>
     </Tabs>
   </ConfigProvider>

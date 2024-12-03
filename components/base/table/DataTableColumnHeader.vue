@@ -33,16 +33,18 @@ export default {
     <ConfigProvider :use-id="useIdFunction">
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
-          <Button
-            variant="ghost"
-            size="sm"
-            class="-ml-3 h-8 data-[state=open]:bg-accent"
-          >
-            <span>{{ title }}</span>
-            <ArrowDownIcon v-if="column.getIsSorted() === 'desc'" class="ml-2 h-4 w-4" />
-            <ArrowUpIcon v-else-if=" column.getIsSorted() === 'asc'" class="ml-2 h-4 w-4" />
-            <CaretSortIcon v-else class="ml-2 h-4 w-4" />
-          </Button>
+          <ConfigProvider :use-id="useIdFunction">
+            <Button
+              variant="ghost"
+              size="sm"
+              class="-ml-3 h-8 data-[state=open]:bg-accent"
+            >
+              <span>{{ title }}</span>
+              <ArrowDownIcon v-if="column.getIsSorted() === 'desc'" class="ml-2 h-4 w-4" />
+              <ArrowUpIcon v-else-if=" column.getIsSorted() === 'asc'" class="ml-2 h-4 w-4" />
+              <CaretSortIcon v-else class="ml-2 h-4 w-4" />
+            </Button>
+          </ConfigProvider>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="start">

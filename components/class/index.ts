@@ -1,0 +1,1 @@
+export { default as ClassDetail } from './Detail.vue'

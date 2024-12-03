@@ -32,7 +32,7 @@
     "nuxt-tiptap-editor": "^2.0.0",
     "pinia": "^2.2.6",
     "pinia-plugin-persistedstate": "^4.1.2",
-    "radix-vue": "^1.7.4",
+    "radix-vue": "^1.9.10",
     "shadcn-nuxt": "^0.10.4",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",

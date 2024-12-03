@@ -6,8 +6,10 @@ import { createColumns } from '~/composables/columns'
 import { ClassDialogDistribution, ClassDialogCreateEdit, ClassDialogDelete } from '~/components/common/dialog/class'
 import { useThrottle } from '~/composables/useThrottle'
 import { showElement } from '~/utils/showElement'
+import { Button } from '~/components/ui/button'
 
 const { $authStore, $academicYearStore, $classStore, $teacherStore, $blockStore, $bus } = useNuxtApp()
+const router = useRouter()
 
 const isDistribution = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
@@ -86,7 +88,26 @@ const columns = createColumns(
     }]
   ],
   classSchema,
-  [],
+  [
+    {
+      accessorKey: 'score',
+      title: '',
+      render: (row) => h('div', { class: 'truncate' },
+        h(Button, {
+          variant: 'outline',
+          size: 'sm',
+          onClick: () => {
+            router.push(`/admin/classes/${row.original.slug}`)
+          }
+        }, { default: () => 'Detail' })
+      ),
+      options: {
+        enableSorting: false,
+        enableHiding: false
+      },
+      before: 'actions'
+    }
+  ],
   'users.update',
   'users.delete'
 ) as ColumnDef<Class>[]
