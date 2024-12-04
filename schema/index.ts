@@ -37,8 +37,8 @@ export type { Student } from './student'
 export { classroomSchema } from './classroom'
 export type { Classroom } from './classroom'
 
-export { attendanceSchema } from './attendance'
-export type { Attendance } from './attendance'
+export { attendanceSchema, attendanceDetailSchema } from './attendance'
+export type { Attendance, AttendanceDetail } from './attendance'
 
 export { assignmentSchema } from './assignment'
 export type { Assignment } from './assignment'
@@ -48,3 +48,6 @@ export type { Article } from './article'
 
 export { commentSchema } from './comment'
 export type { Comment } from './comment'
+
+export { chatPreviewSchema, chatSchema } from './chat'
+export type { ChatPreview, Chat } from './chat'

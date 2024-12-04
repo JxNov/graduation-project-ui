@@ -1,5 +1,4 @@
-import type { Attendance } from '~/schema'
-
+import type { Attendance, AttendanceDetail } from '~/schema'
 
 export const fetchAttendancesService = async (): Promise<Attendance[]> => {
   const { $axios } = useNuxtApp()
@@ -11,29 +10,41 @@ export const fetchAttendancesService = async (): Promise<Attendance[]> => {
       throw new Error('Invalid response')
     }
 
-    return response.data.data.data
+    return response.data.data
   } catch (error) {
     throw error
   }
 }
 
-export const updateAttendanceService = async (id: number, data: {
+export const detailAttendanceService = async (classSlug: string): Promise<AttendanceDetail> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/attendances/${classSlug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const createAttendanceService = async (data: {
   classSlug: string
-  date: string
-  shifts: string
   students: {
     username: string
     status: string
     reason: string
   }[]
-}): Promise<Attendance> => {
+}): Promise<AttendanceDetail> => {
   const { $axios } = useNuxtApp()
 
   try {
-    const response = await $axios.patch(`/v1/attendances/update/${id}`, {
+    const response = await $axios.post('/v1/attendances', {
       class_slug: data.classSlug,
-      date: data.date,
-      shifts: data.shifts,
       students: data.students
     })
 
@@ -41,7 +52,33 @@ export const updateAttendanceService = async (id: number, data: {
       throw new Error('Invalid response')
     }
 
-    return response.data.data
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateAttendanceService = async (id: number, data: {
+  classSlug: string
+  students: {
+    username: string
+    status: string
+    reason: string
+  }[]
+}): Promise<AttendanceDetail> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/attendances/${id}`, {
+      class_slug: data.classSlug,
+      students: data.students
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data
   } catch (error) {
     throw error
   }

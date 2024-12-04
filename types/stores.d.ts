@@ -13,6 +13,7 @@ import { useClassroomStore } from '~/stores/classroom'
 import { useAttendanceStore } from '~/stores/attendance'
 import { useAssignmentStore } from '~/stores/assignment'
 import { useArticleStore } from '~/stores/article'
+import { useChatStore } from '~/stores/chat'
 
 declare module '#app' {
   interface NuxtApp {
@@ -31,6 +32,7 @@ declare module '#app' {
     $attendanceStore: ReturnType<typeof useAttendanceStore>;
     $assignmentStore: ReturnType<typeof useAssignmentStore>;
     $articleStore: ReturnType<typeof useArticleStore>;
+    $chatStore: ReturnType<typeof useChatStore>;
   }
 }
 
@@ -51,5 +53,6 @@ declare module '@vue/runtime-core' {
     $attendanceStore: ReturnType<typeof useAttendanceStore>;
     $assignmentStore: ReturnType<typeof useAssignmentStore>;
     $articleStore: ReturnType<typeof useArticleStore>;
+    $chatStore: ReturnType<typeof useChatStore>;
   }
 }

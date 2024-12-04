@@ -15,6 +15,7 @@
       "attendances": "Attendances",
       "roles": "Roles",
       "users": "Users",
+      "chat": "Chat",
       "classrooms": {
         "index": "Classrooms",
         "home": "Main Screen",

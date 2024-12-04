@@ -88,7 +88,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <ConfigProvider :use-id="useIdFunction">
+  <ClientOnly>
     <Tabs default-value="bulletin-board">
       <div class="flex justify-between items-center">
         <TabsList>
@@ -125,5 +125,5 @@ onBeforeUnmount(() => {
         <People :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
       </TabsContent>
     </Tabs>
-  </ConfigProvider>
+  </ClientOnly>
 </template>

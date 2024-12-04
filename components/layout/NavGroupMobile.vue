@@ -14,6 +14,20 @@ const isOpenCollapsible = ref(false)
 const hasPermission = (permissions: string[] | undefined): boolean => {
   return checkPermission(permissions, $authStore.user.permissions)
 }
+
+const checkActive = (link: string): boolean => {
+  if (link === '/admin') {
+    return route.path === link
+  }
+
+  if (link !== '/classrooms') {
+    // return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+
+    return new RegExp(`^${link}(/[^/]+)?$`).test(route.path)
+  }
+
+  return new RegExp(`^${link}(/.*)?$`).test(route.path)
+}
 </script>
 
 <template>
@@ -44,7 +58,8 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
           <NuxtLink
             :to="nav.link"
             :class="[
-              { 'bg-muted': nav.link === route.path },
+              // { 'bg-muted': nav.link === route.path },
+              { 'bg-muted': checkActive(nav.link) },
             ]"
             class="flex items-center gap-4 rounded-lg px-4 py-2 text-sm text-foreground font-normal hover:bg-muted"
           >

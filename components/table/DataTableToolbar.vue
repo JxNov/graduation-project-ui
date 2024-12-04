@@ -11,7 +11,6 @@ import { refDebounced } from '@vueuse/core'
 interface DataTableToolbarProps {
   table: Table<any>,
   filters: TableFilter[]
-  reloadData?: () => void
 }
 
 const { $bus } = useNuxtApp()
@@ -59,6 +58,6 @@ const handleReset = () => {
         <Cross2Icon class="ml-2 h-4 w-4" />
       </Button>
     </div>
-    <DataTableViewOptions :table="table" :reload-data="reloadData" />
+    <DataTableViewOptions :table="table" />
   </div>
 </template>

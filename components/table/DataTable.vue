@@ -32,7 +32,6 @@ interface DataTableProps {
   columns: ColumnDef<any, any>[]
   data: any[],
   filters: TableFilter[]
-  reloadData?: () => void
 }
 
 const props = defineProps<DataTableProps>()
@@ -79,7 +78,7 @@ const table = useVueTable({
 
 <template>
   <div class="space-y-4 bg-card p-4 rounded-md shadow">
-    <DataTableToolbar :table="table" :filters="filters" :reload-data="reloadData" />
+    <DataTableToolbar :table="table" :filters="filters" />
 
     <div class="rounded-md border">
       <Table>

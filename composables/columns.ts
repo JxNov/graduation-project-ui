@@ -1,7 +1,7 @@
 import type { ColumnDef, HeaderContext, CellContext } from '@tanstack/vue-table'
 import { h } from 'vue'
-import DataTableColumnHeader from '../components/base/table/DataTableColumnHeader.vue'
-import DataTableRowActions from '../components/base/table/DataTableRowActions.vue'
+import DataTableColumnHeader from '~/components/table/DataTableColumnHeader.vue'
+import DataTableRowActions from '~/components/table/DataTableRowActions.vue'
 import { Checkbox } from '~/components/ui/checkbox'
 
 type RowData = Record<string, any>;

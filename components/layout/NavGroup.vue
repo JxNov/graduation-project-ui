@@ -24,7 +24,17 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
 }
 
 const checkActive = (link: string): boolean => {
-  return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+  if (link === '/admin') {
+    return route.path === link
+  }
+
+  if (link !== '/classrooms') {
+    // return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+
+    return new RegExp(`^${link}(/[^/]+)?$`).test(route.path)
+  }
+
+  return new RegExp(`^${link}(/.*)?$`).test(route.path)
 }
 
 const isLargeScreen = useMediaQuery('(min-width: 1024px)')
@@ -33,7 +43,7 @@ const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 <template>
   <ConfigProvider :use-id="useIdFunction">
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip :delay-duration="0">
         <TooltipTrigger as-child>
           <Collapsible
             v-model:open="isOpenCollapsible"

@@ -13,6 +13,7 @@ import { useClassroomStore } from '~/stores/classroom'
 import { useAttendanceStore } from '~/stores/attendance'
 import { useAssignmentStore } from '~/stores/assignment'
 import { useArticleStore } from '~/stores/article'
+import { useChatStore } from '~/stores/chat'
 
 export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('generalStore', useGeneralStore())
@@ -30,4 +31,5 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('attendanceStore', useAttendanceStore())
   NuxtApp.provide('assignmentStore', useAssignmentStore())
   NuxtApp.provide('articleStore', useArticleStore())
+  NuxtApp.provide('chatStore', useChatStore())
 })

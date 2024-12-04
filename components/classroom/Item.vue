@@ -47,7 +47,7 @@ const redirect = (path: string) => {
 
       <Avatar size="base" class="absolute -bottom-1/4 right-6">
         <AvatarImage :src="classroom.teacherImage || ''" alt="@radix-vue" />
-        <AvatarFallback>{{ classroom.teacherName[0] }}</AvatarFallback>
+        <AvatarFallback>{{ classroom.teacherName.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
       </Avatar>
     </div>
 

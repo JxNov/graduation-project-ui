@@ -138,6 +138,12 @@ export const navMenu: NavMenuItems = [
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/attendances',
     permissions: []
+  },
+  {
+    title: 'chat',
+    icon: 'token:chat',
+    link: '/chat',
+    permissions: []
   }
 ]
 

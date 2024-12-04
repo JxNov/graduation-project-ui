@@ -13,6 +13,7 @@ import { useClassroomStore } from '~/stores/classroom'
 import { useAttendanceStore } from '~/stores/attendance'
 import { useAssignmentStore } from '~/stores/assignment'
 import { useArticleStore } from '~/stores/article'
+import { useChatStore } from '~/stores/chat'
 
 export const clearStores = () => {
   useGeneralStore().clearGeneral()
@@ -30,4 +31,5 @@ export const clearStores = () => {
   useAttendanceStore().clearAttendances()
   useAssignmentStore().clearAssignments()
   useArticleStore().clearArticles()
+  useChatStore().clearChats()
 }

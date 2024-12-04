@@ -13,8 +13,11 @@ useSeoMeta({
   twitterImage: '',
   twitterCard: 'summary_large_image'
 })
+
+const route = useRoute()
+const classSlug = route.params.classSlug as string
 </script>
 
 <template>
-  <AttendanceDetail />
+  <AttendanceDetail :class-slug="classSlug" />
 </template>

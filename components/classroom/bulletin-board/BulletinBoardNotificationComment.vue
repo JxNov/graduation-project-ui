@@ -45,7 +45,7 @@ const countDateDays = (date: string) => {
       <div class="flex flex-row items-start gap-4" v-for="comment in comments" :key="comment.id">
         <Avatar>
           <AvatarImage :src="comment.userImage || ''" :alt="comment.name[0]" />
-          <AvatarFallback>{{ comment.name[0] }}</AvatarFallback>
+          <AvatarFallback>{{ comment.name.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
         </Avatar>
 
         <div>

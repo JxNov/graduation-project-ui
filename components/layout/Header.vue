@@ -115,7 +115,8 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             <DropdownMenuLabel class="flex items-center gap-2 font-normal">
               <Avatar>
                 <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
-                <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
+                <AvatarFallback>{{ $authStore.user.name.split(' ').map((name: string) => name[0]).join('') }}
+                </AvatarFallback>
               </Avatar>
 
               <div class="flex flex-col space-y-1">
