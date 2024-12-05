@@ -3,5 +3,5 @@
 </script>
 
 <template>
-  <ScheduleLayout />
+  <ScheduleDisplay />
 </template>

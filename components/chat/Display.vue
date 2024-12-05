@@ -49,36 +49,34 @@ const messages = computed(() => {
       </div>
       <Separator />
 
-      <ScrollArea class="max-h-[500px]">
-        <div class="flex flex-col p-4 gap-2">
-          <div v-for="mess in messages" :key="mess.messageID">
-            <div class="flex items-center gap-2" v-if="$authStore.user.username !== mess.username">
-              <div
-                v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username">
-                <Avatar>
-                  <AvatarFallback>
-                    {{ mess.name.split(' ').map((name: string) => name[0]).join('') }}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <div v-else class="h-10 w-10" />
-
-              <div class="bg-primary rounded-full py-2 px-4 max-w-fit">
-                <div class="flex-1 whitespace-pre-wrap text-sm text-primary-foreground">
-                  {{ mess.message }}
-                </div>
-              </div>
+      <ScrollArea class="max-h-[500px] flex flex-col p-4">
+        <template v-for="mess in messages" :key="mess.messageID">
+          <div class="flex items-center gap-2" v-if="$authStore.user.username !== mess.username">
+            <div
+              v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username">
+              <Avatar>
+                <AvatarFallback>
+                  {{ mess.name.split(' ').map((name: string) => name[0]).join('') }}
+                </AvatarFallback>
+              </Avatar>
             </div>
+            <div v-else class="h-10 w-10" />
 
-            <div class="flex flex-row-reverse items-center gap-2" v-else>
-              <div class="bg-primary rounded-full py-2 px-4 max-w-fit">
-                <div class="flex-1 whitespace-pre-wrap text-sm text-primary-foreground">
-                  {{ mess.message }}
-                </div>
+            <div class="bg-primary rounded-full py-2 px-5 max-w-fit">
+              <div class="flex-1 whitespace-pre-wrap text-sm text-primary-foreground">
+                {{ mess.message }}
               </div>
             </div>
           </div>
-        </div>
+
+          <div class="flex flex-row-reverse items-center gap-2 mt-1" v-else>
+            <div class="bg-primary rounded-full py-2 px-5 max-w-fit">
+              <div class="flex-1 whitespace-pre-wrap text-sm text-primary-foreground">
+                {{ mess.message }}
+              </div>
+            </div>
+          </div>
+        </template>
       </ScrollArea>
 
       <Separator class="mt-auto" />
