@@ -133,11 +133,9 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
 
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                Profile
-              </DropdownMenuItem>
-
-              <DropdownMenuItem>
-                Settings
+                <NuxtLink to="/profile">
+                  {{ $t('auth.profile.title') }}
+                </NuxtLink>
               </DropdownMenuItem>
 
               <DarkToggle />
