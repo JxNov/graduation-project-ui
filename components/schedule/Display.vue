@@ -3,5 +3,5 @@
 </script>
 
 <template>
-
+  <ScheduleDrag />
 </template>

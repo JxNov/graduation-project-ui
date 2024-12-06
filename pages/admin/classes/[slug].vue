@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ClassDetail } from '~/components/class'
-
 const title = 'Chi tiết lớp học'
 const description = 'Chi tiết lớp học'
 

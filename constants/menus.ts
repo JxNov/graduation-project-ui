@@ -110,6 +110,12 @@ export const navMenu: NavMenuItems = [
     permissions: []
   },
   {
+    title: 'schedules',
+    icon: 'carbon:calendar',
+    link: '/admin/schedules',
+    permissions: []
+  },
+  {
     title: 'roles',
     icon: 'eos-icons:role-binding-outlined',
     link: '/admin/roles',
