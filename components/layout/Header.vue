@@ -111,7 +111,7 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent class="w-56" align="end">
+          <DropdownMenuContent class="min-w-56" align="end">
             <DropdownMenuLabel class="flex items-center gap-2 font-normal">
               <Avatar>
                 <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
@@ -132,11 +132,11 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <NuxtLink to="/profile">
+              <NuxtLink to="/profile">
+                <DropdownMenuItem class="cursor-pointer">
                   {{ $t('auth.profile.title') }}
-                </NuxtLink>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </NuxtLink>
 
               <DarkToggle />
 

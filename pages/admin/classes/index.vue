@@ -92,14 +92,23 @@ const columns = createColumns(
     {
       accessorKey: 'score',
       title: '',
-      render: (row) => h('div', { class: 'truncate' },
-        h(Button, {
-          variant: 'outline',
-          size: 'sm',
-          onClick: () => {
-            router.push(`/admin/classes/${row.original.slug}`)
-          }
-        }, { default: () => 'Detail' })
+      render: (row) => h('div', { class: 'truncate px-2' },
+        h('div', { class: 'flex items-center gap-2' }, [
+          h(Button, {
+            variant: 'outline',
+            size: 'sm',
+            onClick: () => {
+              router.push(`/admin/classes/${row.original.slug}`)
+            }
+          }, { default: () => 'Detail' }),
+          h(Button, {
+            variant: 'outline',
+            size: 'sm',
+            onClick: () => {
+              console.log(row.original)
+            }
+          }, { default: () => 'Up to class' })
+        ])
       ),
       options: {
         enableSorting: false,

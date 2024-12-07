@@ -81,7 +81,7 @@ const colorMode = useColorMode()
       <div class="grid grid-cols-3 gap-2">
         <template v-for="color in allColors" :key="color">
           <Button
-            class="justify-start gap-2"
+            class="justify-start flex-col md:flex-row h-full gap-2"
             variant="outline"
             :class="{ 'border-primary border-2': theme === color }"
             @click="setTheme(color)"

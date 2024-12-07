@@ -51,3 +51,6 @@ export type { Comment } from './comment'
 
 export { chatPreviewSchema, chatSchema } from './chat'
 export type { ChatPreview, Chat } from './chat'
+
+export { geminiSchema } from './gemini'
+export type { Gemini } from './gemini'

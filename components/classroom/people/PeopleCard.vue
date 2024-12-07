@@ -24,7 +24,7 @@ const props = defineProps<{
       >
         <Avatar>
           <AvatarImage :src="item.image || ''" :alt="item.name" />
-          <AvatarFallback>{{ item.name[0] }}</AvatarFallback>
+          <AvatarFallback>{{ item.name.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
         </Avatar>
 
         <CardTitle>{{ item.name }}</CardTitle>

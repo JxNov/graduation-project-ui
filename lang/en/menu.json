@@ -13,10 +13,12 @@
       "subjects": "Subjects",
       "classes": "Classes",
       "attendances": "Attendances",
+      "grades": "Grades",
       "schedules": "Schedules",
       "roles": "Roles",
       "users": "Users",
       "chat": "Chat",
+      "gemini": "Gemini",
       "classrooms": {
         "index": "Classrooms",
         "home": "Main Screen",

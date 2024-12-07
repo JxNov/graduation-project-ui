@@ -13,10 +13,12 @@
       "subjects": "Môn học",
       "classes": "Lớp học",
       "attendances": "Điểm danh",
+      "grades": "Điểm số",
       "schedules": "Thời khóa biểu",
       "roles": "Vai trò",
       "users": "Người dùng",
       "chat": "Trò chuyện",
+      "gemini": "Trợ lý ảo",
       "classrooms": {
         "index": "Phòng học",
         "home": "Màn hình chính",

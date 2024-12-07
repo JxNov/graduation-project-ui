@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { ScrollArea } from '~/components/ui/scroll-area'
 import { cn } from '~/lib/utils'
-import type { ChatPreview } from '~/schema'
+import type { Gemini } from '~/schema'
 
-interface ChatListProps {
-  items: ChatPreview[]
+interface GeminiListProps {
+  items: Gemini[]
 }
 
-defineProps<ChatListProps>()
-const selectedChat = defineModel<number>('selectedChat', { required: false })
+defineProps<GeminiListProps>()
+const selectedGemini = defineModel<number>('selectedGemini', { required: false })
 </script>
 
 <template>
@@ -20,9 +20,9 @@ const selectedChat = defineModel<number>('selectedChat', { required: false })
           :key="item.id"
           :class="cn(
             'flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent w-full',
-            selectedChat === item.id && 'bg-muted',
+            selectedGemini === item.id && 'bg-muted',
           )"
-          @click="selectedChat = item.id"
+          @click="selectedGemini = item.id"
         >
           <div class="flex w-full flex-col gap-1">
             <div class="flex items-center">

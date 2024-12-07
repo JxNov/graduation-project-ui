@@ -53,7 +53,8 @@ const messages = computed(() => {
         <template v-for="mess in messages" :key="mess.messageID">
           <div class="flex items-center gap-2" v-if="$authStore.user.username !== mess.username">
             <div
-              v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username">
+              v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username"
+            >
               <Avatar>
                 <AvatarFallback>
                   {{ mess.name.split(' ').map((name: string) => name[0]).join('') }}
@@ -62,8 +63,8 @@ const messages = computed(() => {
             </div>
             <div v-else class="h-10 w-10" />
 
-            <div class="bg-primary rounded-full py-2 px-5 max-w-fit">
-              <div class="flex-1 whitespace-pre-wrap text-sm text-primary-foreground">
+            <div class="bg-secondary rounded-full py-2 px-5 max-w-fit">
+              <div class="flex-1 whitespace-pre-wrap text-sm text-primary">
                 {{ mess.message }}
               </div>
             </div>
