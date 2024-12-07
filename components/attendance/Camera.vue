@@ -9,30 +9,30 @@ const constraints = {
   video: true
 }
 
-const Draw = () => {
+const draw = () => {
   if (videoRef.value && canvasRef.value && ctx.value) {
     ctx.value.drawImage(videoRef.value, 0, 0, canvasRef.value.width, canvasRef.value.height)
-    requestAnimationFrame(Draw)
+    requestAnimationFrame(draw)
   }
 }
 
-const SetStream = (stream: MediaStream) => {
+const setStream = (stream: MediaStream) => {
   if (videoRef.value) {
     videoRef.value.srcObject = stream
     videoRef.value.play()
 
-    requestAnimationFrame(Draw)
+    requestAnimationFrame(draw)
   }
 }
 
-const Capture = () => {
+const capture = () => {
   if (canvasRef.value) {
     preview.value = canvasRef.value.toDataURL()
   }
 }
 
-const StopCamera = () => {
-  if (videoRef.value) {
+const stopCamera = () => {
+  if (videoRef.value && videoRef.value.srcObject) {
     const stream = videoRef.value.srcObject as MediaStream
     const tracks = stream.getTracks()
 
@@ -51,28 +51,32 @@ onMounted(async () => {
     ctx.value = canvasRef.value.getContext('2d')
 
     await navigator.mediaDevices.getUserMedia(constraints)
-      .then(SetStream)
+      .then(setStream)
       .catch((error) => {
         console.error('Error accessing the camera: ', error)
       })
   }
 })
+
+onBeforeUnmount(() => {
+  stopCamera()
+})
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center">
+  <div class="flex flex-col items-center justify-center pt-6">
     <video ref="videoRef" autoplay playsinline muted hidden></video>
 
-    <canvas ref="canvasRef" width="1280" height="800" class="bg-black rounded-3xl"></canvas>
+    <canvas ref="canvasRef" class="bg-black rounded-md w-full aspect-[4/3]"></canvas>
 
     <div class="flex items-center justify-center py-4">
-      <Button type="button" @click="Capture">Capture</Button>
+      <Button type="button" @click="capture">Capture</Button>
 
-      <Button type="button" variant="default" @click="StopCamera">Stop</Button>
+      <Button type="button" variant="default" @click="stopCamera">Stop</Button>
     </div>
 
     <div class="flex items-center justify-center py-4">
-      <img :src="preview || ''" alt="Preview" class="rounded-3xl" />
+      <img :src="preview || ''" alt="Preview" class="rounded-md aspect-[4/3]" />
     </div>
   </div>
 </template>

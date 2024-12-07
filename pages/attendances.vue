@@ -13,6 +13,12 @@ interface Attendance {
   reason: string
 }
 
+const config = useRuntimeConfig()
+const schoolNetworkIPv4 = config.public.schoolNetworkIPv4
+const schoolNetworkSubnetMask = config.public.schoolNetworkSubnetMask
+
+const isOpen = ref<boolean>(false)
+
 const attendanceSchema = {
   id: {
     type: 'number',
@@ -97,10 +103,6 @@ const filters: TableFilter[] = [
   }
 ]
 
-const config = useRuntimeConfig()
-const schoolNetworkIPv4 = config.public.schoolNetworkIPv4
-const schoolNetworkSubnetMask = config.public.schoolNetworkSubnetMask
-
 const handleAttendance = async () => {
   try {
     const response = await fetch(`/api/network-info`)
@@ -119,6 +121,7 @@ const handleAttendance = async () => {
             console.log(address, netmask, cidr)
             console.log(schoolNetworkIPv4, schoolNetworkSubnetMask)
             console.log('Attendance marked')
+            isOpen.value = true
 
             return
           }
@@ -131,11 +134,18 @@ const handleAttendance = async () => {
     console.error(error)
   }
 }
+
+const handleInteractOutside = (event: Event) => {
+  const target = event.target as HTMLElement
+  if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
+}
+
+const handleCloseDialog = () => {
+  isOpen.value = false
+}
 </script>
 
 <template>
-  <!--  <AttendanceCamera />-->
-
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Attendances</h2>
@@ -152,4 +162,10 @@ const handleAttendance = async () => {
       :reload-data="reloadData"
     />
   </div>
+
+  <Dialog :open="isOpen" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <AttendanceCamera />
+    </DialogContent>
+  </Dialog>
 </template>

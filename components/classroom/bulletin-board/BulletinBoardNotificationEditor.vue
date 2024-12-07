@@ -76,7 +76,8 @@ const closeAll = () => {
         >
           <Avatar>
             <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
-            <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
+            <AvatarFallback>{{ $authStore.user.name.split(' ').map((name: string) => name[0]).join('') }}
+            </AvatarFallback>
           </Avatar>
 
           <CardDescription>

@@ -90,7 +90,7 @@ const columns = createColumns(
                 }),
                 h(AvatarFallback, {}, {
                   default: () => [
-                    h('span', {}, row.getValue('name')[0])
+                    h('span', {}, row.getValue('name').split(' ').map((name: string) => name[0]).join(''))
                   ]
                 })
               ]

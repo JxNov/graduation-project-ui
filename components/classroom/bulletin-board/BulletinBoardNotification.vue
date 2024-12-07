@@ -38,7 +38,7 @@ const countDateDays = (date: string) => {
       <div class="flex flex-row items-start gap-4">
         <Avatar>
           <AvatarImage :src="article.teacherImage || ''" :alt="article.teacherName" />
-          <AvatarFallback>{{ article.teacherName[0] }}</AvatarFallback>
+          <AvatarFallback>{{ article.teacherName.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
         </Avatar>
 
         <div>

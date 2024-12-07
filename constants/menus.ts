@@ -110,6 +110,12 @@ export const navMenu: NavMenuItems = [
     permissions: []
   },
   {
+    title: 'schedules',
+    icon: 'carbon:calendar',
+    link: '/admin/schedules',
+    permissions: []
+  },
+  {
     title: 'roles',
     icon: 'eos-icons:role-binding-outlined',
     link: '/admin/roles',
@@ -137,6 +143,24 @@ export const navMenu: NavMenuItems = [
     title: 'attendances',
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/attendances',
+    permissions: []
+  },
+  {
+    title: 'grades',
+    icon: 'flowbite:clipboard-check-outline',
+    link: '/grades',
+    permissions: []
+  },
+  {
+    title: 'chat',
+    icon: 'token:chat',
+    link: '/chat',
+    permissions: []
+  },
+  {
+    title: 'gemini',
+    icon: 'mdi:robot-happy-outline',
+    link: '/gemini',
     permissions: []
   }
 ]

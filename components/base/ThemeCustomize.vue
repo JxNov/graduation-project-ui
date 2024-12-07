@@ -68,18 +68,20 @@ const colorMode = useColorMode()
   <div class="grid gap-6">
     <div class="grid space-y-1">
       <h1 class="text-md text-foreground font-semibold">
-        Customize
+        {{ $t('auth.customize.title') }}
       </h1>
       <p class="text-xs text-muted-foreground">
-        Pick a style and color for your components.
+        {{ $t('auth.customize.subtitle') }}
       </p>
     </div>
     <div class="space-y-1.5">
-      <Label>Color</Label>
+      <Label>
+        {{ $t('auth.customize.color.title') }}
+      </Label>
       <div class="grid grid-cols-3 gap-2">
         <template v-for="color in allColors" :key="color">
           <Button
-            class="justify-start gap-2"
+            class="justify-start flex-col md:flex-row h-full gap-2"
             variant="outline"
             :class="{ 'border-primary border-2': theme === color }"
             @click="setTheme(color)"
@@ -88,13 +90,17 @@ const colorMode = useColorMode()
                   :style="{ backgroundColor: backgroundColor(color) }">
               <Icon v-if="theme === color" name="i-radix-icons-check" size="16" class="text-white" />
             </span>
-            <span class="text-xs capitalize">{{ color }}</span>
+            <span class="text-xs capitalize">
+              {{ $t(`auth.customize.color.${color}`) }}
+            </span>
           </Button>
         </template>
       </div>
     </div>
     <div class="space-y-1.5">
-      <Label>Radius</Label>
+      <Label>
+        {{ $t('auth.customize.radius') }}
+      </Label>
       <div class="grid grid-cols-5 gap-2">
         <template v-for="r in RADII" :key="r">
           <Button
@@ -109,7 +115,9 @@ const colorMode = useColorMode()
       </div>
     </div>
     <div class="space-y-1.5">
-      <Label>Theme</Label>
+      <Label>
+        {{ $t('auth.theme.title') }}
+      </Label>
       <div class="grid grid-cols-3 gap-2">
         <Button
           class="justify-center gap-2"
@@ -118,7 +126,9 @@ const colorMode = useColorMode()
           @click="colorMode.preference = 'light'"
         >
           <Icon name="i-ph-sun-dim-duotone" size="16" />
-          <span class="text-xs capitalize">Light</span>
+          <span class="text-xs capitalize">
+            {{ $t('auth.theme.light') }}
+          </span>
         </Button>
         <Button
           class="justify-center gap-2"
@@ -127,7 +137,9 @@ const colorMode = useColorMode()
           @click="colorMode.preference = 'dark'"
         >
           <Icon name="i-ph-moon-stars-duotone" size="16" />
-          <span class="text-xs capitalize">Dark</span>
+          <span class="text-xs capitalize">
+            {{ $t('auth.theme.dark') }}
+          </span>
         </Button>
         <Button
           class="justify-center gap-2"
@@ -136,7 +148,9 @@ const colorMode = useColorMode()
           @click="colorMode.preference = 'system'"
         >
           <Icon name="i-lucide-monitor" size="16" />
-          <span class="text-xs capitalize">System</span>
+          <span class="text-xs capitalize">
+            {{ $t('auth.theme.system') }}
+          </span>
         </Button>
       </div>
     </div>

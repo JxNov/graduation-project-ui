@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { AttendanceDetail } from '~/components/attendance'
-
-const title = 'Điểm danh lớp học'
-const description = 'Điểm danh lớp học'
+const title = 'Chi tiết lớp học'
+const description = 'Chi tiết lớp học'
 
 useSeoMeta({
   title,
@@ -16,5 +14,5 @@ useSeoMeta({
 </script>
 
 <template>
-  <AttendanceDetail />
+  <ClassDetail />
 </template>

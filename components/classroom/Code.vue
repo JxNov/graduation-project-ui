@@ -26,7 +26,7 @@ const copyToClipboard = (text: string) => {
 
     <CardContent class="flex items-center">
       <TooltipProvider>
-        <Tooltip>
+        <Tooltip :delay-duration="0">
           <TooltipTrigger>
             <p
               class="text-lg text-gray-800 dark:text-white font-bold transition-colors duration-300 cursor-pointer hover:text-primary"

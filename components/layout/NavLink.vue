@@ -18,8 +18,14 @@ const hasPermission = (permissions: string[] | undefined): boolean => {
 }
 
 const checkActive = (link: string): boolean => {
+  if (link === '/admin') {
+    return route.path === link
+  }
+
   if (link !== '/classrooms') {
-    return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+    // return new RegExp(`^${link}(/\\d+)?$`).test(route.path)
+
+    return new RegExp(`^${link}(/[^/]+)?$`).test(route.path)
   }
 
   return new RegExp(`^${link}(/.*)?$`).test(route.path)
@@ -30,7 +36,7 @@ const isLargeScreen = useMediaQuery('(min-width: 1024px)')
 
 <template>
   <TooltipProvider>
-    <Tooltip>
+    <Tooltip :delay-duration="0">
       <TooltipTrigger as-child>
         <NuxtLink :to="item.link" v-if="hasPermission(item.permissions)">
           <Button

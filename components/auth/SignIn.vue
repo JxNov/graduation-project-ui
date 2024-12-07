@@ -64,10 +64,10 @@ const onSubmit = handleSubmit(async (values) => {
         {{ $t('auth.login.title') }}
       </Button>
 
-      <Button type="button" variant="outline" class="w-full flex items-center justify-center gap-2">
-        <Icon name="devicon:google" size="18" />
-        <span>{{ $t('auth.login.google') }}</span>
-      </Button>
+      <!--      <Button type="button" variant="outline" class="w-full flex items-center justify-center gap-2">-->
+      <!--        <Icon name="devicon:google" size="18" />-->
+      <!--        <span>{{ $t('auth.login.google') }}</span>-->
+      <!--      </Button>-->
     </form>
   </ConfigProvider>
 </template>

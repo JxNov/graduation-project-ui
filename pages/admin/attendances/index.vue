@@ -1,53 +1,26 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table'
 import { createColumns } from '~/composables/columns'
-import { useThrottle } from '~/composables/useThrottle'
 import { Button } from '@/components/ui/button'
+import { attendanceSchema } from '~/schema'
+import type { Attendance } from '~/schema'
 
 const router = useRouter()
+const { $attendanceStore, $bus } = useNuxtApp()
 
-interface Attendance {
-  id: number
-  name: string
-  teacher: string
-  students: number
-  attendance: number
-}
-
-const attendanceSchema = {
-  id: {
-    type: 'number',
-    title: 'ID',
-    hidden: true
-  },
-  name: {
-    type: 'string',
-    title: 'Class',
-    hidden: false
-  },
-  teacher: {
-    type: 'string',
-    title: 'Teacher',
-    hidden: false
-  },
-  students: {
-    type: 'number',
-    title: 'Students',
-    hidden: false
-  },
-  attendance: {
-    type: 'number',
-    title: 'Attendances',
-    hidden: false
+onMounted(async () => {
+  if (!$attendanceStore.attendances.length) {
+    await $attendanceStore.fetchAttendances()
   }
-}
+})
 
 const columns = createColumns(
   [
-    ['name', 'Class'],
-    ['teacher', 'Teacher'],
-    ['students', 'Students'],
-    ['attendance', 'Attendances']
+    ['date', 'Date'],
+    ['className', 'Class'],
+    ['teacherName', 'Teacher'],
+    ['totalStudents', 'Students'],
+    ['attendedStudents', 'Attendances']
   ],
   attendanceSchema,
   [
@@ -59,9 +32,17 @@ const columns = createColumns(
           variant: 'outline',
           size: 'sm',
           onClick: () => {
-            router.push(`/admin/attendances/${row.id}`)
+            router.push(`/admin/attendances/${row.original.classSlug}`)
           }
-        }, { default: () => 'Show' })
+        }, {
+          default: () => {
+            if (row.original.id) {
+              return 'Update Attendance'
+            } else {
+              return 'Attendance'
+            }
+          }
+        })
       ),
       options: {
         enableSorting: false,
@@ -72,26 +53,6 @@ const columns = createColumns(
   '',
   ''
 ) as ColumnDef<Attendance>[]
-
-const reloadData = useThrottle(() => {
-}, 60000, 'attendance')
-
-const attendances = ref<Attendance[]>([
-  {
-    id: 1,
-    name: 'Class 1',
-    teacher: 'Teacher 1',
-    students: 10,
-    attendance: 8
-  },
-  {
-    id: 2,
-    name: 'Class 2',
-    teacher: 'Teacher 2',
-    students: 15,
-    attendance: 12
-  }
-])
 </script>
 
 <template>
@@ -101,10 +62,9 @@ const attendances = ref<Attendance[]>([
     </div>
 
     <LayoutTable
-      :data="attendances"
+      :data="$attendanceStore.attendances"
       :columns="columns"
       :filters="[]"
-      :reload-data="reloadData"
     />
   </div>
 </template>

@@ -10,11 +10,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '~/components/ui/dropdown-menu'
-import { ConfigProvider } from 'radix-vue'
 
 interface DataTableViewOptionsProps {
   table: Table<any>
-  reloadData?: () => void
 }
 
 const { $bus } = useNuxtApp()
@@ -46,48 +44,38 @@ const handleDelete = () => {
       class="ml-auto hidden h-8 lg:flex"
       v-if="selectedRows > 0"
       @click="handleDelete"
+      :id="useIdFunction"
     >
       <TrashIcon class="mr-2 h-4 w-4" />
       Delete ({{ selectedRows }})
     </Button>
 
-    <!--    <Button-->
-    <!--      variant="outline"-->
-    <!--      size="sm"-->
-    <!--      class="ml-auto hidden h-8 lg:flex"-->
-    <!--      @click="props.reloadData"-->
-    <!--    >-->
-    <!--      <ReloadIcon class="mr-2 h-4 w-4" />-->
-    <!--      Reload data-->
-    <!--    </Button>-->
+    <DropdownMenu>
+      <DropdownMenuTrigger as-child>
+        <Button
+          variant="outline"
+          size="sm"
+          class="ml-auto hidden h-8 lg:flex"
+          :id="useIdFunction"
+        >
+          <MixerHorizontalIcon class="mr-2 h-4 w-4" />
+          View
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuSeparator />
 
-    <ConfigProvider :use-id="useIdFunction">
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <Button
-            variant="outline"
-            size="sm"
-            class="ml-auto hidden h-8 lg:flex"
-          >
-            <MixerHorizontalIcon class="mr-2 h-4 w-4" />
-            View
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-
-          <DropdownMenuCheckboxItem
-            v-for="column in columns"
-            :key="column.id"
-            class="capitalize"
-            :checked="column.getIsVisible()"
-            @update:checked="(value) => column.toggleVisibility(!!value)"
-          >
-            {{ column.id }}
-          </DropdownMenuCheckboxItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </ConfigProvider>
+        <DropdownMenuCheckboxItem
+          v-for="column in columns"
+          :key="column.id"
+          class="capitalize"
+          :checked="column.getIsVisible()"
+          @update:checked="(value) => column.toggleVisibility(!!value)"
+        >
+          {{ column.id }}
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   </div>
 </template>

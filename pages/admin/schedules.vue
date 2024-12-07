@@ -3,9 +3,5 @@
 </script>
 
 <template>
-
+  <ScheduleLayout />
 </template>
-
-<style scoped>
-
-</style>

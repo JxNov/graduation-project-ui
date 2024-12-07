@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { ConfigProvider } from 'radix-vue'
-import BulletinBoard from '~/components/classroom/bulletin-board/BulletinBoard.vue'
-import Homework from '~/components/classroom/homework/Homework.vue'
-import People from '~/components/classroom/people/People.vue'
 import type { Article } from '~/schema'
 
 const { $classroomStore, $bus } = useNuxtApp()
-const useIdFunction = () => useId()
 const route = useRoute()
 const echo = useEcho()
 
@@ -85,10 +80,37 @@ onBeforeUnmount(() => {
 
   stopAllListeners()
 })
+
+const data = [
+  {
+    title: 'Material 1',
+    slug: 'material-1',
+    subject: 'Math',
+    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+  },
+  {
+    title: 'Material 2',
+    slug: 'material-2',
+    subject: 'Physics',
+    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+  },
+  {
+    title: 'Material 3',
+    slug: 'material-3',
+    subject: 'Chemistry',
+    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+  },
+  {
+    title: 'Material 4',
+    slug: 'material-4',
+    subject: 'Math',
+    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+  }
+]
 </script>
 
 <template>
-  <ConfigProvider :use-id="useIdFunction">
+  <ClientOnly>
     <Tabs default-value="bulletin-board">
       <div class="flex justify-between items-center">
         <TabsList>
@@ -104,8 +126,8 @@ onBeforeUnmount(() => {
             People
           </TabsTrigger>
 
-          <TabsTrigger value="grades">
-            Grades
+          <TabsTrigger value="materials">
+            Materials
           </TabsTrigger>
         </TabsList>
 
@@ -113,7 +135,7 @@ onBeforeUnmount(() => {
       </div>
 
       <TabsContent value="bulletin-board" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <BulletinBoard
+        <ClassroomBulletinBoard
           :articles-classroom="articlesClassroom"
           :class-name="className"
           :class-slug="classSlug"
@@ -122,16 +144,16 @@ onBeforeUnmount(() => {
       </TabsContent>
 
       <TabsContent value="homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <Homework />
+        <ClassroomHomework />
       </TabsContent>
 
       <TabsContent value="people" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <People :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
+        <ClassroomPeople :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
       </TabsContent>
 
-      <TabsContent value="grades" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        4
+      <TabsContent value="materials" class="focus-visible:ring-0 focus-visible:ring-offset-0">
+        <ClassroomMaterials :data="data" />
       </TabsContent>
     </Tabs>
-  </ConfigProvider>
+  </ClientOnly>
 </template>

@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import {Activity, ArrowUpRight, CreditCard, DollarSign, Users} from 'lucide-vue-next'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '~/components/ui/table'
-import {Badge} from '~/components/ui/badge'
+import { Activity, ArrowUpRight, CreditCard, DollarSign, Users } from 'lucide-vue-next'
+
+const data = [
+  { name: 'Jan', total: Math.floor(Math.random() * 2000) + 500, predicted: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Feb', total: Math.floor(Math.random() * 2000) + 500, predicted: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Mar', total: Math.floor(Math.random() * 2000) + 500, predicted: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Apr', total: Math.floor(Math.random() * 2000) + 500, predicted: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'May', total: Math.floor(Math.random() * 2000) + 500, predicted: Math.floor(Math.random() * 2000) + 500 },
+  { name: 'Jun', total: Math.floor(Math.random() * 2000) + 500, predicted: Math.floor(Math.random() * 2000) + 500 }
+]
+
+const valueFormatter = (tick: number | Date) => typeof tick === 'number' ? `$ ${new Intl.NumberFormat('us').format(tick).toString()}` : ''
+
 </script>
 
 <template>
@@ -18,7 +21,7 @@ import {Badge} from '~/components/ui/badge'
         Dashboard
       </h2>
       <div class="flex items-center space-x-2">
-        <BaseDateRangePicker/>
+        <BaseDateRangePicker />
         <Button>Download</Button>
       </div>
     </div>
@@ -29,7 +32,7 @@ import {Badge} from '~/components/ui/badge'
             <CardTitle class="text-sm font-medium">
               Total Revenue
             </CardTitle>
-            <DollarSign class="h-4 w-4 text-muted-foreground"/>
+            <DollarSign class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
@@ -45,7 +48,7 @@ import {Badge} from '~/components/ui/badge'
             <CardTitle class="text-sm font-medium">
               Subscriptions
             </CardTitle>
-            <Users class="h-4 w-4 text-muted-foreground"/>
+            <Users class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
@@ -61,7 +64,7 @@ import {Badge} from '~/components/ui/badge'
             <CardTitle class="text-sm font-medium">
               Sales
             </CardTitle>
-            <CreditCard class="h-4 w-4 text-muted-foreground"/>
+            <CreditCard class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
@@ -77,7 +80,7 @@ import {Badge} from '~/components/ui/badge'
             <CardTitle class="text-sm font-medium">
               Active Now
             </CardTitle>
-            <Activity class="h-4 w-4 text-muted-foreground"/>
+            <Activity class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
@@ -101,152 +104,21 @@ import {Badge} from '~/components/ui/badge'
             <Button as-child size="sm" class="ml-auto gap-1">
               <a href="#">
                 View All
-                <ArrowUpRight class="h-4 w-4"/>
+                <ArrowUpRight class="h-4 w-4" />
               </a>
             </Button>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Customer</TableHead>
-                  <TableHead class="hidden xl:table-column">
-                    Type
-                  </TableHead>
-                  <TableHead class="hidden xl:table-column">
-                    Status
-                  </TableHead>
-                  <TableHead class="hidden xl:table-column">
-                    Date
-                  </TableHead>
-                  <TableHead class="text-right">
-                    Amount
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Liam Johnson
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      liam@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Sale
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-23
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $250.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Olivia Smith
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      olivia@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Refund
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Declined
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-24
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $150.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Noah Williams
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      noah@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Subscription
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-25
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $350.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Emma Brown
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      emma@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Sale
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-26
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $450.00
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <div class="font-medium">
-                      Liam Johnson
-                    </div>
-                    <div class="hidden text-sm text-muted-foreground md:inline">
-                      liam@example.com
-                    </div>
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    Sale
-                  </TableCell>
-                  <TableCell class="hidden xl:table-column">
-                    <Badge class="text-xs" variant="outline">
-                      Approved
-                    </Badge>
-                  </TableCell>
-                  <TableCell class="hidden lg:hidden md:table-cell xl:table-column">
-                    2023-06-27
-                  </TableCell>
-                  <TableCell class="text-right">
-                    $550.00
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <BarChart
+              :data="data"
+              index="name"
+              :categories="['total', 'predicted']"
+              :y-formatter="(tick, i) => {
+                return typeof tick === 'number'
+                  ? `$ ${new Intl.NumberFormat('us').format(tick).toString()}`
+                  : ''
+              }"
+            />
           </CardContent>
         </Card>
         <Card>
@@ -254,84 +126,29 @@ import {Badge} from '~/components/ui/badge'
             <CardTitle>Recent Sales</CardTitle>
           </CardHeader>
           <CardContent class="grid gap-8">
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>OM</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Olivia Martin
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  olivia.martin@email.com
-                </p>
+            <DonutChart
+              index="name"
+              :category="'total'"
+              :data="data"
+              :value-formatter="valueFormatter"
+            />
+
+            <div class="grid gap-4">
+              <div class="flex flex-row items-center justify-between">
+                <div class="text-sm font-medium">
+                  Total Sales
+                </div>
+                <div class="text-sm font-medium">
+                  {{ valueFormatter(data.reduce((acc, curr) => acc + curr.total, 0)) }}
+                </div>
               </div>
-              <div class="ml-auto font-medium">
-                +$1,999.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>JL</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Jackson Lee
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  jackson.lee@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$39.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>IN</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Isabella Nguyen
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  isabella.nguyen@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$299.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>WK</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  William Kim
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  will@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$99.00
-              </div>
-            </div>
-            <div class="flex items-center gap-4">
-              <Avatar class="hidden h-9 w-9 sm:flex">
-                <AvatarFallback>SD</AvatarFallback>
-              </Avatar>
-              <div class="grid gap-1">
-                <p class="text-sm font-medium leading-none">
-                  Sofia Davis
-                </p>
-                <p class="text-sm text-muted-foreground">
-                  sofia.davis@email.com
-                </p>
-              </div>
-              <div class="ml-auto font-medium">
-                +$39.00
+              <div class="flex flex-row items-center justify-between">
+                <div class="text-sm font-medium">
+                  Predicted Sales
+                </div>
+                <div class="text-sm font-medium">
+                  {{ valueFormatter(data.reduce((acc, curr) => acc + curr.predicted, 0)) }}
+                </div>
               </div>
             </div>
           </CardContent>

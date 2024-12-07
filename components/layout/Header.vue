@@ -111,11 +111,12 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent class="w-56" align="end">
+          <DropdownMenuContent class="min-w-56" align="end">
             <DropdownMenuLabel class="flex items-center gap-2 font-normal">
               <Avatar>
                 <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
-                <AvatarFallback>{{ $authStore.user.name[0] }}</AvatarFallback>
+                <AvatarFallback>{{ $authStore.user.name.split(' ').map((name: string) => name[0]).join('') }}
+                </AvatarFallback>
               </Avatar>
 
               <div class="flex flex-col space-y-1">
@@ -131,13 +132,11 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                Profile
-              </DropdownMenuItem>
-
-              <DropdownMenuItem>
-                Settings
-              </DropdownMenuItem>
+              <NuxtLink to="/profile">
+                <DropdownMenuItem class="cursor-pointer">
+                  {{ $t('auth.profile.title') }}
+                </DropdownMenuItem>
+              </NuxtLink>
 
               <DarkToggle />
 
