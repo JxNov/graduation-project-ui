@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import HomeworkItem from './HomeworkItem.vue'
 import HomeWorkCreate from './HomeworkCreate.vue'
+
+const { $homeworkStore } = useNuxtApp()
+const route = useRoute()
+
+onMounted(async () => {
+  if (!$homeworkStore.homeworks.length) {
+    await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
+  }
+})
 </script>
 
 <template>
@@ -9,6 +18,10 @@ import HomeWorkCreate from './HomeworkCreate.vue'
       <HomeWorkCreate />
     </div>
 
-    <HomeworkItem />
+    <HomeworkItem
+      v-for="homework in $homeworkStore.homeworks"
+      :key="homework.slug"
+      :homework="homework"
+    />
   </div>
 </template>

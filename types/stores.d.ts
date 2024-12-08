@@ -15,6 +15,7 @@ import { useAssignmentStore } from '~/stores/assignment'
 import { useArticleStore } from '~/stores/article'
 import { useChatStore } from '~/stores/chat'
 import { useGeminiStore } from '~/stores/gemini'
+import { useHomeworkStore } from '~/stores/homework'
 
 declare module '#app' {
   interface NuxtApp {
@@ -35,6 +36,7 @@ declare module '#app' {
     $articleStore: ReturnType<typeof useArticleStore>;
     $chatStore: ReturnType<typeof useChatStore>;
     $geminiStore: ReturnType<typeof useGeminiStore>;
+    $homeworkStore: ReturnType<typeof useHomeworkStore>;
   }
 }
 
@@ -57,5 +59,6 @@ declare module '@vue/runtime-core' {
     $articleStore: ReturnType<typeof useArticleStore>;
     $chatStore: ReturnType<typeof useChatStore>;
     $geminiStore: ReturnType<typeof useGeminiStore>;
+    $homeworkStore: ReturnType<typeof useHomeworkStore>;
   }
 }

@@ -54,3 +54,6 @@ export type { ChatPreview, Chat } from './chat'
 
 export { geminiSchema } from './gemini'
 export type { Gemini } from './gemini'
+
+export { homeworkSchema } from './homework'
+export type { Homework } from './homework'
