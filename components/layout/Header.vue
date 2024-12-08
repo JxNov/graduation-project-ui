@@ -9,6 +9,8 @@ import DarkToggle from '~/components/base/DarkToggle.vue'
 import LanguageSwitcher from '~/components/base/LanguageSwitcher.vue'
 import ThemePopover from '~/components/base/ThemePopover.vue'
 import ThemeDrawer from '~/components/base/ThemeDrawer.vue'
+import { getDownloadURL, ref as firebaseRef } from 'firebase/storage'
+import { storage } from '~/config/firebase.config'
 
 defineProps<{
   classroom?: boolean
@@ -30,6 +32,12 @@ function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
 }
 
 const isMediumScreen = useMediaQuery('(min-width: 768px)')
+
+
+onMounted(async () => {
+  const storageRef = firebaseRef(storage, `image-user/image-user/ARfkgNrMdnuvDTgQy5jv_665aa0a6439b3_cvtpl.jpg`)
+  $authStore.user.image = await getDownloadURL(storageRef)
+})
 </script>
 
 <template>

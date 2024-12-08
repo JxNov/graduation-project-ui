@@ -104,6 +104,12 @@ export const navMenu: NavMenuItems = [
     permissions: []
   },
   {
+    title: 'grades',
+    icon: 'flowbite:clipboard-check-outline',
+    link: '/grades',
+    permissions: []
+  },
+  {
     title: 'attendances',
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/admin/attendances',
@@ -143,12 +149,6 @@ export const navMenu: NavMenuItems = [
     title: 'attendances',
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/attendances',
-    permissions: []
-  },
-  {
-    title: 'grades',
-    icon: 'flowbite:clipboard-check-outline',
-    link: '/grades',
     permissions: []
   },
   {
