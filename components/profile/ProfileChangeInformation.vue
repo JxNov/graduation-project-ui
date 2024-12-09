@@ -1,6 +1,8 @@
 <script setup lang='ts'>
 import ProfileChangeImage from '~/components/profile/ProfileChangeImage.vue'
 
+const { $authStore, $studentStore } = useNuxtApp()
+
 const profile = {
   name: 'John Doe',
   image: ['https://randomuser.me/api/portraits', 'https://randomuser.me/api/portraits', 'https://randomuser.me/api/portraits', 'https://randomuser.me/api/portraits'],
@@ -14,21 +16,24 @@ const profile = {
   generation: '2023'
 }
 
-const capturedImages = ref<{ id: number; image: string }[]>([])
-const images = computed(() => capturedImages.value.map((image) => image.image))
+const capturedImages = ref<File[]>([])
 
-const onSubmit = () => {
+const onSubmit = async () => {
+  try {
+    await $studentStore.updateProfileInformation($authStore.user.username, {
+      images: capturedImages.value,
+      password: 'password'
+    })
+  } catch (error) {
+    console.error('Error updating information: ', error)
+  }
 }
 </script>
 
 <template>
   <form class="flex flex-col gap-4" @submit.prevent="onSubmit">
     <div class="grid gap-4">
-      <ProfileChangeImage @update:model-value="capturedImages = $event" />
-
-      <Button class="w-full" type="submit">
-        Update Information
-      </Button>
+      <ProfileChangeImage v-if="!$authStore.user.image" @update:model-value="capturedImages = $event" />
 
       <Card>
         <CardHeader class="flex flex-row profiles-start gap-4">
@@ -73,6 +78,12 @@ const onSubmit = () => {
           </p>
         </CardContent>
       </Card>
+    </div>
+
+    <div class="flex justify-end">
+      <Button class="" type="submit">
+        Update Information
+      </Button>
     </div>
   </form>
 </template>

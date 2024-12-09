@@ -7,7 +7,8 @@ const images = ref<VNode[]>([])
 const capturedImages = reactive<{ id: number; image: string }[]>([])
 
 const emits = defineEmits<{
-  (e: 'update:modelValue', capturedImages: { id: number; image: string }[]): void
+  // (e: 'update:modelValue', capturedImages: { id: number; image: string }[]): void
+  (e: 'update:modelValue', imagesInput: File[]): void
 }>()
 
 const openCamera = (buttonId: string) => {
@@ -117,7 +118,22 @@ function captureImage(video: HTMLVideoElement) {
 }
 
 watch(capturedImages, (newValue) => {
-  emits('update:modelValue', newValue)
+  // emits('update:modelValue', newValue)
+  const imagesInput = newValue.map((image) => {
+    const byteString = atob(image.image.split(',')[1])
+    const mimeString = image.image.split(',')[0].split(':')[1].split(';')[0]
+    const ab = new ArrayBuffer(byteString.length)
+    const ia = new Uint8Array(ab)
+
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i)
+    }
+
+    const blob = new Blob([ab], { type: mimeString })
+    return new File([blob], `image_${image.id}.png`, { type: mimeString })
+  })
+
+  emits('update:modelValue', imagesInput)
 })
 </script>
 

@@ -1,5 +1,10 @@
 import type { Student } from '~/schema'
-import { fetchStudentsService, importStudentsService, exportSampleStudentsService } from '~/services/student'
+import {
+  fetchStudentsService,
+  importStudentsService,
+  exportSampleStudentsService,
+  updateProfileInformationService
+} from '~/services/student'
 import { toast } from 'vue-sonner'
 
 export const useStudentStore = defineStore('student', () => {
@@ -27,6 +32,25 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
+  const updateProfileInformation = async (username: string, data: {
+    images: File[],
+    password: string,
+  }) => {
+    try {
+      const response = await updateProfileInformationService(username, data)
+
+      if (!response) {
+        throw new Error('Change student info failed!!!')
+      }
+
+      toast.success('Change student info successfully!!!')
+
+      return response
+    } catch (error) {
+      toast.error('Change student info failed!!!')
+    }
+  }
+
   const importStudents = async (data: { file: File, generationSlug: string, academicYearSlug: string }) => {
     try {
       const response = await importStudentsService(data)
@@ -41,18 +65,6 @@ export const useStudentStore = defineStore('student', () => {
     } catch (error) {
       toast.error('Students import failed!!!')
     }
-  }
-
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchStudents()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
   }
 
   const replaceStudents = (response: any) => {
@@ -74,8 +86,8 @@ export const useStudentStore = defineStore('student', () => {
     students,
     exportSampleStudents,
     fetchStudents,
+    updateProfileInformation,
     importStudents,
-    reloadData,
     clearStudents
   }
 })

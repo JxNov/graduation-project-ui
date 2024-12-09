@@ -124,10 +124,6 @@ const filters: TableFilter[] = [
   }
 ]
 
-const reloadData = useThrottle(() => {
-  $studentStore.reloadData()
-}, 60000, 'student')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
@@ -195,7 +191,6 @@ const downloadSampleStudents = async () => {
       :data="$studentStore.students"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 
