@@ -11,97 +11,31 @@ export const navMenu: NavMenuItems = [
     title: 'dashboard',
     icon: 'hugeicons:dashboard-square-01',
     link: '/admin',
-    permissions: []
+    permissions: ['admin.*']
   },
-  // {
-  //   title: 'general',
-  //   icon: 'gravity-ui:graduation-cap',
-  //   children: [
-  //     {
-  //       title: 'generations',
-  //       icon: 'fluent:people-team-16-regular',
-  //       link: '/admin/generations',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'academicYears',
-  //       icon: 'material-symbols:calendar-clock-outline-rounded',
-  //       link: '/admin/academic-years',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'semesters',
-  //       icon: 'carbon:calendar',
-  //       link: '/admin/semesters',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'classes',
-  //       icon: 'eos-icons:product-classes-outlined',
-  //       link: '/admin/classes',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'attendances',
-  //       icon: 'material-symbols:person-raised-hand-outline',
-  //       link: '/admin/attendances',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'roles',
-  //       icon: 'eos-icons:role-binding-outlined',
-  //       link: '/admin/roles',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'users',
-  //       icon: 'fluent:people-20-regular',
-  //       link: '/admin/users',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'students',
-  //       icon: 'ph:student',
-  //       link: '/admin/students',
-  //       permissions: []
-  //     },
-  //     {
-  //       title: 'teachers',
-  //       icon: 'hugeicons:teaching',
-  //       link: '/admin/teachers',
-  //       permissions: []
-  //     }
-  //     // {
-  //     //   title: 'subjects',
-  //     //   icon: 'carbon:document-subject',
-  //     //   link: '/admin/subjects',
-  //     //   permissions: []
-  //     // },
-  //   ]
-  // },
   {
     title: 'generations',
     icon: 'fluent:people-team-16-regular',
     link: '/admin/generations',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'academicYears',
     icon: 'material-symbols:calendar-clock-outline-rounded',
     link: '/admin/academic-years',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'semesters',
     icon: 'carbon:calendar',
     link: '/admin/semesters',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'classes',
     icon: 'eos-icons:product-classes-outlined',
     link: '/admin/classes',
-    permissions: []
+    permissions: ['admin.*', 'teacher.*']
   },
   {
     title: 'grades',
@@ -113,43 +47,43 @@ export const navMenu: NavMenuItems = [
     title: 'attendances',
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/admin/attendances',
-    permissions: []
+    permissions: ['admin.*', 'teacher.*']
   },
   {
     title: 'schedules',
     icon: 'carbon:calendar',
     link: '/admin/schedules',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'roles',
     icon: 'eos-icons:role-binding-outlined',
     link: '/admin/roles',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'users',
     icon: 'fluent:people-20-regular',
     link: '/admin/users',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'teachers',
     icon: 'hugeicons:teaching',
     link: '/admin/teachers',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'students',
     icon: 'ph:student',
     link: '/admin/students',
-    permissions: []
+    permissions: ['admin.*']
   },
   {
     title: 'attendances',
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/attendances',
-    permissions: []
+    permissions: ['student.*']
   },
   {
     title: 'chat',
@@ -170,6 +104,6 @@ export const navMenuBottom: NavMenuItems = [
     title: 'classrooms.index',
     icon: 'mdi:google-classroom',
     link: '/classrooms',
-    permissions: []
+    permissions: ['teacher.*', 'student.*']
   }
 ]
