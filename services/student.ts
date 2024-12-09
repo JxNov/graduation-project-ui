@@ -78,7 +78,6 @@ export const updateProfileInformationService = async (username: string, data: {
       throw new Error('Invalid response')
     }
 
-    console.log(response.data)
     return response.data
   } catch (error) {
     throw error

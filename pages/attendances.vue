@@ -118,9 +118,9 @@ const handleAttendance = async () => {
           const { address, netmask, cidr } = network
 
           if (address === schoolNetworkIPv4 && netmask === schoolNetworkSubnetMask) {
-            console.log(address, netmask, cidr)
-            console.log(schoolNetworkIPv4, schoolNetworkSubnetMask)
-            console.log('Attendance marked')
+            // console.log(address, netmask, cidr)
+            // console.log(schoolNetworkIPv4, schoolNetworkSubnetMask)
+            // console.log('Attendance marked')
             isOpen.value = true
 
             return
@@ -164,7 +164,7 @@ const handleCloseDialog = () => {
   </div>
 
   <Dialog :open="isOpen" @update:open="handleCloseDialog">
-    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+    <DialogContent class="sm:max-w-[525px]" @interact-outside="handleInteractOutside">
       <AttendanceCamera />
     </DialogContent>
   </Dialog>

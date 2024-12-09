@@ -9,7 +9,7 @@ import DarkToggle from '~/components/base/DarkToggle.vue'
 import LanguageSwitcher from '~/components/base/LanguageSwitcher.vue'
 import ThemePopover from '~/components/base/ThemePopover.vue'
 import ThemeDrawer from '~/components/base/ThemeDrawer.vue'
-import { getImageFirebase } from '~/utils/getImageFirebase'
+import { getImageFirebase } from '~/utils/imageFirebase'
 
 defineProps<{
   classroom?: boolean
@@ -34,8 +34,8 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
 
 
 onMounted(async () => {
-  if (!$authStore.user.image.startsWith('http')) {
-    $authStore.user.image = await getImageFirebase($authStore.user.username, $authStore.user.image)
+  if (!$authStore.avatar.startsWith('http')) {
+    $authStore.avatar = await getImageFirebase($authStore.user.username, $authStore.user.image)
   }
 })
 </script>
@@ -122,7 +122,7 @@ onMounted(async () => {
           <DropdownMenuContent class="min-w-56" align="end">
             <DropdownMenuLabel class="flex items-center gap-2 font-normal">
               <Avatar>
-                <AvatarImage :src="$authStore.user.image || ''" :alt="$authStore.user.name" />
+                <AvatarImage :src="$authStore.avatar || ''" :alt="$authStore.user.name" />
                 <AvatarFallback>{{ $authStore.user.name.split(' ').map((name: string) => name[0]).join('') }}
                 </AvatarFallback>
               </Avatar>
