@@ -1,4 +1,4 @@
-import type { Attendance, AttendanceDetail } from '~/schema'
+import type { Attendance, AttendanceDetail, AttendanceShow } from '~/schema'
 
 export const fetchAttendancesService = async (): Promise<Attendance[]> => {
   const { $axios } = useNuxtApp()
@@ -73,6 +73,40 @@ export const updateAttendanceService = async (id: number, data: {
       class_slug: data.classSlug,
       students: data.students
     })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const showAttendanceService = async (): Promise<AttendanceShow[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/attendances/show`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateStudentAttendanceService = async (username: string, data: {
+  shifts: string
+}): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/attendances/student/${username}`, data)
 
     if (!response) {
       throw new Error('Invalid response')

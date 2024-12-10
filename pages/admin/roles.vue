@@ -3,9 +3,8 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import type { Role } from '~/schema'
 import { roleSchema } from '~/schema'
 import type { TableFilter } from '~/types/table'
-import { useThrottle } from '~/composables/useThrottle'
 import { createColumns } from '~/composables/columns'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { RoleDialogCreateEdit, RoleDialogDelete } from '~/components/common/dialog/role'
 import { Badge } from '~/components/ui/badge'
@@ -110,17 +109,13 @@ watch(() => $roleStore.roles, (newValue) => {
   }
 })
 
-const reloadData = useThrottle(() => {
-  $roleStore.reloadData()
-}, 60000, 'role')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['users.create'])
 })
 
 const handleCloseDialog = () => {
@@ -145,7 +140,6 @@ const handleCloseDialog = () => {
       :data="$roleStore.roles"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 

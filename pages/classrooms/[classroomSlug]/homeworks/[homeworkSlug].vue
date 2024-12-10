@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import HomeworkInstruct from '~/components/classroom/homework/HomeworkInstruct.vue'
 import HomeworkStudent from '~/components/classroom/homework/HomeworkStudent.vue'
+import { checkPermissions } from '~/utils/checkPermissions'
 
-const { $classroomStore, $homeworkStore } = useNuxtApp()
+const { $classroomStore, $homeworkStore, $authStore } = useNuxtApp()
 const route = useRoute()
 
 const title = 'Chi tiết bài tập'
@@ -23,6 +24,8 @@ const className = ref<string>('')
 const code = ref<string>('')
 const homework = ref<any>(null)
 
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
+
 onMounted(async () => {
   const { className: name, classCode } = await $classroomStore.fetchDetailClassroom(classSlug)
   className.value = name
@@ -38,7 +41,7 @@ onMounted(async () => {
 
 <template>
   <ClientOnly>
-    <Tabs default-value="instruct">
+    <Tabs default-value="instruct" v-if="teacherPermissions">
       <div class="flex justify-between items-center">
         <TabsList>
           <TabsTrigger value="instruct">
@@ -61,5 +64,7 @@ onMounted(async () => {
         <HomeworkStudent />
       </TabsContent>
     </Tabs>
+
+    <HomeworkInstruct :data="homework" v-else />
   </ClientOnly>
 </template>

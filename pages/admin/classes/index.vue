@@ -4,8 +4,7 @@ import type { Class } from '~/schema'
 import { classSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
 import { ClassDialogDistribution, ClassDialogCreateEdit, ClassDialogDelete } from '~/components/common/dialog/class'
-import { useThrottle } from '~/composables/useThrottle'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 import { Button } from '~/components/ui/button'
 
 const { $authStore, $academicYearStore, $classStore, $teacherStore, $blockStore, $bus } = useNuxtApp()
@@ -121,17 +120,13 @@ const columns = createColumns(
   'users.delete'
 ) as ColumnDef<Class>[]
 
-const reloadData = useThrottle(() => {
-  $classStore.reloadData()
-}, 60000, 'class')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['users.create'])
 })
 
 const handleCloseDialog = () => {
@@ -163,7 +158,6 @@ const handleCloseDialog = () => {
       :data="$classStore.classes"
       :columns="columns"
       :filters="[]"
-      :reload-data="reloadData"
     />
   </div>
 

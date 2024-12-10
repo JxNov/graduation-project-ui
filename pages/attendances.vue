@@ -1,56 +1,45 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table'
 import { createColumns } from '~/composables/columns'
-import { useThrottle } from '~/composables/useThrottle'
 import type { TableFilter } from '~/types/table'
 import { Badge } from '~/components/ui/badge'
 import { toast } from 'vue-sonner'
+import { attendanceShowSchema } from '~/schema'
+import type { AttendanceShow } from '~/schema'
+import { extractValue } from '~/utils/extractValue'
 
-interface Attendance {
-  id: number
-  date: string
-  status: string
-  reason: string
-}
-
+const { $attendanceStore, $bus } = useNuxtApp()
 const config = useRuntimeConfig()
+
 const schoolNetworkIPv4 = config.public.schoolNetworkIPv4
 const schoolNetworkSubnetMask = config.public.schoolNetworkSubnetMask
 
 const isOpen = ref<boolean>(false)
 
-const attendanceSchema = {
-  id: {
-    type: 'number',
-    title: 'ID',
-    hidden: true
-  },
-  date: {
-    type: 'string',
-    title: 'Date',
-    hidden: false
-  },
-  status: {
-    type: 'string',
-    title: 'Status',
-    hidden: false
-  },
-  reason: {
-    type: 'string',
-    title: 'Reason',
-    hidden: false
+onMounted(async () => {
+  $bus.on('close-dialog-attendance', (value: boolean) => {
+    isOpen.value = value
+  })
+
+  if (!$attendanceStore.attendanceShow.length) {
+    await $attendanceStore.showAttendance()
   }
-}
+})
+
+onUnmounted(() => {
+  $bus.off('close-dialog-attendance')
+})
 
 const columns = createColumns(
   [
     ['date', 'Date'],
+    ['shifts', 'Shifts'],
     ['reason', 'Reason', '', {
       enableSorting: false,
       enableHiding: false
     }]
   ],
-  attendanceSchema,
+  attendanceShowSchema,
   [
     {
       accessorKey: 'status',
@@ -66,40 +55,21 @@ const columns = createColumns(
   ],
   '',
   ''
-) as ColumnDef<Attendance>[]
+) as ColumnDef<AttendanceShow>[]
 
-const reloadData = useThrottle(() => {
-}, 60000, 'attendance')
-
-const attendances = ref<Attendance[]>([
-  {
-    id: 1,
-    date: '2024-11-09',
-    status: 'Present',
-    reason: ''
-  },
-  {
-    id: 2,
-    date: '2024-11-10',
-    status: 'Absent',
-    reason: 'Sick'
-  },
-  {
-    id: 3,
-    date: '2024-11-11',
-    status: 'Present',
-    reason: ''
-  }
-])
+const valueStatus = extractValue($attendanceStore.attendanceShow, 'status')
+const valueShifts = extractValue($attendanceStore.attendanceShow, 'shifts')
 
 const filters: TableFilter[] = [
   {
+    name: 'shifts',
+    label: 'Shifts',
+    values: valueShifts
+  },
+  {
     name: 'status',
     label: 'Status',
-    values: [
-      { label: 'Present', value: 'Present' },
-      { label: 'Absent', value: 'Absent' }
-    ]
+    values: valueStatus
   }
 ]
 
@@ -118,11 +88,7 @@ const handleAttendance = async () => {
           const { address, netmask, cidr } = network
 
           if (address === schoolNetworkIPv4 && netmask === schoolNetworkSubnetMask) {
-            // console.log(address, netmask, cidr)
-            // console.log(schoolNetworkIPv4, schoolNetworkSubnetMask)
-            // console.log('Attendance marked')
             isOpen.value = true
-
             return
           }
 
@@ -156,10 +122,9 @@ const handleCloseDialog = () => {
     </div>
 
     <LayoutTable
-      :data="attendances"
+      :data="$attendanceStore.attendanceShow"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 

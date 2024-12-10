@@ -2,8 +2,7 @@ import type { Student } from '~/schema'
 import {
   fetchStudentsService,
   importStudentsService,
-  exportSampleStudentsService,
-  updateProfileInformationService
+  exportSampleStudentsService
 } from '~/services/student'
 import { toast } from 'vue-sonner'
 
@@ -29,25 +28,6 @@ export const useStudentStore = defineStore('student', () => {
       return response
     } catch (error) {
       toast.error('Students export failed!!!')
-    }
-  }
-
-  const updateProfileInformation = async (username: string, data: {
-    images: File[],
-    password: string,
-  }) => {
-    try {
-      const response = await updateProfileInformationService(username, data)
-
-      if (!response) {
-        throw new Error('Change student info failed!!!')
-      }
-
-      toast.success('Change student info successfully!!!')
-
-      return response
-    } catch (error) {
-      toast.error('Change student info failed!!!')
     }
   }
 
@@ -86,7 +66,6 @@ export const useStudentStore = defineStore('student', () => {
     students,
     exportSampleStudents,
     fetchStudents,
-    updateProfileInformation,
     importStudents,
     clearStudents
   }

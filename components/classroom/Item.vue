@@ -25,7 +25,7 @@ const redirect = (path: string) => {
           <!--            alt="Background Image"-->
           <!--            class="object-cover w-full h-full"-->
           <!--          />-->
-          <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500" />
+          <div class="absolute inset-0 bg-gradient-to-br from-primary to-primary-foreground/50" />
         </div>
         <div class="absolute inset-0 bg-black opacity-50" />
 

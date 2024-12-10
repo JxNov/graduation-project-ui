@@ -75,20 +75,6 @@ export const useRoleStore = defineStore('role', () => {
     }
   }
 
-  const reloadData = () => {
-    const promise = () => Promise.all([
-      fetchModules(),
-      fetchRoles(),
-      fetchPermissions()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceRoles = (response: any) => {
     const index = roles.value.findIndex(role => role.slug === response.slug)
     if (index !== -1) {
@@ -118,7 +104,6 @@ export const useRoleStore = defineStore('role', () => {
     createRole,
     updateRole,
     deleteRole,
-    reloadData,
     clearRoles
   }
 })

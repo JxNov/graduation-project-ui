@@ -43,18 +43,6 @@ export const useTeacherStore = defineStore('teacher', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchTeachers()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceTeachers = (response: any) => {
     teachers.value = teachers.value.map((user: any) => {
       const responseTeacher = response.find((res: any) => res.username === user.username)
@@ -75,7 +63,6 @@ export const useTeacherStore = defineStore('teacher', () => {
     fetchTeachers,
     exportSampleTeachers,
     importTeachers,
-    reloadData,
     clearTeachers
   }
 })

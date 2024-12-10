@@ -5,11 +5,15 @@ import { listAll, ref as firebaseRef } from 'firebase/storage'
 import { storage } from '~/config/firebase.config'
 import type { Ref } from 'vue'
 
+const { $attendanceStore, $bus } = useNuxtApp()
+
 const labels = ref<{ label: string; images: string[] }[]>([])
 const detectedFaces = ref<string[]>([])
 const videoStream = ref<MediaStream | null>(null)
 const webcamStarted = ref<boolean>(false)
 const modelsLoaded = ref<boolean>(false)
+const studentPresent = ref<string>('')
+const isLoading = ref<boolean>(false)
 
 async function loadModels() {
   await Promise.all([
@@ -68,12 +72,29 @@ async function listFolders() {
 }
 
 function markAttendance(detectedFaces: Ref<string[]>) {
-  const presentStudents = detectedFaces.value
+  studentPresent.value = detectedFaces.value[0]
 }
 
-// function sendAttendanceDataToServer() {
-//   console.log('User is present')
-// }
+async function sendAttendanceDataToServer() {
+  isLoading.value = true
+  const shifts = new Date().getHours() < 12 ? 'Morning' : 'Afternoon'
+
+  try {
+    const response = await $attendanceStore.updateStudentAttendance(studentPresent.value, { shifts })
+
+    if (!response) {
+      throw new Error('Failed to mark attendance')
+    }
+
+    studentPresent.value = ''
+    detectedFaces.value = []
+    isLoading.value = false
+    $bus.emit('close-dialog-attendance', false)
+  } catch (error) {
+    isLoading.value = false
+    throw error
+  }
+}
 
 async function getLabeledFaceDescriptions() {
   const labeledDescriptors = labels.value.map((label) => {
@@ -171,7 +192,13 @@ onBeforeUnmount(() => {
     </div>
 
     <div class="flex items-center justify-center py-4">
-      <Button type="button">Capture</Button>
+      <Button
+        type="button"
+        @click="sendAttendanceDataToServer"
+        :disabled="isLoading"
+      >
+        Attendance
+      </Button>
     </div>
   </div>
 </template>

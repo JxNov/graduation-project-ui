@@ -29,3 +29,13 @@ export const attendanceDetailSchema = z.object({
 })
 
 export type AttendanceDetail = z.infer<typeof attendanceDetailSchema>
+
+export const attendanceShowSchema = z.object({
+  date: z.string(),
+  shifts: z.string(),
+  className: z.string(),
+  status: z.string(),
+  reason: z.string()
+})
+
+export type AttendanceShow = z.infer<typeof attendanceShowSchema>

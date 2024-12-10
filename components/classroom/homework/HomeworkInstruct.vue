@@ -4,21 +4,28 @@ import { ChatBubbleIcon, DotsVerticalIcon } from '@radix-icons/vue'
 import HomeworkInstructComment from './HomeworkInstructComment.vue'
 import HomeworkInstructEditor from './HomeworkInstructEditor.vue'
 import HomeworkSubmit from './HomeworkSubmit.vue'
+import { checkPermissions } from '~/utils/checkPermissions'
 
+const { $authStore } = useNuxtApp()
 const useIdFunction = () => useId()
 
 defineProps<{
   data: any
 }>()
+
+const studentPermissions = checkPermissions($authStore.user.permissions, ['student.read'])
 </script>
 
 <template>
   <div class="grid lg:grid-cols-12 gap-4 xl:px-24 mt-10">
-    <div class="h-fit lg:hidden">
+    <div class="h-fit lg:hidden" v-if="studentPermissions">
       <HomeworkSubmit />
     </div>
 
-    <Card class="lg:col-span-8 2xl:col-span-9">
+    <Card
+      class="lg:col-span-8 2xl:col-span-9"
+      :class="{ 'lg:col-span-12 2xl:col-span-12': !studentPermissions }"
+    >
       <CardHeader class="flex lg:flex-row justify-between items-center">
         <div class="flex flex-row items-start gap-4">
           <Avatar>
@@ -93,7 +100,7 @@ defineProps<{
       <!--      </div>-->
     </Card>
 
-    <div class="hidden lg:block lg:col-span-4 2xl:col-span-3 h-fit">
+    <div class="hidden lg:block lg:col-span-4 2xl:col-span-3 h-fit" v-if="studentPermissions">
       <HomeworkSubmit />
     </div>
   </div>

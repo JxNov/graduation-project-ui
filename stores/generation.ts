@@ -59,18 +59,6 @@ export const useGenerationStore = defineStore('generation', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchGenerations()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceGenerations = (response: any) => {
     const index = generations.value.findIndex(generation => generation.slug === response.slug)
     if (index !== -1) {
@@ -94,7 +82,6 @@ export const useGenerationStore = defineStore('generation', () => {
     createGeneration,
     updateGeneration,
     deleteGeneration,
-    reloadData,
     clearGenerations
   }
 })

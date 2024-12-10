@@ -4,9 +4,8 @@ import type { AcademicYear } from '~/schema'
 import { academicYearSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
 import { AcademicYearDialogCreateEdit, AcademicYearDialogDelete } from '~/components/common/dialog/academic-year'
-import { useThrottle } from '~/composables/useThrottle'
 import { extractValue } from '~/utils/extractValue'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 
 const { $authStore, $academicYearStore, $generationStore, $bus } = useNuxtApp()
 
@@ -99,17 +98,13 @@ const filters = [
   }
 ]
 
-const reloadData = useThrottle(() => {
-  $academicYearStore.reloadData()
-}, 60000, 'academic-year')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['users.create'])
 })
 
 const handleCloseDialog = () => {
@@ -133,7 +128,6 @@ const handleCloseDialog = () => {
       :data="$academicYearStore.academicYears"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 

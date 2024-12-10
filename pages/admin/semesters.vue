@@ -4,9 +4,8 @@ import type { Semester } from '~/schema'
 import { semesterSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
 import { SemesterDialogCreateEdit, SemesterDialogDelete } from '~/components/common/dialog/semester'
-import { useThrottle } from '~/composables/useThrottle'
 import { extractValue } from '~/utils/extractValue'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 
 const { $authStore, $semesterStore, $academicYearStore, $bus } = useNuxtApp()
 
@@ -106,17 +105,13 @@ const filters = [
   }
 ]
 
-const reloadData = useThrottle(() => {
-  $semesterStore.reloadData()
-}, 60000, 'semester')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['users.create'])
 })
 
 const handleCloseDialog = () => {
@@ -140,7 +135,6 @@ const handleCloseDialog = () => {
       :data="$semesterStore.semesters"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 

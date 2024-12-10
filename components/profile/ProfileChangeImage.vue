@@ -2,12 +2,15 @@
 import { CameraIcon } from '@radix-icons/vue'
 import type { VNode } from 'vue'
 
+const props = defineProps<{
+  disabled: boolean
+}>()
+
 const isHidden = ref<boolean>(false)
 const images = ref<VNode[]>([])
 const capturedImages = reactive<{ id: number; image: string }[]>([])
 
 const emits = defineEmits<{
-  // (e: 'update:modelValue', capturedImages: { id: number; image: string }[]): void
   (e: 'update:modelValue', imagesInput: File[]): void
 }>()
 
@@ -55,15 +58,19 @@ const createImageBox = (i: number) => {
   const inputId = `image_${i}-captured-image-input`
 
   return h('div', {
-    class: 'relative max-w-[calc(20%-1rem)] cursor-pointer rounded-md overflow-hidden'
+    class: 'relative cursor-pointer rounded-md overflow-hidden col-span-4'
   }, [
     h('img', {
       id: imgId,
       class: 'max-w-full h-auto object-cover'
     }),
     h('div', {
-      class: 'absolute inset-0 bg-primary-foreground/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300',
-      onClick: () => openCamera(`image_${i}`)
+      class: `absolute inset-0 bg-primary-foreground/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 ${props.disabled ? 'pointer-events-none cursor-not-allowed' : 'cursor-pointer'}`,
+      onClick: () => {
+        if (!props.disabled) {
+          openCamera(`image_${i}`)
+        }
+      }
     }, [
       h(CameraIcon, { class: 'w-20 h-20 text-primary' })
     ]),
@@ -118,7 +125,6 @@ function captureImage(video: HTMLVideoElement) {
 }
 
 watch(capturedImages, (newValue) => {
-  // emits('update:modelValue', newValue)
   const imagesInput = newValue.map((image) => {
     const byteString = atob(image.image.split(',')[1])
     const mimeString = image.image.split(',')[0].split(':')[1].split(';')[0]
@@ -138,7 +144,7 @@ watch(capturedImages, (newValue) => {
 </script>
 
 <template>
-  <Card>
+  <Card class="col-span-8 h-fit">
     <CardHeader class="flex flex-row profiles-start gap-4 select-none">
       Take Multiple Images
     </CardHeader>
@@ -149,12 +155,14 @@ watch(capturedImages, (newValue) => {
         @click="takeMultipleImages"
         :class="{ 'hidden': isHidden }"
       >
-        <div class="w-full h-52 bg-primary-foreground flex items-center justify-center">
+        <div
+          class="w-full h-52 bg-primary-foreground flex items-center justify-center hover:bg-primary-foreground/50 transition duration-300"
+        >
           <CameraIcon class="w-12 h-12 text-primary" />
         </div>
       </div>
 
-      <div id="multiple-images" class="flex gap-6">
+      <div id="multiple-images" class="grid grid-cols-12 gap-4">
         <template v-for="(image, index) in images" :key="index">
           <component :is="image"></component>
         </template>

@@ -4,8 +4,7 @@ import type { Student } from '~/schema'
 import { studentSchema } from '~/schema'
 import type { TableFilter } from '~/types/table'
 import { createColumns } from '~/composables/columns'
-import { useThrottle } from '~/composables/useThrottle'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { StudentDialogImport } from '@/components/common/dialog/student'
@@ -138,7 +137,7 @@ const handleCloseDialog = () => {
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['student.create'])
+  return checkPermissions($authStore.user.permissions, ['student.create'])
 })
 
 const downloadSampleStudents = async () => {

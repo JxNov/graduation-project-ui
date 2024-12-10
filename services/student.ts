@@ -57,29 +57,3 @@ export const importStudentsService = async (data: {
     throw error
   }
 }
-
-export const updateProfileInformationService = async (username: string, data: {
-  images: File[],
-  password: string,
-}): Promise<any> => {
-  const { $axios } = useNuxtApp()
-
-  try {
-    const response = await $axios.post(`/v1/users/updateStudent/${username}`, {
-      ...data,
-      '_method': 'PATCH'
-    }, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    if (!response) {
-      throw new Error('Invalid response')
-    }
-
-    return response.data
-  } catch (error) {
-    throw error
-  }
-}

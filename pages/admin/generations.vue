@@ -4,9 +4,8 @@ import type { Generation } from '~/schema'
 import { generationSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
 import { GenerationDialogCreateEdit, GenerationDialogDelete } from '~/components/common/dialog/generation'
-import { useThrottle } from '~/composables/useThrottle'
 import { extractValue } from '~/utils/extractValue'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 
 const { $authStore, $generationStore, $bus } = useNuxtApp()
 
@@ -88,17 +87,13 @@ const filters = [
   }
 ]
 
-const reloadData = useThrottle(() => {
-  $generationStore.reloadData()
-}, 60000, 'generation')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['users.create'])
 })
 
 const handleCloseDialog = () => {
@@ -122,7 +117,6 @@ const handleCloseDialog = () => {
       :data="$generationStore.generations"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 

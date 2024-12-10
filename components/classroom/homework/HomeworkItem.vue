@@ -15,8 +15,6 @@ const isOpen = ref<boolean>(false)
 const redirect = (path: string) => {
   router.push(path)
 }
-
-console.log(props.homework)
 </script>
 
 <template>

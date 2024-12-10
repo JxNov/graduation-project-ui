@@ -13,18 +13,6 @@ export const useAssignmentStore = defineStore('assignment', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchAssignments()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceAssignments = (response: any) => {
     const index = assignments.value.findIndex(assignment => assignment.slug === response.slug)
     if (index !== -1) {
@@ -45,7 +33,6 @@ export const useAssignmentStore = defineStore('assignment', () => {
   return {
     assignments,
     fetchAssignments,
-    reloadData,
     clearAssignments
   }
 })

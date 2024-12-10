@@ -10,8 +10,8 @@ export type { Permission } from './permission'
 export { generationSchema } from './generation'
 export type { Generation } from './generation'
 
-export { userSchema } from './user'
-export type { User } from './user'
+export { userSchema, userDetailSchema } from './user'
+export type { User, UserDetail } from './user'
 
 export { authSchema } from './auth'
 export type { Auth } from './auth'
@@ -37,8 +37,8 @@ export type { Student } from './student'
 export { classroomSchema } from './classroom'
 export type { Classroom } from './classroom'
 
-export { attendanceSchema, attendanceDetailSchema } from './attendance'
-export type { Attendance, AttendanceDetail } from './attendance'
+export { attendanceSchema, attendanceDetailSchema, attendanceShowSchema } from './attendance'
+export type { Attendance, AttendanceDetail, AttendanceShow } from './attendance'
 
 export { assignmentSchema } from './assignment'
 export type { Assignment } from './assignment'

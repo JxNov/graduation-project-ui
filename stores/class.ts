@@ -82,18 +82,6 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchClasses()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceClasses = (response: any) => {
     const index = classes.value.findIndex(cls => cls.slug === response.slug)
     if (index !== -1) {
@@ -118,7 +106,6 @@ export const useClassStore = defineStore('class', () => {
     updateClass,
     deleteClass,
     distributeStudents,
-    reloadData,
     clearClasses
   }
 })

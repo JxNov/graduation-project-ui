@@ -1,4 +1,17 @@
 <script setup lang="ts">
+import { getImageFirebase } from '~/utils/imageFirebase'
+
+const { $authStore, $userStore } = useNuxtApp()
+
+onMounted(async () => {
+  if (!$userStore.userDetail) {
+    await $userStore.fetchUserDetail($authStore.user.username)
+  }
+
+  if (!$authStore.avatar.startsWith('http')) {
+    $authStore.avatar = await getImageFirebase($authStore.user.username, $authStore.user.image)
+  }
+})
 </script>
 
 <template>
