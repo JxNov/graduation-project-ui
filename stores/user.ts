@@ -1,9 +1,15 @@
-import type { User } from '~/schema'
-import { assignRolePermissionService, fetchUsersService } from '~/services/user'
+import type { User, UserDetail } from '~/schema'
+import {
+  assignRolePermissionService,
+  fetchUsersService,
+  fetchUserDetailService,
+  updateProfileInformationService
+} from '~/services/user'
 import { toast } from 'vue-sonner'
 
 export const useUserStore = defineStore('user', () => {
   const users = ref<User[]>([])
+  const userDetail = ref<UserDetail | null>(null)
 
   const fetchUsers = async () => {
     try {
@@ -30,16 +36,37 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchUsers()
-    ])
+  const fetchUserDetail = async (username: string) => {
+    try {
+      userDetail.value = await fetchUserDetailService(username)
+    } catch (error) {
+      throw error
+    }
+  }
 
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
+  const updateProfileInformation = async (username: string, data: {
+    images: File[],
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string,
+  }) => {
+    try {
+      const response = await updateProfileInformationService(username, data)
+
+      if (!response) {
+        throw new Error('Change student info failed!!!')
+      }
+
+      toast.success('Change student info successfully!!!')
+
+      return response
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error)
+        return
+      }
+      toast.error('Change student info failed!!!')
+    }
   }
 
   const replaceUsers = (response: any) => {
@@ -55,13 +82,16 @@ export const useUserStore = defineStore('user', () => {
 
   const clearUsers = () => {
     users.value = []
+    userDetail.value = null
   }
 
   return {
     users,
+    userDetail,
     fetchUsers,
     assignRolePermission,
-    reloadData,
+    fetchUserDetail,
+    updateProfileInformation,
     clearUsers
   }
 })

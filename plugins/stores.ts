@@ -15,6 +15,7 @@ import { useAssignmentStore } from '~/stores/assignment'
 import { useArticleStore } from '~/stores/article'
 import { useChatStore } from '~/stores/chat'
 import { useGeminiStore } from '~/stores/gemini'
+import { useHomeworkStore } from '~/stores/homework'
 
 export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('generalStore', useGeneralStore())
@@ -34,4 +35,5 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('articleStore', useArticleStore())
   NuxtApp.provide('chatStore', useChatStore())
   NuxtApp.provide('geminiStore', useGeminiStore())
+  NuxtApp.provide('homeworkStore', useHomeworkStore())
 })

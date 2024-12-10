@@ -66,18 +66,6 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = Promise.all([
-      fetchAcademicYears()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceAcademicYears = (response: any) => {
     const index = academicYears.value.findIndex(academicYear => academicYear.slug === response.slug)
     if (index !== -1) {
@@ -101,7 +89,6 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
     createAcademicYear,
     updateAcademicYear,
     deleteAcademicYear,
-    reloadData,
     clearAcademicYears
   }
 })

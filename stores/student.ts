@@ -1,5 +1,9 @@
 import type { Student } from '~/schema'
-import { fetchStudentsService, importStudentsService, exportSampleStudentsService } from '~/services/student'
+import {
+  fetchStudentsService,
+  importStudentsService,
+  exportSampleStudentsService
+} from '~/services/student'
 import { toast } from 'vue-sonner'
 
 export const useStudentStore = defineStore('student', () => {
@@ -43,18 +47,6 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchStudents()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceStudents = (response: any) => {
     students.value = students.value.map((user: any) => {
       const responseStudent = response.find((res: any) => res.username === user.username)
@@ -75,7 +67,6 @@ export const useStudentStore = defineStore('student', () => {
     exportSampleStudents,
     fetchStudents,
     importStudents,
-    reloadData,
     clearStudents
   }
 })

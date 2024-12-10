@@ -37,16 +37,6 @@ export const useArticleStore = defineStore('article', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceArticles = (response: any) => {
     const index = articles.value.findIndex(article => article.id === response.id)
     if (index !== -1) {
@@ -68,7 +58,6 @@ export const useArticleStore = defineStore('article', () => {
     articles,
     createArticle,
     createComment,
-    reloadData,
     clearArticles
   }
 })

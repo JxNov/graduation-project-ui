@@ -5,11 +5,13 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { toast } from 'vue-sonner'
 import { ConfigProvider } from 'radix-vue'
+import { EyeClosedIcon, EyeOpenIcon } from '@radix-icons/vue'
 
 const { $authStore, $generalStore } = useNuxtApp()
 const useIdFunction = () => useId()
 
 const isLoading = ref<boolean>(false)
+const showPassword = ref<boolean>(false)
 
 const formSchema = toTypedSchema(z.object({
   password: z.string(),
@@ -19,6 +21,10 @@ const formSchema = toTypedSchema(z.object({
 const { isFieldDirty, handleSubmit } = useForm({
   validationSchema: formSchema
 })
+
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+}
 
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
@@ -53,7 +59,19 @@ const onSubmit = handleSubmit(async (values) => {
         <FormItem>
           <FormLabel>Password</FormLabel>
           <FormControl>
-            <Input type="password" v-bind="componentField" :disabled="isLoading" />
+            <div class="relative">
+              <component
+                :is="showPassword ? EyeOpenIcon : EyeClosedIcon"
+                class="absolute right-2 top-2.5 size-4 text-muted-foreground cursor-pointer"
+                @click="togglePasswordVisibility"
+              />
+
+              <Input
+                :type="showPassword ? 'text' : 'password'"
+                v-bind="componentField"
+                :disabled="isLoading"
+              />
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>

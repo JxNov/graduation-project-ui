@@ -118,14 +118,23 @@ $bus.on('reset-filters', clearFilters)
             </Badge>
 
             <template v-else>
+              <!--              <Badge-->
+              <!--                v-for="option in options-->
+              <!--                  .filter((option) => selectedValues.has(option.value))"-->
+              <!--                :key="option.value"-->
+              <!--                variant="secondary"-->
+              <!--                class="rounded-sm px-1 font-normal"-->
+              <!--              >-->
+              <!--                {{ option.label }}-->
+              <!--              </Badge>-->
+
               <Badge
-                v-for="option in options
-                  .filter((option) => selectedValues.has(option.value))"
-                :key="option.value"
                 variant="secondary"
                 class="rounded-sm px-1 font-normal"
+                v-for="selectedValue in selectedValues"
+                :key="selectedValue"
               >
-                {{ option.label }}
+                {{ selectedValue }}
               </Badge>
             </template>
           </div>
@@ -150,8 +159,7 @@ $bus.on('reset-filters', clearFilters)
                     const isSelected = selectedValues.has(option[0])
                     if (isSelected) {
                       selectedValues.delete(option[0])
-                    }
-                    else {
+                    } else {
                       selectedValues.add(option[0])
                     }
                     const filterValues = Array.from(selectedValues)

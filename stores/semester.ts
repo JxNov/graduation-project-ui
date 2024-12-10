@@ -65,18 +65,6 @@ export const useSemesterStore = defineStore('semester', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchSemesters()
-    ])
-
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
-  }
-
   const replaceSemesters = (response: any) => {
     const index = semesters.value.findIndex(semester => semester.slug === response.slug)
     if (index !== -1) {
@@ -100,7 +88,6 @@ export const useSemesterStore = defineStore('semester', () => {
     createSemester,
     updateSemester,
     deleteSemester,
-    reloadData,
     clearSemesters
   }
 })

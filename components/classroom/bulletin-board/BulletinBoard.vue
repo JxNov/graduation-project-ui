@@ -6,6 +6,9 @@ import BulletinBoardHomeworkComment from './BulletinBoardHomeworkComment.vue'
 import BulletinBoardNotification from './BulletinBoardNotification.vue'
 import BulletinBoardHomeworkDueDate from './BulletinBoardHomeworkDueDate.vue'
 import { scrollToFragment } from '@/utils/scrollToFragment'
+import { checkPermissions } from '~/utils/checkPermissions'
+
+const { $authStore } = useNuxtApp()
 
 defineProps<{
   articlesClassroom: any
@@ -13,6 +16,8 @@ defineProps<{
   classSlug: string
   code: string
 }>()
+
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
 </script>
 
 <template>
@@ -23,7 +28,7 @@ defineProps<{
       <!--        alt="Background Image"-->
       <!--        class="object-cover w-full h-full"-->
       <!--      />-->
-      <div class="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500" />
+      <div class="absolute inset-0 bg-gradient-to-br from-primary to-primary-foreground/50" />
       <div class="absolute inset-0 bg-black opacity-50" />
 
       <p class="absolute bottom-4 left-4 flex items-center justify-center text-white text-4xl font-bold z-10">
@@ -50,7 +55,7 @@ defineProps<{
 
       <div class="col-span-12 md:col-span-9">
         <div class="flex flex-col gap-4">
-          <BulletinBoardEditor :class-slug="classSlug" />
+          <BulletinBoardEditor :class-slug="classSlug" v-if="teacherPermissions" />
 
           <!--          <BulletinBoardHomework id="1">-->
           <!--            <BulletinBoardHomeworkComment />-->

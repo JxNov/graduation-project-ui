@@ -1,15 +1,18 @@
-import type { Attendance, AttendanceDetail } from '~/schema'
+import type { Attendance, AttendanceDetail, AttendanceShow } from '~/schema'
 import {
   fetchAttendancesService,
   detailAttendanceService,
   createAttendanceService,
-  updateAttendanceService
+  updateAttendanceService,
+  showAttendanceService,
+  updateStudentAttendanceService
 } from '~/services/attendance'
 import { toast } from 'vue-sonner'
 
 export const useAttendanceStore = defineStore('attendance', () => {
   const attendances = ref<Attendance[]>([])
   const attendance = ref<AttendanceDetail | null>(null)
+  const attendanceShow = ref<AttendanceShow[]>([])
 
   const fetchAttendances = async () => {
     try {
@@ -73,16 +76,30 @@ export const useAttendanceStore = defineStore('attendance', () => {
     }
   }
 
-  const reloadData = async () => {
-    const promise = () => Promise.all([
-      fetchAttendances()
-    ])
+  const showAttendance = async () => {
+    try {
+      attendanceShow.value = await showAttendanceService()
+    } catch (error) {
+      throw error
+    }
+  }
 
-    toast.promise(promise, {
-      loading: 'Reloading data...',
-      success: 'Data reloaded successfully!!!',
-      error: 'Data reloaded failed!!!'
-    })
+  const updateStudentAttendance = async (username: string, data: {
+    shifts: string
+  }) => {
+    try {
+      const response = await updateStudentAttendanceService(username, data)
+
+      if (!response) {
+        throw new Error('Update student attendance failed!!!')
+      }
+
+      toast.success('Student attendance updated successfully!!!')
+      return response
+    } catch (error) {
+      toast.error('Student attendance updated failed!!!')
+      throw error
+    }
   }
 
   // const replaceAttendances = (response: any) => {
@@ -100,16 +117,20 @@ export const useAttendanceStore = defineStore('attendance', () => {
 
   const clearAttendances = () => {
     attendances.value = []
+    attendance.value = null
+    attendanceShow.value = []
   }
 
   return {
     attendances,
     attendance,
+    attendanceShow,
     fetchAttendances,
     detailAttendance,
     createAttendance,
     updateAttendance,
-    reloadData,
+    showAttendance,
+    updateStudentAttendance,
     clearAttendances
   }
 })

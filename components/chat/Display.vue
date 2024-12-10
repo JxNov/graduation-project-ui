@@ -101,8 +101,77 @@ const messages = computed(() => {
       </div>
     </div>
 
-    <div v-else class="p-8 text-center text-muted-foreground">
-      No message selected
+    <div v-else class="flex flex-1 flex-col">
+      <div class="flex items-start p-4">
+        <div class="flex items-start gap-4 text-sm">
+          <Avatar>
+            <AvatarFallback>
+              AD
+            </AvatarFallback>
+          </Avatar>
+          <div class="grid gap-1">
+            <div class="font-semibold">
+              Admin
+            </div>
+
+            <div class="line-clamp-1 text-xs">
+              <span class="font-medium">Send:</span> Admin
+            </div>
+          </div>
+        </div>
+      </div>
+      <Separator />
+
+      <ScrollArea class="max-h-[500px] flex flex-col p-4">
+        <!--        <template v-for="mess in messages" :key="mess.messageID">-->
+        <!--          <div class="flex items-center gap-2" v-if="$authStore.user.username !== mess.username">-->
+        <!--            <div-->
+        <!--              v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username"-->
+        <!--            >-->
+        <!--              <Avatar>-->
+        <!--                <AvatarFallback>-->
+        <!--                  {{ mess.name.split(' ').map((name: string) => name[0]).join('') }}-->
+        <!--                </AvatarFallback>-->
+        <!--              </Avatar>-->
+        <!--            </div>-->
+        <!--            <div v-else class="h-10 w-10" />-->
+
+        <!--            <div class="bg-secondary rounded-full py-2 px-5 max-w-fit">-->
+        <!--              <div class="flex-1 whitespace-pre-wrap text-sm text-primary">-->
+        <!--                {{ mess.message }}-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+
+        <!--          <div class="flex flex-row-reverse items-center gap-2 mt-1" v-else>-->
+        <!--            <div class="bg-primary rounded-full py-2 px-5 max-w-fit">-->
+        <!--              <div class="flex-1 whitespace-pre-wrap text-sm text-primary-foreground">-->
+        <!--                {{ mess.message }}-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </template>-->
+      </ScrollArea>
+
+      <Separator class="mt-auto" />
+      <div class="p-4">
+        <form>
+          <div class="grid gap-4">
+            <Textarea
+              class="p-4 h-24 resize-none"
+              placeholder="Send a message to admin..."
+            />
+
+            <Button
+              type="button"
+              size="sm"
+              class="ml-auto"
+            >
+              Send
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>

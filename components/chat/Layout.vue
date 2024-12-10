@@ -49,8 +49,8 @@ watchEffect(async () => {
           class="h-full max-h-[820px] items-stretch"
         >
           <ResizablePanel class="max-w-[350px]">
-            <div class="flex items-center px-4 py-2">
-              <h1 class="text-xl font-bold">
+            <div class="flex items-center px-4 py-5">
+              <h1 class="text-2xl font-bold">
                 Inbox
               </h1>
             </div>

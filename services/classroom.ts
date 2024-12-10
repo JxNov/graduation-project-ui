@@ -47,3 +47,19 @@ export const fetchPeopleClassroomService = async (classSlug: string): Promise<Cl
     throw error
   }
 }
+
+export const fetchClassroomStudentService = async (): Promise<Classroom[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/classrooms/student')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

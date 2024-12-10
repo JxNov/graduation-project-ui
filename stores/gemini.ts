@@ -13,7 +13,6 @@ export const useGeminiStore = defineStore('gemini', () => {
     }
   }
 
-
   const clearGeminis = () => {
     geminis.value = []
   }

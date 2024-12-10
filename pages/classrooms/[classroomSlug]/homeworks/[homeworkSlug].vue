@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { ConfigProvider } from 'radix-vue'
 import HomeworkInstruct from '~/components/classroom/homework/HomeworkInstruct.vue'
 import HomeworkStudent from '~/components/classroom/homework/HomeworkStudent.vue'
+import { checkPermissions } from '~/utils/checkPermissions'
 
-const { $classroomStore } = useNuxtApp()
-const useIdFunction = () => useId()
+const { $classroomStore, $homeworkStore, $authStore } = useNuxtApp()
+const route = useRoute()
 
 const title = 'Chi tiết bài tập'
 const description = 'Chi tiết bài tập'
-const route = useRoute()
 
 useSeoMeta({
   title,
@@ -23,17 +22,26 @@ useSeoMeta({
 const classSlug = route.params.classroomSlug as string
 const className = ref<string>('')
 const code = ref<string>('')
+const homework = ref<any>(null)
+
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
 
 onMounted(async () => {
   const { className: name, classCode } = await $classroomStore.fetchDetailClassroom(classSlug)
   className.value = name
   code.value = classCode
+
+  if (!$homeworkStore.homeworks.length) {
+    await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
+  }
+
+  homework.value = $homeworkStore.homeworks.find((homework: any) => homework.slug === route.params.homeworkSlug)
 })
 </script>
 
 <template>
-  <ConfigProvider :use-id="useIdFunction">
-    <Tabs default-value="instruct">
+  <ClientOnly>
+    <Tabs default-value="instruct" v-if="teacherPermissions">
       <div class="flex justify-between items-center">
         <TabsList>
           <TabsTrigger value="instruct">
@@ -49,12 +57,14 @@ onMounted(async () => {
       </div>
 
       <TabsContent value="instruct" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <HomeworkInstruct />
+        <HomeworkInstruct :data="homework" />
       </TabsContent>
 
       <TabsContent value="student-homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
         <HomeworkStudent />
       </TabsContent>
     </Tabs>
-  </ConfigProvider>
+
+    <HomeworkInstruct :data="homework" v-else />
+  </ClientOnly>
 </template>

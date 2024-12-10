@@ -12,11 +12,12 @@ import { PlusIcon } from '@radix-icons/vue'
     </DrawerTrigger>
 
     <DrawerContent class="h-full">
-      <div class="mx-auto w-full max-w-sm">
+      <div class="mx-auto w-full max-w-screen-xl">
         <DrawerHeader>
-          <DrawerTitle>Move Goal</DrawerTitle>
-          <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+          <DrawerTitle>Create Homework</DrawerTitle>
+          <DrawerDescription>Fill in the form below to create a new homework.</DrawerDescription>
         </DrawerHeader>
+
 
         <DrawerFooter>
           <Button>Submit</Button>

@@ -18,6 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
     roles: [],
     permissions: []
   })
+  const avatar = ref<string>(user.value.image)
 
   const login = async (data: { email: string, password: string }) => {
     try {
@@ -65,10 +66,13 @@ export const useAuthStore = defineStore('auth', () => {
       roles: [],
       permissions: []
     }
+
+    avatar.value = user.value.image
   }
 
   return {
     user,
+    avatar,
     login,
     logout,
     refreshToken,

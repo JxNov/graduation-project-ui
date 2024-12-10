@@ -105,7 +105,8 @@ export const createColumns = (
           )
         }
 
-        return value.includes(rowValue?.toString().toLowerCase())
+        // return value.includes(rowValue?.toString().toLowerCase())
+        return rowValue?.toString().toLowerCase().includes(value.toString().toLowerCase())
       }
     }
 

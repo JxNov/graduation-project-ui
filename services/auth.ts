@@ -1,6 +1,5 @@
 import type { Auth } from '~/schema'
 
-
 export const loginService = async (data: { email: string, password: string }): Promise<void> => {
   const { $axios } = useNuxtApp()
   const { email, password } = data

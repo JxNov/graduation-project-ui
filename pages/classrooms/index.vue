@@ -1,9 +1,18 @@
 <script setup lang="ts">
-const { $classroomStore } = useNuxtApp()
+import { checkPermissions } from '~/utils/checkPermissions'
+
+const { $classroomStore, $authStore } = useNuxtApp()
+
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
+const studentPermissions = checkPermissions($authStore.user.permissions, ['student.read'])
 
 onMounted(() => {
   if (!$classroomStore.classrooms.length) {
-    $classroomStore.fetchClassrooms()
+    if (teacherPermissions) {
+      $classroomStore.fetchClassrooms()
+    } else if (studentPermissions) {
+      $classroomStore.fetchClassroomStudent()
+    }
   }
 })
 </script>

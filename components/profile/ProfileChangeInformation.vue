@@ -1,60 +1,177 @@
 <script setup lang='ts'>
-const profile = {
-  name: 'John Doe',
-  image: 'https://randomuser.me/api/port',
-  role: 'Student',
-  email: 'abc@example.com',
-  phone: '1234567890',
-  dateOfBirth: '01/01/2000',
-  gender: 'Male',
-  address: '123 Main St, City, Country',
-  username: 'abc123',
-  generation: '2023'
+import { toTypedSchema } from '@vee-validate/zod'
+import { useForm } from 'vee-validate'
+import { z } from 'zod'
+import ProfileChangeImage from '~/components/profile/ProfileChangeImage.vue'
+import { EyeClosedIcon, EyeOpenIcon } from '@radix-icons/vue'
+
+const { $authStore, $userStore } = useNuxtApp()
+
+const capturedImages = ref<File[]>([])
+const showOldPassword = ref<boolean>(false)
+const showNewPassword = ref<boolean>(false)
+const showConfirmPassword = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
+
+const formSchema = toTypedSchema(z.object({
+    oldPassword: z.string().min(6),
+    newPassword: z.string().min(6),
+    confirmPassword: z.string().min(6)
+  })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: 'Passwords don\'t match',
+      path: ['confirmPassword']
+    })
+)
+
+const { isFieldDirty, handleSubmit, setFieldValue } = useForm({
+  validationSchema: formSchema
+})
+
+const togglePasswordVisibility = (field: string) => {
+  switch (field) {
+    case 'oldPassword':
+      showOldPassword.value = !showOldPassword.value
+      break
+    case 'newPassword':
+      showNewPassword.value = !showNewPassword.value
+      break
+    case 'confirmPassword':
+      showConfirmPassword.value = !showConfirmPassword.value
+      break
+  }
 }
+
+const onSubmit = handleSubmit(async (values) => {
+  isLoading.value = true
+
+  try {
+    const response = await $userStore.updateProfileInformation($authStore.user.username, {
+      images: capturedImages.value,
+      ...values
+    })
+
+    if (!response) {
+      throw new Error('Failed to update profile information')
+    }
+
+    $authStore.user.image = response.data.image
+    isLoading.value = false
+    navigateTo('/')
+  } catch (error) {
+    isLoading.value = false
+    throw error
+  }
+})
 </script>
 
 <template>
-  <Card class="col-span-9">
-    <CardHeader class="flex flex-row profiles-start gap-4">
-      <h2 class="text-lg font-semibold">
-        Personal Information
-      </h2>
-    </CardHeader>
+  <form @submit.prevent="onSubmit">
+    <div class="flex flex-col gap-4">
+      <div class="grid grid-cols-12 gap-4">
+        <ProfileChangeImage
+          :disabled="isLoading"
+          v-if="!$authStore.user.image"
+          @update:model-value="capturedImages = $event"
+        />
 
-    <CardContent class="flex flex-col gap-4 border-t pt-6">
-      <h3 class="font-semibold">
-        Personal Details
-      </h3>
+        <Card class="col-span-4">
+          <CardHeader class="flex flex-row profiles-start gap-4">
+            <h2 class="text-lg font-semibold">
+              Change Password
+            </h2>
+          </CardHeader>
 
-      <p class="text-sm flex justify-between">
-        <strong>Name:</strong> {{ profile.name }}
-      </p>
+          <CardContent class="flex flex-col gap-4 border-t pt-6">
+            <FormField v-slot="{ componentField }" name="oldPassword" :validate-on-blur="!isFieldDirty">
+              <FormItem>
+                <FormLabel>
+                  Old Password
+                </FormLabel>
 
-      <p class="text-sm flex justify-between">
-        <strong>Gender:</strong> {{ profile.gender }}
-      </p>
+                <FormControl>
+                  <div class="relative">
+                    <component
+                      :is="showOldPassword ? EyeOpenIcon : EyeClosedIcon"
+                      class="absolute right-2 top-2.5 size-4 text-muted-foreground cursor-pointer"
+                      @click="togglePasswordVisibility('oldPassword')"
+                    />
 
-      <p class="text-sm flex justify-between">
-        <strong>Date of Birth:</strong> {{ profile.dateOfBirth }}
-      </p>
+                    <Input
+                      :type="showOldPassword ? 'text' : 'password'"
+                      placeholder="Old Password"
+                      v-bind="componentField"
+                      :disabled="isLoading"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
 
-      <p class="text-sm flex justify-between">
-        <strong>Address:</strong> {{ profile.address }}
-      </p>
-    </CardContent>
+            <FormField v-slot="{ componentField }" name="newPassword" :validate-on-blur="!isFieldDirty">
+              <FormItem>
+                <FormLabel>
+                  New Password
+                </FormLabel>
 
-    <CardContent class="flex flex-col gap-4">
-      <h3 class="font-semibold">
-        Contact Information
-      </h3>
+                <FormControl>
+                  <div class="relative">
+                    <component
+                      :is="showNewPassword ? EyeOpenIcon : EyeClosedIcon"
+                      class="absolute right-2 top-2.5 size-4 text-muted-foreground cursor-pointer"
+                      @click="togglePasswordVisibility('newPassword')"
+                    />
 
-      <p class="text-sm flex justify-between">
-        <strong>Username:</strong> {{ profile.username }}
-      </p>
+                    <Input
+                      :type="showNewPassword ? 'text' : 'password'"
+                      placeholder="New Password"
+                      v-bind="componentField"
+                      :disabled="isLoading"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
 
-      <p class="text-sm flex justify-between">
-        <strong>Generation:</strong> {{ profile.generation }}
-      </p>
-    </CardContent>
-  </Card>
+            <FormField v-slot="{ componentField }" name="confirmPassword" :validate-on-blur="!isFieldDirty">
+              <FormItem>
+                <FormLabel>
+                  Confirm Password
+                </FormLabel>
+
+                <FormControl>
+                  <div class="relative">
+                    <component
+                      :is="showConfirmPassword ? EyeOpenIcon : EyeClosedIcon"
+                      class="absolute right-2 top-2.5 size-4 text-muted-foreground cursor-pointer"
+                      @click="togglePasswordVisibility('confirmPassword')"
+                    />
+
+                    <Input
+                      :type="showConfirmPassword ? 'text' : 'password'"
+                      placeholder="Confirm Password"
+                      v-bind="componentField"
+                      :disabled="isLoading"
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div class="flex justify-end">
+        <Button
+          type="submit"
+          :disabled="isLoading"
+        >
+          Update Information
+        </Button>
+      </div>
+    </div>
+  </form>
 </template>

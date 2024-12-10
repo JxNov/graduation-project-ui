@@ -4,8 +4,7 @@ import type { Student } from '~/schema'
 import { studentSchema } from '~/schema'
 import type { TableFilter } from '~/types/table'
 import { createColumns } from '~/composables/columns'
-import { useThrottle } from '~/composables/useThrottle'
-import { showElement } from '~/utils/showElement'
+import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { StudentDialogImport } from '@/components/common/dialog/student'
@@ -124,10 +123,6 @@ const filters: TableFilter[] = [
   }
 ]
 
-const reloadData = useThrottle(() => {
-  $studentStore.reloadData()
-}, 60000, 'student')
-
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
@@ -142,7 +137,7 @@ const handleCloseDialog = () => {
 }
 
 const shouldShowElement = computed(() => {
-  return showElement($authStore.user.permissions, ['student.create'])
+  return checkPermissions($authStore.user.permissions, ['student.create'])
 })
 
 const downloadSampleStudents = async () => {
@@ -195,7 +190,6 @@ const downloadSampleStudents = async () => {
       :data="$studentStore.students"
       :columns="columns"
       :filters="filters"
-      :reload-data="reloadData"
     />
   </div>
 

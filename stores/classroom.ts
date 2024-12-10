@@ -1,5 +1,10 @@
 import type { Classroom } from '~/schema'
-import { fetchClassroomsService, fetchDetailClassroomService, fetchPeopleClassroomService } from '~/services/classroom'
+import {
+  fetchClassroomsService,
+  fetchDetailClassroomService,
+  fetchPeopleClassroomService,
+  fetchClassroomStudentService
+} from '~/services/classroom'
 import { toast } from 'vue-sonner'
 
 export const useClassroomStore = defineStore('classroom', () => {
@@ -29,6 +34,14 @@ export const useClassroomStore = defineStore('classroom', () => {
     }
   }
 
+  const fetchClassroomStudent = async () => {
+    try {
+      classrooms.value = await fetchClassroomStudentService()
+    } catch (error) {
+      throw error
+    }
+  }
+
   const clearClassrooms = () => {
     classrooms.value = []
   }
@@ -38,6 +51,7 @@ export const useClassroomStore = defineStore('classroom', () => {
     fetchClassrooms,
     fetchDetailClassroom,
     fetchPeopleClassroom,
+    fetchClassroomStudent,
     clearClassrooms
   }
 })
