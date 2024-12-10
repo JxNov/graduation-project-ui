@@ -4,8 +4,7 @@ export const navMenu: NavMenuItems = [
   {
     title: 'home',
     icon: 'i-lucide-home',
-    link: '/',
-    permissions: []
+    link: '/'
   },
   {
     title: 'dashboard',
@@ -88,14 +87,12 @@ export const navMenu: NavMenuItems = [
   {
     title: 'chat',
     icon: 'token:chat',
-    link: '/chat',
-    permissions: []
+    link: '/chat'
   },
   {
     title: 'gemini',
     icon: 'mdi:robot-happy-outline',
-    link: '/gemini',
-    permissions: []
+    link: '/gemini'
   }
 ]
 

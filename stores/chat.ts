@@ -58,29 +58,41 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  // const getChatStudent = async (id: number) => {
-  //   try {
-  //     chats.value = await getChatStudentService(id)
-  //   } catch (err) {
-  //     throw err
-  //   }
-  // }
-  //
-  // const createChatAdmin = async (username: string, message: string) => {
-  //   try {
-  //     await createChatAdminService(username, message)
-  //   } catch (err) {
-  //     throw err
-  //   }
-  // }
-  //
-  // const createChatStudent = async (message: string) => {
-  //   try {
-  //     await createChatStudentService(message)
-  //   } catch (err) {
-  //     throw err
-  //   }
-  // }
+  const getChatStudent = async (id: number) => {
+    try {
+      chats.value = await getChatStudentService(id)
+    } catch (err) {
+      throw err
+    }
+  }
+
+  const createChatAdmin = async (username: string, message: string) => {
+    try {
+      const response = await createChatAdminService(username, message)
+
+      if (!response) {
+        throw new Error('Failed to send message')
+      }
+
+      return response
+    } catch (err) {
+      throw err
+    }
+  }
+
+  const createChatStudent = async (message: string) => {
+    try {
+      const response = await createChatStudentService(message)
+
+      if (!response) {
+        throw new Error('Failed to send message')
+      }
+
+      return response
+    } catch (err) {
+      throw err
+    }
+  }
 
   const clearChats = () => {
     chatPreviews.value = []
@@ -93,9 +105,9 @@ export const useChatStore = defineStore('chat', () => {
     getChatPreviewAdmin,
     getChatPreviewStudents,
     getChatAdmin,
-    // getChatStudent,
-    // createChatAdmin,
-    // createChatStudent,
+    getChatStudent,
+    createChatAdmin,
+    createChatStudent,
     clearChats
   }
 })

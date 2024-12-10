@@ -1,5 +1,5 @@
 import type { Gemini } from '~/schema'
-import { fetchGeminisService, createGeminiService } from '~/services/gemini'
+import { fetchGeminisService, askGeminiService } from '~/services/gemini'
 import { toast } from 'vue-sonner'
 
 export const useGeminiStore = defineStore('gemini', () => {
@@ -13,6 +13,20 @@ export const useGeminiStore = defineStore('gemini', () => {
     }
   }
 
+  const askGemini = async (question: string) => {
+    try {
+      const response = await askGeminiService(question)
+
+      if (!response) {
+        throw new Error('Failed to create Gemini')
+      }
+
+      return response
+    } catch (error) {
+      throw error
+    }
+  }
+
   const clearGeminis = () => {
     geminis.value = []
   }
@@ -20,6 +34,7 @@ export const useGeminiStore = defineStore('gemini', () => {
   return {
     geminis,
     fetchGeminis,
+    askGemini,
     clearGeminis
   }
 })
