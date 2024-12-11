@@ -54,8 +54,8 @@ onMounted(async () => {
         <SheetContent aria-describedby="radix-vue-dialog-description-1" side="left" class="flex flex-col p-4">
           <SheetHeader>
             <SheetTitle class="flex items-center gap-3">
-              <Triangle class="size-5 fill-foreground" />
-              Dashboard
+              <!--              <Triangle class="size-5 fill-foreground" />-->
+              Tech4School
             </SheetTitle>
           </SheetHeader>
 

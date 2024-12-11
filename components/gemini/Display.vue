@@ -57,7 +57,7 @@ const renderAnswer = (answer: string) => {
 </script>
 
 <template>
-  <div class="flex h-full flex-col">
+  <div class="flex h-full flex-col justify-end">
     <div v-if="data" class="flex flex-1 flex-col pt-4">
       <div
         class="max-h-[500px] flex flex-col p-4 overflow-hidden overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-border"
@@ -116,7 +116,25 @@ const renderAnswer = (answer: string) => {
     </div>
 
     <div v-else class="p-8 text-center text-muted-foreground">
-      No selected
+      <form @submit.prevent="onSubmit">
+        <div class="grid gap-4">
+            <Textarea
+              class="p-4 h-24 resize-none"
+              :placeholder="`Enter your question here...`"
+              :disabled="isLoading"
+              v-model="text"
+            />
+
+          <Button
+            type="submit"
+            size="sm"
+            class="ml-auto"
+            :disabled="isLoading"
+          >
+            Send
+          </Button>
+        </div>
+      </form>
     </div>
   </div>
 </template>

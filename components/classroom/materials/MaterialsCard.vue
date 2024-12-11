@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { getDownloadURL, ref as firebaseRef } from 'firebase/storage'
+import { storage } from '~/config/firebase.config'
+
 const props = defineProps<{
   data: any
 }>()
 
 const openFile = (filePath: string) => {
-  window.open(filePath, '_blank')
+  // window.open(filePath, '_blank')
+  const storageRef = firebaseRef(storage, filePath)
+  getDownloadURL(storageRef).then((downloadURL) => {
+  })
 }
 
 const downloadFile = (filePath: string, title: string) => {
-  const url = URL.createObjectURL(new Blob([filePath]))
+  const url = URL.createObjectURL(new Blob([filePath], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }))
   const a = document.createElement('a')
   a.href = url
   a.download = title
@@ -21,33 +27,50 @@ const downloadFile = (filePath: string, title: string) => {
 </script>
 
 <template>
-  <Card v-for="(item, index) in props.data" :key="index">
-    <CardHeader class="flex flex-row justify-between items-center gap-4 select-none">
-      <CardTitle>
-        {{ item.title }}
-      </CardTitle>
+  <div
+    v-if="props.data.length"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+  >
+    <Card v-for="(item, index) in props.data" :key="index">
+      <CardHeader class="flex flex-row justify-between items-center gap-4">
+        <CardTitle>
+          {{ item.title }}
+        </CardTitle>
 
-      <CardDescription>
-        {{ item.subject }}
-      </CardDescription>
-    </CardHeader>
+        <CardDescription>
+          {{ item.subjectName }}
+        </CardDescription>
+      </CardHeader>
 
-    <CardContent class="flex justify-between items-center gap-2">
-      <Button
-        type="button"
-        class="w-full"
-        @click="openFile(item.filePath)"
-      >
-        Open
-      </Button>
+      <CardContent v-if="item.description">
+        <p class="text-sm">
+          {{ item.description }}
+        </p>
+      </CardContent>
 
-      <Button
-        type="button"
-        class="w-full"
-        @click="downloadFile(item.filePath, item.title)"
-      >
-        Download
-      </Button>
-    </CardContent>
-  </Card>
+      <CardFooter class="flex justify-between items-center gap-2">
+        <Button
+          type="button"
+          class="w-full"
+          @click="openFile(item.file_path)"
+        >
+          Open
+        </Button>
+
+        <Button
+          type="button"
+          class="w-full"
+          @click="downloadFile(item.file_path, item.title)"
+        >
+          Download
+        </Button>
+      </CardFooter>
+    </Card>
+  </div>
+
+  <div v-else class="flex justify-center items-center h-96">
+    <p class="text-2xl">
+      No materials found
+    </p>
+  </div>
 </template>

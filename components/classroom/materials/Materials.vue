@@ -2,6 +2,10 @@
 import { Search } from 'lucide-vue-next'
 import { refDebounced } from '@vueuse/core'
 import MaterialsCard from './MaterialsCard.vue'
+import { checkPermissions } from '~/utils/checkPermissions'
+import { PlusIcon } from '@radix-icons/vue'
+
+const { $authStore } = useNuxtApp()
 
 interface MaterialProps {
   data: any
@@ -12,13 +16,15 @@ const props = defineProps<MaterialProps>()
 type Material = {
   title: string
   slug: string
-  subject: string
+  subjectName: string
+  subjectSlug: string
   filePath: string
 }
 
-const searchValue = ref('')
-const selectedSubject = ref('')
+const searchValue = ref<string>('')
+const selectedSubject = ref<string>('')
 const debouncedSearch = refDebounced(searchValue, 250)
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
 
 const filteredMaterialList = computed(() => {
   let output: Material[] = []
@@ -28,7 +34,7 @@ const filteredMaterialList = computed(() => {
     output = props.data
   } else {
     output = props.data.filter((item: any) => {
-      return (item.subject.toLowerCase().includes(searchValue) || item.title.toLowerCase().includes(searchValue)) && item.subject.toLowerCase().includes(subjectValue)
+      return (item.subjectSlug.toLowerCase().includes(searchValue) || item.title.toLowerCase().includes(searchValue)) && item.subjectSlug.toLowerCase().includes(subjectValue)
     })
   }
 
@@ -36,9 +42,14 @@ const filteredMaterialList = computed(() => {
 })
 
 const getMaterialSubject = computed(() => {
-  const subjectList = props.data.map((item: any) => item.subject)
+  const subjectList = props.data.map((item: any) => item.subjectSlug)
   return Array.from(new Set(subjectList))
 })
+
+const getName = (slug: string) => {
+  const subject = props.data.find((item: any) => item.subjectSlug === slug)
+  return subject.subjectName
+}
 
 const clearSearch = () => {
   searchValue.value = ''
@@ -48,6 +59,37 @@ const clearSearch = () => {
 
 <template>
   <div class="w-full flex flex-col gap-4 xl:px-16 mt-10">
+    <div class="flex justify-end" v-if="teacherPermissions">
+      <Drawer>
+        <DrawerTrigger as-child>
+          <Button type="button">
+            <PlusIcon class="w-6 h-6 mr-1" />
+            Create Homework
+          </Button>
+        </DrawerTrigger>
+
+        <DrawerContent class="h-full">
+          <div class="mx-auto w-full max-w-screen-xl">
+            <DrawerHeader>
+              <DrawerTitle>Create Homework</DrawerTitle>
+              <DrawerDescription>Fill in the form below to create a new homework.</DrawerDescription>
+            </DrawerHeader>
+
+
+            <DrawerFooter>
+              <Button>Submit</Button>
+
+              <DrawerClose as-child>
+                <Button variant="outline">
+                  Cancel
+                </Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </div>
+        </DrawerContent>
+      </Drawer>
+    </div>
+
     <Card class="flex justify-between items-center gap-4 p-4">
       <CardTitle class="text-2xl">
         Materials List
@@ -72,7 +114,7 @@ const clearSearch = () => {
                   :key="index"
                   :value="subject as string"
                 >
-                  {{ subject }}
+                  {{ getName(subject as string) }}
                 </SelectItem>
               </SelectGroup>
             </SelectContent>
@@ -89,8 +131,6 @@ const clearSearch = () => {
       </form>
     </Card>
 
-    <div class="grid grid-cols-5 gap-4">
-      <MaterialsCard :data="filteredMaterialList" />
-    </div>
+    <MaterialsCard :data="filteredMaterialList" />
   </div>
 </template>

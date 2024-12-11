@@ -5,15 +5,17 @@ import { useUserStore } from './user'
 import { useGenerationStore } from './generation'
 import { useAcademicYearStore } from './academicYear'
 import { useSemesterStore } from './semester'
-import { useBlockStore } from '~/stores/block'
+import { useBlockStore } from './block'
 import { useClassStore } from './class'
-import { useTeacherStore } from '~/stores/teacher'
-import { useStudentStore } from '~/stores/student'
-import { useClassroomStore } from '~/stores/classroom'
-import { useAttendanceStore } from '~/stores/attendance'
-import { useAssignmentStore } from '~/stores/assignment'
-import { useArticleStore } from '~/stores/article'
-import { useChatStore } from '~/stores/chat'
+import { useTeacherStore } from './teacher'
+import { useStudentStore } from './student'
+import { useClassroomStore } from './classroom'
+import { useAttendanceStore } from './attendance'
+import { useAssignmentStore } from './assignment'
+import { useArticleStore } from './article'
+import { useChatStore } from './chat'
+import { useGeminiStore } from './gemini'
+import { useMaterialStore } from './material'
 
 export const clearStores = () => {
   useGeneralStore().clearGeneral()
@@ -32,4 +34,6 @@ export const clearStores = () => {
   useAssignmentStore().clearAssignments()
   useArticleStore().clearArticles()
   useChatStore().clearChats()
+  useGeminiStore().clearGeminis()
+  useMaterialStore().clearMaterials()
 }

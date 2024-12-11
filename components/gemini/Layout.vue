@@ -3,7 +3,6 @@ import { refDebounced } from '@vueuse/core'
 import { Search } from 'lucide-vue-next'
 import type { Gemini } from '~/schema'
 
-const { $geminiStore } = useNuxtApp()
 const useIdFunction = () => useId()
 
 const props = defineProps<{

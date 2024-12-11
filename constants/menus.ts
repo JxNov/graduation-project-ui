@@ -87,7 +87,8 @@ export const navMenu: NavMenuItems = [
   {
     title: 'chat',
     icon: 'token:chat',
-    link: '/chat'
+    link: '/chat',
+    permissions: ['admin.*', 'student.*']
   },
   {
     title: 'gemini',

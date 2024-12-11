@@ -3,6 +3,8 @@ import { type HTMLAttributes, computed } from 'vue'
 import { TabsTrigger, type TabsTriggerProps, useForwardProps } from 'radix-vue'
 import { cn } from '@/lib/utils'
 
+const useIdFunction = () => useId()
+
 const props = defineProps<TabsTriggerProps & { class?: HTMLAttributes['class'] }>()
 
 const delegatedProps = computed(() => {
@@ -22,7 +24,7 @@ const forwardedProps = useForwardProps(delegatedProps)
       props.class,
     )"
   >
-    <span class="truncate">
+    <span class="truncate cursor-pointer" :id="useIdFunction">
       <slot />
     </span>
   </TabsTrigger>

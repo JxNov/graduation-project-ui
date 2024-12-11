@@ -75,6 +75,7 @@ const onSubmit = handleSubmit(async (values) => {
           @update:model-value="capturedImages = $event"
         />
 
+        <div v-if="$authStore.user.image" :class="{ 'col-span-8': $authStore.user.image}" />
         <Card class="col-span-4">
           <CardHeader class="flex flex-row profiles-start gap-4">
             <h2 class="text-lg font-semibold">
@@ -99,7 +100,6 @@ const onSubmit = handleSubmit(async (values) => {
 
                     <Input
                       :type="showOldPassword ? 'text' : 'password'"
-                      placeholder="Old Password"
                       v-bind="componentField"
                       :disabled="isLoading"
                     />
@@ -125,7 +125,6 @@ const onSubmit = handleSubmit(async (values) => {
 
                     <Input
                       :type="showNewPassword ? 'text' : 'password'"
-                      placeholder="New Password"
                       v-bind="componentField"
                       :disabled="isLoading"
                     />
@@ -151,7 +150,6 @@ const onSubmit = handleSubmit(async (values) => {
 
                     <Input
                       :type="showConfirmPassword ? 'text' : 'password'"
-                      placeholder="Confirm Password"
                       v-bind="componentField"
                       :disabled="isLoading"
                     />

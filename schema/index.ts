@@ -57,3 +57,6 @@ export type { Gemini } from './gemini'
 
 export { homeworkSchema } from './homework'
 export type { Homework } from './homework'
+
+export { materialSchema, materialBlockSchema } from './material'
+export type { Material, MaterialBlock } from './material'
