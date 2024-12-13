@@ -1,5 +1,23 @@
 import type { Classroom } from '~/schema'
 
+export const joinClassroomService = async (code: string): Promise<Classroom> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post('/v1/classrooms', {
+      code
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export const fetchClassroomsService = async (): Promise<Classroom[]> => {
   const { $axios } = useNuxtApp()
 

@@ -4,7 +4,7 @@ export const materialSchema = z.object({
   title: z.string(),
   slug: z.string(),
   description: z.string(),
-  file_path: z.string(),
+  filePath: z.string(),
   subjectName: z.string(),
   subjectSlug: z.string()
 })

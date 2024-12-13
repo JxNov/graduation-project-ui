@@ -4,16 +4,22 @@ import Underline from '@tiptap/extension-underline'
 
 const props = defineProps<{
   modelValue: string
+  disabled?: boolean
 }>()
 
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string): void
 }>()
 
+const content = ref<string>(props.modelValue)
+const updatingFromModel = ref<boolean>(false)
+
 const editor = useEditor({
-  content: props.modelValue,
+  content: content.value,
   onUpdate: ({ editor }) => {
-    emits('update:modelValue', editor.getHTML())
+    if (!updatingFromModel.value) {
+      emits('update:modelValue', editor.getHTML())
+    }
   },
   extensions: [TiptapStarterKit, Underline],
   editorProps: {
@@ -26,10 +32,18 @@ const editor = useEditor({
 onBeforeUnmount(() => {
   unref(editor)?.destroy()
 })
+
+watch(() => props.modelValue, (value) => {
+  if (value !== editor.value?.getHTML()) {
+    updatingFromModel.value = true
+    editor.value?.commands.setContent(value)
+    updatingFromModel.value = false
+  }
+})
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'opacity-50 pointer-events-none': props.disabled }">
     <div v-if="editor"
          class="flex items-center flex-wrap gap-x-1 border-t border-l border-r p-2 rounded-t-md">
       <Button

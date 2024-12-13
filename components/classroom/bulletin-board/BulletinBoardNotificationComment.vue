@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { ChatBubbleIcon } from '@radix-icons/vue'
+import { ChatBubbleIcon, DotsVerticalIcon } from '@radix-icons/vue'
+import { checkPermissions } from '~/utils/checkPermissions'
+import { ConfigProvider } from 'radix-vue'
+
+const { $authStore, $articleStore } = useNuxtApp()
+const useIdFunction = () => useId()
 
 defineProps<{
   comments: any
 }>()
 
+const emits = defineEmits<{
+  (e: 'editComment', comment: any): void
+  (e: 'deleteComment', comment: any): void
+}>()
+
 const isOpen = ref<boolean>(false)
+
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
 
 const countDateDays = (date: string) => {
   const date1 = new Date(date)
@@ -30,6 +42,24 @@ const countDateDays = (date: string) => {
     }
   }
 }
+
+const editComment = (comment: any) => {
+  emits('editComment', comment)
+}
+
+const deleteComment = async (comment: any) => {
+  try {
+    const response = await $articleStore.deleteComment(comment.id)
+
+    if (response.status !== 'success') {
+      throw new Error('Failed to delete comment')
+    }
+
+    emits('deleteComment', comment)
+  } catch (error) {
+    throw error
+  }
+}
 </script>
 
 <template>
@@ -42,22 +72,51 @@ const countDateDays = (date: string) => {
     </CollapsibleTrigger>
 
     <CollapsibleContent class="space-y-4">
-      <div class="flex flex-row items-start gap-4" v-for="comment in comments" :key="comment.id">
-        <Avatar>
-          <AvatarImage :src="comment.userImage || ''" :alt="comment.name[0]" />
-          <AvatarFallback>{{ comment.name.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
-        </Avatar>
+      <div class="flex justify-between" v-for="comment in comments" :key="comment.id">
+        <div class="flex items-start gap-4">
+          <Avatar>
+            <AvatarImage :src="comment.userImage || ''" :alt="comment.name[0]" />
+            <AvatarFallback>{{ comment.name.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
+          </Avatar>
 
-        <div>
-          <CardTitle>
-            {{ comment.name }}
-            <span class="text-xs ml-3">
+          <div>
+            <CardTitle>
+              {{ comment.name }}
+              <span class="text-xs ml-3">
               {{ countDateDays(comment.createdAt) }} trước
             </span>
-          </CardTitle>
+            </CardTitle>
 
-          <div class="text-sm prose" v-html="comment.content" />
+            <div class="text-sm prose" v-html="comment.content" />
+          </div>
         </div>
+
+        <ConfigProvider :use-id="useIdFunction">
+          <DropdownMenu v-if="teacherPermissions || $authStore.user.username === comment.username">
+            <DropdownMenuTrigger as-child>
+              <Button
+                variant="ghost"
+                class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+              >
+                <DotsVerticalIcon class="h-4 w-4" />
+                <span class="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" class="w-[160px]">
+              <DropdownMenuItem
+                v-if="$authStore.user.username === comment.username"
+                @click="editComment(comment)"
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator v-if="$authStore.user.username === comment.username" />
+
+              <DropdownMenuItem @click="deleteComment(comment)">
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ConfigProvider>
       </div>
     </CollapsibleContent>
   </Collapsible>

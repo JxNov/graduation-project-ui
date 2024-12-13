@@ -1,28 +1,14 @@
 <script setup lang="ts">
-import { getDownloadURL, ref as firebaseRef } from 'firebase/storage'
-import { storage } from '~/config/firebase.config'
-
 const props = defineProps<{
   data: any
 }>()
 
 const openFile = (filePath: string) => {
-  // window.open(filePath, '_blank')
-  const storageRef = firebaseRef(storage, filePath)
-  getDownloadURL(storageRef).then((downloadURL) => {
-  })
+  window.open(`https://docs.google.com/document/d/${filePath}/edit`, '_blank')
 }
 
 const downloadFile = (filePath: string, title: string) => {
-  const url = URL.createObjectURL(new Blob([filePath], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }))
-  const a = document.createElement('a')
-  a.href = url
-  a.download = title
-
-  document.body.appendChild(a)
-  a.click()
-  URL.revokeObjectURL(url)
-  document.body.removeChild(a)
+  window.open(`https://docs.google.com/document/d/${filePath}/export?format=docx`, '_blank')
 }
 </script>
 
@@ -52,7 +38,7 @@ const downloadFile = (filePath: string, title: string) => {
         <Button
           type="button"
           class="w-full"
-          @click="openFile(item.file_path)"
+          @click="openFile(item.filePath)"
         >
           Open
         </Button>
@@ -60,7 +46,7 @@ const downloadFile = (filePath: string, title: string) => {
         <Button
           type="button"
           class="w-full"
-          @click="downloadFile(item.file_path, item.title)"
+          @click="downloadFile(item.filePath, item.title)"
         >
           Download
         </Button>

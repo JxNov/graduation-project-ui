@@ -89,6 +89,7 @@ const closeAll = () => {
                   <BaseTiptapEditor
                     :model-value="values.content ?? ''"
                     @update:model-value="updateContent"
+                    :disabled="isLoading"
                   />
                 </FormControl>
               </FormItem>

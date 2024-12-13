@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Article } from '~/schema'
 
-const { $classroomStore, $materialStore, $bus } = useNuxtApp()
+const { $classroomStore, $homeworkStore, $materialStore, $bus } = useNuxtApp()
 const route = useRoute()
 const echo = useEcho()
 const useIdFunction = () => useId()
@@ -51,6 +51,7 @@ const subscribeToPrivateChannel = () => {
 onMounted(async () => {
   $bus.on('article:created', (article: any) => {
     articlesClassroom.value.push(article)
+    subscribeToPrivateChannel()
   })
 
   $bus.on('article:commented', (val: any) => {
@@ -59,10 +60,24 @@ onMounted(async () => {
       const article = articlesClassroom.value.find((article: any) => article.id === articleId)
 
       if (article) {
-        article.comments.push(comment)
+        if (Array.isArray(article.comments)) {
+          const commentIndex = article.comments.findIndex((c: any) => c.id === comment.id)
+          if (commentIndex !== -1) {
+            article.comments[commentIndex] = comment
+          } else {
+            article.comments.push(comment)
+          }
+        } else {
+          article.comments = [comment]
+        }
       }
     }
   )
+
+  $bus.on('article:deleted', (articleId: number) => {
+    const index = articlesClassroom.value.findIndex((article: any) => article.id === articleId)
+    articlesClassroom.value.splice(index, 1)
+  })
 
   const { className: name, classCode, articles } = await $classroomStore.fetchDetailClassroom(classSlug)
   className.value = name
@@ -74,6 +89,10 @@ onMounted(async () => {
   teachersClassroom.value = teachers
   studentsClassroom.value = students
 
+  if (!$homeworkStore.homeworks.length) {
+    await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
+  }
+
   if (!$materialStore.materials.length) {
     await $materialStore.fetchMaterialsClass(classSlug)
   }
@@ -82,6 +101,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   $bus.off('article:created')
   $bus.off('article:commented')
+  $bus.off('article:deleted')
 
   stopAllListeners()
 })

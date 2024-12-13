@@ -4,15 +4,8 @@ import HomeWorkCreate from './HomeworkCreate.vue'
 import { checkPermissions } from '~/utils/checkPermissions'
 
 const { $homeworkStore, $authStore } = useNuxtApp()
-const route = useRoute()
 
 const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
-
-onMounted(async () => {
-  if (!$homeworkStore.homeworks.length) {
-    await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
-  }
-})
 </script>
 
 <template>

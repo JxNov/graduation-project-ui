@@ -1,10 +1,47 @@
 <script setup lang="ts">
+import { ConfigProvider } from 'radix-vue'
+import { DotsVerticalIcon } from '@radix-icons/vue'
 import BulletinBoardNotificationEditor from './BulletinBoardNotificationEditor.vue'
 import BulletinBoardNotificationComment from './BulletinBoardNotificationComment.vue'
+import { checkPermissions } from '~/utils/checkPermissions'
 
-defineProps<{
+const { $authStore, $articleStore, $bus } = useNuxtApp()
+const useIdFunction = () => useId()
+
+const props = defineProps<{
   article: any
 }>()
+
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
+
+const editComment = ref<any>(null)
+const deleteComment = ref<any>(null)
+
+const handleEditComment = (comment: any) => {
+  editComment.value = comment
+}
+
+const hadleRemoveComment = (value: any) => {
+  editComment.value = value
+}
+
+const handleDeleteComment = (comment: any) => {
+  deleteComment.value = comment
+}
+
+const handleDeleteArticle = async () => {
+  try {
+    const response = await $articleStore.deleteArticle(props.article.id)
+
+    if (response.status !== 'success') {
+      throw new Error('Failed to delete article')
+    }
+
+    $bus.emit('article:deleted', props.article.id)
+  } catch (error) {
+    throw error
+  }
+}
 
 const countDateDays = (date: string) => {
   const date1 = new Date(date)
@@ -29,6 +66,13 @@ const countDateDays = (date: string) => {
     }
   }
 }
+
+watchEffect(() => {
+  if (deleteComment.value) {
+    const index = props.article.comments.findIndex((comment: any) => comment.id === deleteComment.value.id)
+    props.article.comments.splice(index, 1)
+  }
+})
 </script>
 
 <template>
@@ -47,35 +91,39 @@ const countDateDays = (date: string) => {
         </div>
       </div>
 
-      <!--      <ConfigProvider :use-id="useIdFunction">-->
-      <!--        <DropdownMenu>-->
-      <!--          <DropdownMenuTrigger as-child>-->
-      <!--            <Button-->
-      <!--              variant="ghost"-->
-      <!--              class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"-->
-      <!--            >-->
-      <!--              <DotsVerticalIcon class="h-4 w-4" />-->
-      <!--              <span class="sr-only">Open menu</span>-->
-      <!--            </Button>-->
-      <!--          </DropdownMenuTrigger>-->
-      <!--          <DropdownMenuContent align="end" class="w-[160px]">-->
-      <!--            <DropdownMenuItem>-->
-      <!--              Edit-->
-      <!--            </DropdownMenuItem>-->
-      <!--            <DropdownMenuSeparator />-->
-
-      <!--            <DropdownMenuItem>-->
-      <!--              Delete-->
-      <!--            </DropdownMenuItem>-->
-      <!--          </DropdownMenuContent>-->
-      <!--        </DropdownMenu>-->
-      <!--      </ConfigProvider>-->
+      <ConfigProvider :use-id="useIdFunction">
+        <DropdownMenu v-if="teacherPermissions && $authStore.user.username === article.teacherUsername">
+          <DropdownMenuTrigger as-child>
+            <Button
+              variant="ghost"
+              class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+            >
+              <DotsVerticalIcon class="h-4 w-4" />
+              <span class="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" class="w-[160px]">
+            <DropdownMenuItem @click="handleDeleteArticle">
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ConfigProvider>
     </CardHeader>
 
     <CardContent v-html="article.content" />
 
-    <BulletinBoardNotificationEditor :article-id="article.id">
-      <BulletinBoardNotificationComment v-if="article.comments?.length" :comments="article.comments" />
+    <BulletinBoardNotificationEditor
+      :article-id="article.id"
+      :comment="editComment"
+      @remove-comment="hadleRemoveComment"
+    >
+      <BulletinBoardNotificationComment
+        v-if="article.comments?.length"
+        :comments="article.comments"
+        @edit-comment="handleEditComment"
+        @delete-comment="handleDeleteComment"
+      />
     </BulletinBoardNotificationEditor>
   </Card>
 </template>
