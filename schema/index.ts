@@ -60,3 +60,6 @@ export type { Homework } from './homework'
 
 export { materialSchema, materialBlockSchema } from './material'
 export type { Material, MaterialBlock } from './material'
+
+export { gradeSchema, gradeClassSchema } from './grade'
+export type { Grade, GradeClass } from './grade'

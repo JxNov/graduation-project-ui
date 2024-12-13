@@ -14,9 +14,9 @@ const showConfirmPassword = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 
 const formSchema = toTypedSchema(z.object({
-    oldPassword: z.string().min(6),
-    newPassword: z.string().min(6),
-    confirmPassword: z.string().min(6)
+    oldPassword: z.string().min(6).optional(),
+    newPassword: z.string().min(6).optional(),
+    confirmPassword: z.string().min(6).optional()
   })
     .refine((data) => data.newPassword === data.confirmPassword, {
       message: 'Passwords don\'t match',
@@ -57,7 +57,9 @@ const onSubmit = handleSubmit(async (values) => {
 
     $authStore.user.image = response.data.image
     isLoading.value = false
-    navigateTo('/')
+    setFieldValue('oldPassword', undefined)
+    setFieldValue('newPassword', undefined)
+    setFieldValue('confirmPassword', undefined)
   } catch (error) {
     isLoading.value = false
     throw error

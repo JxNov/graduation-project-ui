@@ -46,9 +46,9 @@ export const useUserStore = defineStore('user', () => {
 
   const updateProfileInformation = async (username: string, data: {
     images: File[],
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword: string,
+    oldPassword?: string,
+    newPassword?: string,
+    confirmPassword?: string,
   }) => {
     try {
       const response = await updateProfileInformationService(username, data)

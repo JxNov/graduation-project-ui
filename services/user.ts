@@ -58,9 +58,9 @@ export const fetchUserDetailService = async (username: string): Promise<UserDeta
 
 export const updateProfileInformationService = async (username: string, data: {
   images: File[],
-  oldPassword: string,
-  newPassword: string,
-  confirmPassword: string,
+  oldPassword?: string,
+  newPassword?: string,
+  confirmPassword?: string,
 }): Promise<any> => {
   const { $axios } = useNuxtApp()
 
