@@ -7,15 +7,17 @@ import { createColumns } from '~/composables/columns'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
-import { TeacherDialogImport } from '~/components/common/dialog/teacher'
+import { TeacherDialogImport, TeacherDialogAssign } from '~/components/common/dialog/teacher'
 import { toast } from 'vue-sonner'
+import { Badge } from '~/components/ui/badge'
 
-const { $authStore, $teacherStore, $bus } = useNuxtApp()
+const { $authStore, $teacherStore, $subjectStore, $bus } = useNuxtApp()
 
 const isLoaded = ref<boolean>(false)
 const isImporting = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
+const isAssigning = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
 const selectedValue = ref<Teacher | object>({})
 
@@ -40,6 +42,10 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
+  $bus.on('close-dialog-assign', (value: boolean) => {
+    isAssigning.value = value
+  })
+
   $bus.on('close-dialog-delete', (value: boolean) => {
     isDeleting.value = value
     selectedValue.value = {}
@@ -51,6 +57,10 @@ onMounted(async () => {
 
   if (!$teacherStore.teachers.length) {
     await $teacherStore.fetchTeachers()
+  }
+
+  if (!$subjectStore.subjects.length) {
+    await $subjectStore.fetchSubjects()
   }
 })
 
@@ -65,7 +75,6 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    // ['name', 'Name'],
     ['email', 'Email'],
     ['gender', 'Gender'],
     ['actions', '', '', {
@@ -99,19 +108,36 @@ const columns = createColumns(
         }
       }),
       before: 'email'
+    },
+    {
+      accessorKey: 'subjects',
+      title: 'Subjects',
+      render: (row) => h('div', { class: 'truncate' },
+        row.original.subjects.map((permission: any) => h(Badge, {
+          variant: 'outline',
+          class: 'mr-1'
+        }, () => permission))
+      ),
+      before: 'actions'
     }
   ],
-  'teachers.update',
-  'teachers.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<Teacher>[]
 
 const valueGender = extractValue($teacherStore.teachers, 'gender')
+const valueSubjects = extractValue($teacherStore.teachers, 'subjects')
 
 const filters: TableFilter[] = [
   {
     name: 'gender',
     label: 'Gender',
     values: valueGender
+  },
+  {
+    name: 'subjects',
+    label: 'Subjects',
+    values: valueSubjects
   }
 ]
 
@@ -124,12 +150,13 @@ const handleCloseDialog = () => {
   isImporting.value = false
   isCreating.value = false
   isEditing.value = false
+  isAssigning.value = false
   isDeleting.value = false
   selectedValue.value = {}
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['teacher.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 
 const downloadSampleTeachers = async () => {
@@ -175,6 +202,10 @@ const downloadSampleTeachers = async () => {
         <Button variant="default" @click="isImporting = true" v-if="shouldShowElement">
           Import Teachers
         </Button>
+
+        <Button @click="isAssigning = true" v-if="shouldShowElement">
+          Assign Subjects to Teachers
+        </Button>
       </div>
     </div>
 
@@ -188,6 +219,12 @@ const downloadSampleTeachers = async () => {
   <Dialog :open="isImporting" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
       <TeacherDialogImport />
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isAssigning" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
+      <TeacherDialogAssign />
     </DialogContent>
   </Dialog>
 

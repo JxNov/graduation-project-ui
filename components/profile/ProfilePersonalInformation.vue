@@ -3,7 +3,7 @@ const { $userStore } = useNuxtApp()
 </script>
 
 <template>
-  <Card class="col-span-9">
+  <Card class="col-span-8">
     <CardHeader class="flex flex-row profiles-start gap-4">
       <h2 class="text-lg font-semibold">
         Personal Information

@@ -11,7 +11,7 @@ import { PlusIcon } from '@radix-icons/vue'
       </Button>
     </DrawerTrigger>
 
-    <DrawerContent class="h-full">
+    <DrawerContent class="h-5/6">
       <div class="mx-auto w-full max-w-screen-xl">
         <DrawerHeader>
           <DrawerTitle>Create Homework</DrawerTitle>

@@ -36,7 +36,6 @@ const onSubmit = handleSubmit(async (values) => {
 
   try {
     const response = await $classroomStore.joinClassroom(values.code)
-    console.log(response)
 
     if (!response) {
       throw new Error('Failed to join classroom')

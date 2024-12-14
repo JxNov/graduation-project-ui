@@ -1,5 +1,6 @@
 import type { Teacher } from '~/schema'
 import { fetchTeachersService, importTeachersService, exportSampleTeachersService } from '~/services/teacher'
+import { assignSubjectToTeacherService } from '~/services/subject'
 import { toast } from 'vue-sonner'
 
 export const useTeacherStore = defineStore('teacher', () => {
@@ -43,15 +44,34 @@ export const useTeacherStore = defineStore('teacher', () => {
     }
   }
 
-  const replaceTeachers = (response: any) => {
-    teachers.value = teachers.value.map((user: any) => {
-      const responseTeacher = response.find((res: any) => res.username === user.username)
-      if (responseTeacher) {
-        return responseTeacher
+  const assignSubjectToTeacher = async (username: string, subjectSlug: string[]) => {
+    try {
+      const response = await assignSubjectToTeacherService(username, subjectSlug)
+      replaceTeachers(response)
+
+      if (!response) {
+        throw new Error('Assign subject to teacher failed!!!')
       }
 
-      return user
-    })
+      toast.success('Assign subject to teacher successfully!!!')
+
+      return response
+    } catch (error) {
+      toast.error('Assign subject to teacher failed!!!')
+    }
+  }
+
+  const replaceTeachers = (response: any) => {
+    const index = teachers.value.findIndex(teacher => teacher.username === response.username)
+    if (index !== -1) {
+      teachers.value = [
+        ...teachers.value.slice(0, index),
+        response,
+        ...teachers.value.slice(index + 1)
+      ]
+    } else {
+      teachers.value = [...teachers.value, response]
+    }
   }
 
   const clearTeachers = () => {
@@ -63,6 +83,7 @@ export const useTeacherStore = defineStore('teacher', () => {
     fetchTeachers,
     exportSampleTeachers,
     importTeachers,
+    assignSubjectToTeacher,
     clearTeachers
   }
 })

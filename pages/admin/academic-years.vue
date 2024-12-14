@@ -72,8 +72,8 @@ const columns = createColumns(
   ],
   academicYearSchema,
   [],
-  'users.update',
-  'users.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<AcademicYear>[]
 
 const valueGenerationName = extractValue($academicYearStore.academicYears, 'generationName')
@@ -104,7 +104,7 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 
 const handleCloseDialog = () => {
@@ -119,7 +119,7 @@ const handleCloseDialog = () => {
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Manage academic years</h2>
-      <Button variant="default" @click="isCreating = true">
+      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
         Create new academic year
       </Button>
     </div>

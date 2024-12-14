@@ -27,7 +27,7 @@ const filteredGeminiList = computed(() => {
   return output
 })
 
-const selectedGeminiData = computed(() => props.data.find(item => item?.id === selectedGemini.value))
+const selectedGeminiData = computed(() => props.data?.find(item => item?.id === selectedGemini.value))
 </script>
 
 <template>

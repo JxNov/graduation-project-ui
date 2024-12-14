@@ -55,6 +55,11 @@ export const navMenu: NavMenuItems = [
     permissions: ['admin.*']
   },
   {
+    title: 'materials',
+    icon: 'material-symbols:file-present-outline-rounded',
+    link: '/materials'
+  },
+  {
     title: 'roles',
     icon: 'eos-icons:role-binding-outlined',
     link: '/admin/roles',

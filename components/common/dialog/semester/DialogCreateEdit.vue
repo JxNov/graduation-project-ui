@@ -2,7 +2,7 @@
 import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { useForm } from 'vee-validate'
-import DatePicker from '~/components/base/DatePicker.vue'
+import DatePickerNotSelectedPrevious from '~/components/base/DatePickerNotSelectedPrevious.vue'
 import { type DateValue, parseDate, today, getLocalTimeZone } from '@internationalized/date'
 import Combobox from '~/components/base/Combobox.vue'
 
@@ -129,7 +129,7 @@ const onSubmit = handleSubmit(async (values) => {
         </FormItem>
       </FormField>
 
-      <DatePicker
+      <DatePickerNotSelectedPrevious
         name="startDate"
         label="Start date"
         :model-value="startDate"
@@ -137,7 +137,7 @@ const onSubmit = handleSubmit(async (values) => {
         @update:model-value="handleStartDateChange"
       />
 
-      <DatePicker
+      <DatePickerNotSelectedPrevious
         name="endDate"
         label="End date"
         :model-value="endDate"

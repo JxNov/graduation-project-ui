@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { User } from '~/schema'
-import { userSchema } from '~/schema'
+import type { Grade } from '~/schema'
+import { gradeSchema } from '~/schema'
 import type { TableFilter } from '~/types/table'
 import { createColumns } from '~/composables/columns'
 import { checkPermissions } from '~/utils/checkPermissions'
@@ -9,57 +9,19 @@ import { extractValue } from '~/utils/extractValue'
 import { Badge } from '~/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 
-const { $authStore, $userStore, $roleStore } = useNuxtApp()
+const { $authStore, $userStore, $roleStore, $gradeStore } = useNuxtApp()
 
 onMounted(async () => {
-})
-
-interface Grade {
-  subject: string
-  teacher: string
-  mouthPoints: number[]
-  fifteenMinutesPoints: number[]
-  onePeriodPoints: number[]
-  midTermPoints: number[]
-  finalPoints: number
-}
-
-const gradeSchema = {
-  subject: 'string',
-  teacher: 'string',
-  mouthPoints: 'array',
-  fifteenMinutesPoints: 'array',
-  onePeriodPoints: 'array',
-  midTermPoints: 'array',
-  finalPoints: 'number'
-}
-
-const grades: Grade[] = [
-  {
-    subject: 'Math',
-    teacher: 'Teacher 1',
-    mouthPoints: [10, 10, 9],
-    fifteenMinutesPoints: [10, 8, 6],
-    onePeriodPoints: [10, 7, 5],
-    midTermPoints: [10, 10],
-    finalPoints: 10
-  },
-  {
-    subject: 'Science',
-    teacher: 'Teacher 2',
-    mouthPoints: [10, 10, 10],
-    fifteenMinutesPoints: [10, 10, 10],
-    onePeriodPoints: [10, 10, 10],
-    midTermPoints: [10, 10],
-    finalPoints: 10
+  if (!$gradeStore.grades.length) {
+    await $gradeStore.fetchGradeStudent('kiendv897-6a1', 'ki-1', 'nam-nhat')
   }
-]
+})
 
 const columns = createColumns(
   [
-    ['subject', 'Subject'],
-    ['teacher', 'Teacher'],
-    ['finalPoints', 'Final Points']
+    ['subjectName', 'Subject'],
+    ['semesterName', 'Semester'],
+    ['academicYearName', 'Academic Year']
   ],
   gradeSchema,
   [
@@ -72,7 +34,7 @@ const columns = createColumns(
           class: 'mr-1'
         }, () => mouthPoint))
       ),
-      after: 'teacher'
+      after: 'academicYearName'
     },
     {
       accessorKey: 'fifteenMinutesPoints',
@@ -97,32 +59,59 @@ const columns = createColumns(
       after: 'fifteenMinutesPoints'
     },
     {
-      accessorKey: 'midTermPoints',
+      accessorKey: 'midSemesterPoints',
       title: 'Mid Term Points',
       render: (row) => h('div',
-        row.original.midTermPoints.map((midTermPoint: any) => h(Badge, {
+        row.original.midSemesterPoints.map((midTermPoint: any) => h(Badge, {
           variant: 'outline',
           class: 'mr-1'
         }, () => midTermPoint))
       ),
-      before: 'finalPoints'
+      before: 'averageScore'
+    },
+    {
+      accessorKey: 'endSemesterPoints',
+      title: 'End Term Points',
+      render: (row) => h('div',
+        row.original.endSemesterPoints.map((endTermPoint: any) => h(Badge, {
+          variant: 'outline',
+          class: 'mr-1'
+        }, () => endTermPoint))
+      ),
+      before: 'averageScore'
+    },
+    {
+      accessorKey: 'averageScore',
+      title: 'Average Score',
+      render: (row) => h(Badge, {
+        variant: 'outline',
+        class: 'mr-1'
+      }, () => row.original.averageScore)
     }
   ],
   'users.update',
   'users.delete'
 ) as ColumnDef<Grade>[]
 
-const valueSubject = [
-  { value: 'math', label: 'Math' },
-  { value: 'science', label: 'Science' },
-  { value: 'english', label: 'English' }
-]
+const valueSubject = extractValue($gradeStore.grades, 'subjectName')
+const valueSemester = extractValue($gradeStore.grades, 'semesterName')
+const valueAcademicYear = extractValue($gradeStore.grades, 'academicYearName')
 
 const filters: TableFilter[] = [
   {
-    name: 'subject',
+    name: 'subjectName',
     label: 'Subject',
     values: valueSubject
+  },
+  {
+    name: 'semesterName',
+    label: 'Semester',
+    values: valueSemester
+  },
+  {
+    name: 'academicYearName',
+    label: 'Academic Year',
+    values: valueAcademicYear
   }
 ]
 
@@ -141,7 +130,7 @@ const shouldShowElement = computed(() => {
     <h2 class="text-4xl font-bold tracking-tight">Grades</h2>
 
     <LayoutTable
-      :data="grades"
+      :data="$gradeStore.grades"
       :columns="columns"
       :filters="filters"
     />

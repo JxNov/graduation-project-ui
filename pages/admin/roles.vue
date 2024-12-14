@@ -87,8 +87,8 @@ const columns = createColumns(
       before: 'actions'
     }
   ],
-  'users.update',
-  'users.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<Role>[]
 
 const valuePermissions = extractValue($roleStore.roles, 'permissions')
@@ -115,7 +115,7 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 
 const handleCloseDialog = () => {

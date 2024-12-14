@@ -1,42 +1,20 @@
 import { z } from 'zod'
 
 export const gradeSchema = z.object({
+  subjectName: z.string(),
+  teacherName: z.string(),
+  teacherUsername: z.string(),
   studentName: z.string(),
-  username: z.string(),
-  class: z.string(),
-  semester: z.string(),
-  scores: z.array(z.object({
-    subjectName: z.string(),
-    detailedScores: z.object({
-      diemMieng: z.array(z.number()),
-      diem15Phut: z.array(z.number()),
-      diemMotTiet: z.array(z.number()),
-      diemGiuaKi: z.array(z.number()),
-      diemCuoiKi: z.array(z.number())
-    }),
-    averageScore: z.string()
-  }))
+  studentUsername: z.string(),
+  className: z.string(),
+  semesterName: z.string(),
+  academicYearName: z.string(),
+  mouthPoints: z.array(z.number()),
+  fifteenMinutesPoints: z.array(z.number()),
+  onePeriodPoints: z.array(z.number()),
+  midSemesterPoints: z.array(z.number()),
+  endSemesterPoints: z.array(z.number()),
+  averageScore: z.string()
 })
 
 export type Grade = z.infer<typeof gradeSchema>
-
-export const gradeClassSchema = z.object({
-  teacherName: z.string(),
-  username: z.string(),
-  class: z.string(),
-  scores: z.array(z.object({
-    studentName: z.string(),
-    subjectName: z.string(),
-    semesterName: z.string(),
-    detailedScores: z.object({
-      diemMieng: z.array(z.number()),
-      diem15Phut: z.array(z.number()),
-      diemMotTiet: z.array(z.number()),
-      diemGiuaKi: z.array(z.number()),
-      diemCuoiKi: z.array(z.number())
-    }),
-    averageScore: z.string()
-  }))
-})
-
-export type GradeClass = z.infer<typeof gradeClassSchema>

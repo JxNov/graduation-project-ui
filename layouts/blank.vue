@@ -18,7 +18,7 @@ defineShortcuts({
 </script>
 
 <template>
-  <div>
+  <div vaul-drawer-wrapper>
     <slot />
   </div>
 </template>

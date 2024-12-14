@@ -17,6 +17,8 @@ import { useChatStore } from '~/stores/chat'
 import { useGeminiStore } from '~/stores/gemini'
 import { useHomeworkStore } from '~/stores/homework'
 import { useMaterialStore } from '~/stores/material'
+import { useGradeStore } from '~/stores/grade'
+import { useSubjectStore } from '~/stores/subject'
 
 declare module '#app' {
   interface NuxtApp {
@@ -39,6 +41,8 @@ declare module '#app' {
     $geminiStore: ReturnType<typeof useGeminiStore>;
     $homeworkStore: ReturnType<typeof useHomeworkStore>;
     $materialStore: ReturnType<typeof useMaterialStore>;
+    $gradeStore: ReturnType<typeof useGradeStore>;
+    $subjectStore: ReturnType<typeof useSubjectStore>;
   }
 }
 
@@ -63,5 +67,7 @@ declare module '@vue/runtime-core' {
     $geminiStore: ReturnType<typeof useGeminiStore>;
     $homeworkStore: ReturnType<typeof useHomeworkStore>;
     $materialStore: ReturnType<typeof useMaterialStore>;
+    $gradeStore: ReturnType<typeof useGradeStore>;
+    $subjectStore: ReturnType<typeof useSubjectStore>;
   }
 }

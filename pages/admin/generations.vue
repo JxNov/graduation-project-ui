@@ -67,8 +67,8 @@ const columns = createColumns(
   ],
   generationSchema,
   [],
-  'users.update',
-  'users.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<Generation>[]
 
 const valueStartDate = extractValue($generationStore.generations, 'startDate')
@@ -93,7 +93,7 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 
 const handleCloseDialog = () => {

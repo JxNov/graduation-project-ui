@@ -19,6 +19,7 @@ export const useClassroomStore = defineStore('classroom', () => {
         throw new Error('Invalid response')
       }
 
+      classrooms.value.push(response)
       toast.success('Successfully joined classroom')
 
       return response

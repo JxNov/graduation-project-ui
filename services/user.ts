@@ -86,3 +86,31 @@ export const updateProfileInformationService = async (username: string, data: {
     throw error
   }
 }
+
+export const createUserService = async (data: {
+  name: string,
+  dateOfBirth: string,
+  gender: string,
+  address: string,
+  phone: string,
+}): Promise<User> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post('/v1/users', {
+      name: data.name,
+      date_of_birth: data.dateOfBirth,
+      gender: data.gender,
+      address: data.address,
+      phone_number: data.phone
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

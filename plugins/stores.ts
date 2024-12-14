@@ -17,6 +17,8 @@ import { useChatStore } from '~/stores/chat'
 import { useGeminiStore } from '~/stores/gemini'
 import { useHomeworkStore } from '~/stores/homework'
 import { useMaterialStore } from '~/stores/material'
+import { useGradeStore } from '~/stores/grade'
+import { useSubjectStore } from '~/stores/subject'
 
 export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('generalStore', useGeneralStore())
@@ -38,4 +40,6 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('geminiStore', useGeminiStore())
   NuxtApp.provide('homeworkStore', useHomeworkStore())
   NuxtApp.provide('materialStore', useMaterialStore())
+  NuxtApp.provide('gradeStore', useGradeStore())
+  NuxtApp.provide('subjectStore', useSubjectStore())
 })
