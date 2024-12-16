@@ -11,7 +11,6 @@ import { useTeacherStore } from './teacher'
 import { useStudentStore } from './student'
 import { useClassroomStore } from './classroom'
 import { useAttendanceStore } from './attendance'
-import { useAssignmentStore } from './assignment'
 import { useArticleStore } from './article'
 import { useChatStore } from './chat'
 import { useGeminiStore } from './gemini'
@@ -32,7 +31,6 @@ export const clearStores = () => {
   useStudentStore().clearStudents()
   useClassroomStore().clearClassrooms()
   useAttendanceStore().clearAttendances()
-  useAssignmentStore().clearAssignments()
   useArticleStore().clearArticles()
   useChatStore().clearChats()
   useGeminiStore().clearGeminis()

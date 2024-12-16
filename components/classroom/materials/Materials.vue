@@ -5,8 +5,9 @@ import MaterialsCard from './MaterialsCard.vue'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { PlusIcon } from '@radix-icons/vue'
 import type { Material } from '~/schema'
+import { MaterialClassDialogCreateEdit, MaterialClassDialogDelete } from '~/components/common/dialog/material-class'
 
-const { $authStore } = useNuxtApp()
+const { $authStore, $bus } = useNuxtApp()
 
 interface MaterialProps {
   data: any
@@ -14,6 +15,10 @@ interface MaterialProps {
 
 const props = defineProps<MaterialProps>()
 
+const isCreating = ref<boolean>(false)
+const isEditing = ref<boolean>(false)
+const isDeleting = ref<boolean>(false)
+const selectedValue = ref<any>({})
 const searchValue = ref<string>('')
 const selectedSubject = ref<string>('')
 const debouncedSearch = refDebounced(searchValue, 250)
@@ -48,39 +53,60 @@ const clearSearch = () => {
   searchValue.value = ''
   selectedSubject.value = ''
 }
+
+const handleInteractOutside = (event: Event) => {
+  const target = event.target as HTMLElement
+  if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
+}
+
+const handleCloseDialog = () => {
+  isCreating.value = false
+  isEditing.value = false
+  isDeleting.value = false
+  selectedValue.value = {}
+}
+
+onMounted(() => {
+  $bus.on('close-dialog-create-edit', (value: boolean) => {
+    isCreating.value = value
+    isEditing.value = value
+    selectedValue.value = {}
+  })
+
+  $bus.on('open-dialog-edit-material-class', (value: any) => {
+    isEditing.value = value.isEditing
+    selectedValue.value = value.item
+  })
+
+  $bus.on('open-dialog-delete-material-class', (value: any) => {
+    isDeleting.value = value.isDeleting
+    selectedValue.value = value.item
+  })
+
+  $bus.on('close-dialog-delete-material-class', (value: boolean) => {
+    isDeleting.value = value
+    selectedValue.value = {}
+  })
+})
+
+onBeforeUnmount(() => {
+  $bus.off('close-dialog-create-edit')
+  $bus.off('open-dialog-edit-material-class')
+  $bus.off('open-dialog-delete-material-class')
+  $bus.off('close-dialog-delete-material-class')
+})
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-4 xl:px-16 mt-10">
     <div class="flex justify-end" v-if="teacherPermissions">
-      <Drawer>
-        <DrawerTrigger as-child>
-          <Button type="button">
-            <PlusIcon class="w-6 h-6 mr-1" />
-            Create Homework
-          </Button>
-        </DrawerTrigger>
-
-        <DrawerContent class="h-full">
-          <div class="mx-auto w-full max-w-screen-xl">
-            <DrawerHeader>
-              <DrawerTitle>Create Homework</DrawerTitle>
-              <DrawerDescription>Fill in the form below to create a new homework.</DrawerDescription>
-            </DrawerHeader>
-
-
-            <DrawerFooter>
-              <Button>Submit</Button>
-
-              <DrawerClose as-child>
-                <Button variant="outline">
-                  Cancel
-                </Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </div>
-        </DrawerContent>
-      </Drawer>
+      <Button
+        type="button"
+        @click="isCreating = true"
+      >
+        <PlusIcon class="size-4 mr-2" />
+        Create Material
+      </Button>
     </div>
 
     <Card class="flex justify-between items-center gap-4 p-4">
@@ -126,4 +152,28 @@ const clearSearch = () => {
 
     <MaterialsCard :data="filteredMaterialList" />
   </div>
+
+  <Dialog :open="isCreating" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <ScrollArea class="max-h-[650px] w-full px-2">
+        <MaterialClassDialogCreateEdit />
+      </ScrollArea>
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isEditing" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <ScrollArea class="max-h-[650px] w-full px-2">
+        <MaterialClassDialogCreateEdit edit :data="selectedValue" />
+      </ScrollArea>
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isDeleting" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <ScrollArea class="max-h-[650px] w-full px-2">
+        <MaterialClassDialogDelete :data="selectedValue" />
+      </ScrollArea>
+    </DialogContent>
+  </Dialog>
 </template>

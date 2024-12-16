@@ -224,7 +224,7 @@ const downloadSampleTeachers = async () => {
 
   <Dialog :open="isAssigning" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
-      <TeacherDialogAssign />
+      <TeacherDialogAssign @click="$bus.emit('close-tags-combobox', false)" />
     </DialogContent>
   </Dialog>
 

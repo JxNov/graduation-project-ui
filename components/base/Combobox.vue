@@ -9,7 +9,7 @@ const props = defineProps<{
     label: string
     value: string
   }[]
-  modelValue: string
+  modelValue: string | undefined
 }>()
 
 const emits = defineEmits<{

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Article } from '~/schema'
 
-const { $classroomStore, $homeworkStore, $materialStore, $bus } = useNuxtApp()
+const { $classroomStore, $homeworkStore, $materialStore, $subjectStore, $semesterStore, $bus } = useNuxtApp()
 const route = useRoute()
 const echo = useEcho()
 const useIdFunction = () => useId()
@@ -89,13 +89,7 @@ onMounted(async () => {
   teachersClassroom.value = teachers
   studentsClassroom.value = students
 
-  if (!$homeworkStore.homeworks.length) {
-    await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
-  }
-
-  if (!$materialStore.materials.length) {
-    await $materialStore.fetchMaterialsClass(classSlug)
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -105,6 +99,28 @@ onBeforeUnmount(() => {
 
   stopAllListeners()
 })
+
+async function fetchData() {
+  const promises = []
+
+  if (!$homeworkStore.homeworks.length) {
+    promises.push($homeworkStore.fetchHomeworks(route.params.classroomSlug as string))
+  }
+
+  if (!$materialStore.materialClass.length) {
+    promises.push($materialStore.fetchMaterialClass(classSlug))
+  }
+
+  if (!$subjectStore.subjects.length) {
+    promises.push($subjectStore.fetchSubjects())
+  }
+
+  if (!$semesterStore.semesters.length) {
+    promises.push($semesterStore.fetchSemesters())
+  }
+
+  await Promise.all(promises)
+}
 </script>
 
 <template>
@@ -149,7 +165,7 @@ onBeforeUnmount(() => {
     </TabsContent>
 
     <TabsContent value="materials" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
-      <ClassroomMaterials :data="$materialStore.materials" />
+      <ClassroomMaterials :data="$materialStore.materialClass" />
     </TabsContent>
   </Tabs>
 </template>

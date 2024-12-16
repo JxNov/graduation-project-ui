@@ -11,7 +11,6 @@ import { useTeacherStore } from '~/stores/teacher'
 import { useStudentStore } from '~/stores/student'
 import { useClassroomStore } from '~/stores/classroom'
 import { useAttendanceStore } from '~/stores/attendance'
-import { useAssignmentStore } from '~/stores/assignment'
 import { useArticleStore } from '~/stores/article'
 import { useChatStore } from '~/stores/chat'
 import { useGeminiStore } from '~/stores/gemini'
@@ -35,7 +34,6 @@ declare module '#app' {
     $studentStore: ReturnType<typeof useStudentStore>;
     $classroomStore: ReturnType<typeof useClassroomStore>;
     $attendanceStore: ReturnType<typeof useAttendanceStore>;
-    $assignmentStore: ReturnType<typeof useAssignmentStore>;
     $articleStore: ReturnType<typeof useArticleStore>;
     $chatStore: ReturnType<typeof useChatStore>;
     $geminiStore: ReturnType<typeof useGeminiStore>;
@@ -61,7 +59,6 @@ declare module '@vue/runtime-core' {
     $studentStore: ReturnType<typeof useStudentStore>;
     $classroomStore: ReturnType<typeof useClassroomStore>;
     $attendanceStore: ReturnType<typeof useAttendanceStore>;
-    $assignmentStore: ReturnType<typeof useAssignmentStore>;
     $articleStore: ReturnType<typeof useArticleStore>;
     $chatStore: ReturnType<typeof useChatStore>;
     $geminiStore: ReturnType<typeof useGeminiStore>;

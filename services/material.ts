@@ -34,7 +34,7 @@ export const fetchMaterialBlockService = async (): Promise<MaterialBlock[]> => {
 
 export const createMaterialClassService = async (data: {
   title: string
-  description: string
+  description: string | null
   file: File
   subjectSlug: string
   classSlug: string
@@ -66,7 +66,7 @@ export const createMaterialClassService = async (data: {
 
 export const createMaterialBlockService = async (data: {
   title: string
-  description: string
+  description: string | null
   file: File
   subjectSlug: string
   blockSlug: string
@@ -98,7 +98,7 @@ export const createMaterialBlockService = async (data: {
 
 export const updateMaterialClassService = async (materialSlug: string, data: {
   title: string
-  description: string
+  description: string | null
   file: File
   subjectSlug: string
   classSlug: string
@@ -131,7 +131,7 @@ export const updateMaterialClassService = async (materialSlug: string, data: {
 
 export const updateMaterialBlockService = async (materialSlug: string, data: {
   title: string
-  description: string
+  description: string | null
   file: File
   subjectSlug: string
   blockSlug: string
@@ -157,6 +157,22 @@ export const updateMaterialBlockService = async (materialSlug: string, data: {
     }
 
     return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const deleteMaterialService = async (materialSlug: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.delete(`/v1/materials/force-delete/${materialSlug}`)
+
+    if (!response) {
+      throw new Error('No response')
+    }
+
+    return response.data
   } catch (error) {
     throw error
   }

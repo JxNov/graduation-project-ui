@@ -76,32 +76,34 @@ const handleInteractOutside = (event: Event) => {
 
   <Dialog :open="isDialogOpen" @update:open="isDialogOpen = $event">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <DialogHeader>
-        <DialogTitle>Join Classroom</DialogTitle>
+      <ScrollArea class="max-h-[650px] w-full px-4">
+        <DialogHeader>
+          <DialogTitle>Join Classroom</DialogTitle>
 
-        <DialogDescription>
-          Enter the invitation code to join the classroom
-        </DialogDescription>
-      </DialogHeader>
+          <DialogDescription>
+            Enter the invitation code to join the classroom
+          </DialogDescription>
+        </DialogHeader>
 
-      <form class="space-y-6" @submit="onSubmit">
-        <FormField v-slot="{ componentField }" name="code" :validate-on-blur="!isFieldDirty">
-          <FormItem>
-            <FormLabel>Code</FormLabel>
+        <form class="space-y-6" @submit="onSubmit">
+          <FormField v-slot="{ componentField }" name="code" :validate-on-blur="!isFieldDirty">
+            <FormItem>
+              <FormLabel>Code</FormLabel>
 
-            <FormControl>
-              <Input type="text" placeholder="xxxxxxx" v-bind="componentField" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        </FormField>
+              <FormControl>
+                <Input type="text" placeholder="xxxxxxx" v-bind="componentField" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
 
-        <DialogFooter>
-          <Button type="submit">
-            Join
-          </Button>
-        </DialogFooter>
-      </form>
+          <DialogFooter>
+            <Button type="submit">
+              Join
+            </Button>
+          </DialogFooter>
+        </form>
+      </ScrollArea>
     </DialogContent>
   </Dialog>
 </template>

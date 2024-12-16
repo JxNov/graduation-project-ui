@@ -5,6 +5,7 @@ import { checkPermissions } from '~/utils/checkPermissions'
 
 const { $classroomStore, $homeworkStore, $authStore } = useNuxtApp()
 const route = useRoute()
+const useIdFunction = () => useId()
 
 const title = 'Chi tiết bài tập'
 const description = 'Chi tiết bài tập'
@@ -23,6 +24,7 @@ const classSlug = route.params.classroomSlug as string
 const className = ref<string>('')
 const code = ref<string>('')
 const homework = ref<any>(null)
+const userSubmittedAssignment = ref<any>([])
 
 const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
 
@@ -36,35 +38,43 @@ onMounted(async () => {
   }
 
   homework.value = $homeworkStore.homeworks.find((homework: any) => homework.slug === route.params.homeworkSlug)
+  userSubmittedAssignment.value = await $homeworkStore.fetchDetailSubmittedAssignment(route.params.classroomSlug as string, route.params.homeworkSlug as string)
 })
+
+const handleUpdate = (data: any) => {
+  const index = userSubmittedAssignment.value.findIndex((item: any) => item.studentUsername === data.studentUsername)
+  userSubmittedAssignment.value[index] = data
+}
 </script>
 
 <template>
-  <ClientOnly>
-    <Tabs default-value="instruct" v-if="teacherPermissions">
-      <div class="flex justify-between items-center">
-        <TabsList>
-          <TabsTrigger value="instruct">
-            Instruct
-          </TabsTrigger>
+  <Tabs default-value="instruct" v-if="teacherPermissions">
+    <div class="flex justify-between items-center">
+      <TabsList>
+        <TabsTrigger value="instruct">
+          Instruct
+        </TabsTrigger>
 
-          <TabsTrigger value="student-homework">
-            Student Homework
-          </TabsTrigger>
-        </TabsList>
+        <TabsTrigger value="student-homework">
+          Student Homework
+        </TabsTrigger>
+      </TabsList>
 
-        <ClassroomCodeMobile :class-name="className" :code="code" />
-      </div>
+      <ClassroomCodeMobile :class-name="className" :code="code" />
+    </div>
 
-      <TabsContent value="instruct" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <HomeworkInstruct :data="homework" />
-      </TabsContent>
+    <TabsContent value="instruct" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
+      <HomeworkInstruct :data="homework" />
+    </TabsContent>
 
-      <TabsContent value="student-homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <HomeworkStudent />
-      </TabsContent>
-    </Tabs>
+    <TabsContent value="student-homework" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
+      <HomeworkStudent
+        :homework="homework"
+        :data="userSubmittedAssignment"
+        @update="handleUpdate"
+      />
+    </TabsContent>
+  </Tabs>
 
-    <HomeworkInstruct :data="homework" v-else />
-  </ClientOnly>
+  <HomeworkInstruct :data="homework" :user-submitted-assignment="userSubmittedAssignment" v-else />
 </template>

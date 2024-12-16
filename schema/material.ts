@@ -14,7 +14,12 @@ export type Material = z.infer<typeof materialSchema>
 export const materialBlockSchema = z.object({
   blockName: z.string(),
   blockSlug: z.string(),
-  materials: z.array(materialSchema)
+  title: z.string(),
+  slug: z.string(),
+  description: z.string(),
+  filePath: z.string(),
+  subjectName: z.string(),
+  subjectSlug: z.string()
 })
 
 export type MaterialBlock = z.infer<typeof materialBlockSchema>
