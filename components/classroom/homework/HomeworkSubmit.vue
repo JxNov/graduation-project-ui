@@ -123,7 +123,7 @@ const formatNumber = (value: number) => {
       <img
         v-if="dataUser.filePath"
         :src="`https://drive.google.com/thumbnail?id=${dataUser.filePath}`"
-        class="w-full h-32 object-cover rounded-md aspect-square cursor-pointer"
+        class="w-full h-32 object-cover rounded-md aspect-square cursor-pointer select-none"
         :alt="dataUser.studentName"
         loading="lazy"
         @click="openFileAssignment(dataUser.filePath)"
