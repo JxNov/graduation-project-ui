@@ -1,22 +1,4 @@
 <script setup lang="ts">
-import {
-  CalendarCell,
-  CalendarCellTrigger,
-  CalendarGrid,
-  CalendarGridBody,
-  CalendarGridHead,
-  CalendarGridRow,
-  CalendarHeadCell,
-  CalendarHeader,
-  CalendarHeading
-} from '~/components/ui/calendar'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '~/components/ui/select'
 import { cn } from '~/lib/utils'
 import { type DateValue, getLocalTimeZone, today } from '@internationalized/date'
 import { useVModel } from '@vueuse/core'
@@ -104,7 +86,6 @@ watch(value, (newValue) => {
             v-model:placeholder="placeholder"
             v-bind="forwarded"
             :class="cn('rounded-md border p-3 bg-card w-fit', props.class)"
-            :min-value="today(getLocalTimeZone())"
           >
             <CalendarHeader>
               <CalendarHeading class="flex w-full items-center justify-between gap-2">
@@ -113,7 +94,6 @@ watch(value, (newValue) => {
                   @update:model-value="(v: string) => {
                     if (!v || !placeholder) return;
                     if (Number(v) === placeholder?.month) return;
-                    if (Number(v) < new Date().getMonth() + 1 && new Date().getFullYear() === placeholder.year) return;
                     placeholder = placeholder.set({
                       month: Number(v),
                     })
@@ -126,8 +106,6 @@ watch(value, (newValue) => {
                     <SelectItem
                       v-for="month in createYear({ dateObj: date })"
                       :key="month.toString()" :value="month.month.toString()"
-                      :class="cn(month.month < new Date().getMonth() + 1 && new Date().getFullYear() === placeholder.year && 'text-muted-foreground')"
-                      :disabled="month.month < new Date().getMonth() + 1 && new Date().getFullYear() === placeholder.year"
                     >
                       {{ formatter.custom(toDate(month), { month: 'long' }) }}
                     </SelectItem>
@@ -139,25 +117,6 @@ watch(value, (newValue) => {
                   @update:model-value="(v: string) => {
                     if (!v || !placeholder) return;
                     if (Number(v) === placeholder?.year) return;
-                    if (Number(v) < new Date().getFullYear()) return;
-
-                    if ((Number(v) === new Date().getFullYear() || placeholder.month === new Date().getMonth() + 1) && placeholder.day < new Date().getDate()) {
-                      placeholder = placeholder.set({
-                        day: new Date().getDate(),
-                        month: new Date().getMonth() + 1,
-                        year: Number(v),
-                      })
-                      return;
-                    }
-
-                    if (Number(v) === new Date().getFullYear() && placeholder.month < new Date().getMonth() + 1) {
-                      placeholder = placeholder.set({
-                        month: new Date().getMonth() + 1,
-                        year: Number(v),
-                      })
-                      return;
-                    }
-
                     placeholder = placeholder.set({
                       year: Number(v),
                     })
@@ -170,8 +129,6 @@ watch(value, (newValue) => {
                     <SelectItem
                       v-for="yearValue in createDecade({ dateObj: date, startIndex: -10, endIndex: 10 })"
                       :key="yearValue.toString()" :value="yearValue.year.toString()"
-                      :class="cn(yearValue.year < new Date().getFullYear() && 'text-muted-foreground')"
-                      :disabled="yearValue.year < new Date().getFullYear()"
                     >
                       {{ yearValue.year }}
                     </SelectItem>

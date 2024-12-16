@@ -4,7 +4,8 @@ import {
   createClassService,
   updateClassService,
   deleteClassService,
-  distributeStudentsService
+  distributeStudentsService,
+  assignStudentsToClassService
 } from '~/services/class'
 import { toast } from 'vue-sonner'
 
@@ -82,6 +83,23 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const assignStudentsToClass = async (data: {
+    classSlug: string
+    username: string[]
+  }) => {
+    try {
+      const response = await assignStudentsToClassService(data)
+      incrementNumberOfStudents(data.classSlug)
+
+      toast.success('Students assigned to class successfully')
+
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const replaceClasses = (response: any) => {
     const index = classes.value.findIndex(cls => cls.slug === response.slug)
     if (index !== -1) {
@@ -92,6 +110,20 @@ export const useClassStore = defineStore('class', () => {
       ]
     } else {
       classes.value = [...classes.value, response]
+    }
+  }
+
+  const incrementNumberOfStudents = (classSlug: string) => {
+    const index = classes.value.findIndex(cls => cls.slug === classSlug)
+    if (index !== -1) {
+      classes.value = [
+        ...classes.value.slice(0, index),
+        {
+          ...classes.value[index],
+          numberOfStudents: classes.value[index].numberOfStudents + 1
+        },
+        ...classes.value.slice(index + 1)
+      ]
     }
   }
 
@@ -106,6 +138,7 @@ export const useClassStore = defineStore('class', () => {
     updateClass,
     deleteClass,
     distributeStudents,
+    assignStudentsToClass,
     clearClasses
   }
 })

@@ -97,3 +97,25 @@ export const distributeStudentsService = async (academicYearSlug: string, blockS
     throw error
   }
 }
+
+export const assignStudentsToClassService = async (data: {
+  classSlug: string
+  username: string[]
+}): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post(`/v1/excels/students-class`, {
+      classSlug: data.classSlug,
+      usernames: data.username
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

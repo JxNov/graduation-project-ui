@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { Article } from '~/schema'
 
-const { $classroomStore, $bus } = useNuxtApp()
+const { $classroomStore, $homeworkStore, $materialStore, $subjectStore, $semesterStore, $bus } = useNuxtApp()
 const route = useRoute()
 const echo = useEcho()
+const useIdFunction = () => useId()
 
 const title = 'Chi tiết lớp học'
 const description = 'Chi tiết lớp học'
@@ -50,6 +51,7 @@ const subscribeToPrivateChannel = () => {
 onMounted(async () => {
   $bus.on('article:created', (article: any) => {
     articlesClassroom.value.push(article)
+    subscribeToPrivateChannel()
   })
 
   $bus.on('article:commented', (val: any) => {
@@ -58,10 +60,24 @@ onMounted(async () => {
       const article = articlesClassroom.value.find((article: any) => article.id === articleId)
 
       if (article) {
-        article.comments.push(comment)
+        if (Array.isArray(article.comments)) {
+          const commentIndex = article.comments.findIndex((c: any) => c.id === comment.id)
+          if (commentIndex !== -1) {
+            article.comments[commentIndex] = comment
+          } else {
+            article.comments.push(comment)
+          }
+        } else {
+          article.comments = [comment]
+        }
       }
     }
   )
+
+  $bus.on('article:deleted', (articleId: number) => {
+    const index = articlesClassroom.value.findIndex((article: any) => article.id === articleId)
+    articlesClassroom.value.splice(index, 1)
+  })
 
   const { className: name, classCode, articles } = await $classroomStore.fetchDetailClassroom(classSlug)
   className.value = name
@@ -72,88 +88,84 @@ onMounted(async () => {
   const { teachers, students } = await $classroomStore.fetchPeopleClassroom(classSlug)
   teachersClassroom.value = teachers
   studentsClassroom.value = students
+
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
   $bus.off('article:created')
   $bus.off('article:commented')
+  $bus.off('article:deleted')
 
   stopAllListeners()
 })
 
-const data = [
-  {
-    title: 'Material 1',
-    slug: 'material-1',
-    subject: 'Math',
-    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-  },
-  {
-    title: 'Material 2',
-    slug: 'material-2',
-    subject: 'Physics',
-    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-  },
-  {
-    title: 'Material 3',
-    slug: 'material-3',
-    subject: 'Chemistry',
-    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
-  },
-  {
-    title: 'Material 4',
-    slug: 'material-4',
-    subject: 'Math',
-    filePath: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf'
+async function fetchData() {
+  const promises = []
+
+  if (!$homeworkStore.homeworks.length) {
+    promises.push($homeworkStore.fetchHomeworks(route.params.classroomSlug as string))
   }
-]
+
+  if (!$materialStore.materialClass.length) {
+    promises.push($materialStore.fetchMaterialClass(classSlug))
+  }
+
+  if (!$subjectStore.subjects.length) {
+    promises.push($subjectStore.fetchSubjects())
+  }
+
+  if (!$semesterStore.semesters.length) {
+    promises.push($semesterStore.fetchSemesters())
+  }
+
+  await Promise.all(promises)
+}
 </script>
 
 <template>
-  <ClientOnly>
-    <Tabs default-value="bulletin-board">
-      <div class="flex justify-between items-center">
-        <TabsList>
-          <TabsTrigger value="bulletin-board">
-            Bulletin Board
-          </TabsTrigger>
+  <Tabs default-value="bulletin-board">
+    <div class="flex justify-between items-center">
+      <TabsList>
+        <TabsTrigger as-child value="bulletin-board">
+          Bulletin Board
+        </TabsTrigger>
 
-          <TabsTrigger value="homework">
-            Homework
-          </TabsTrigger>
+        <TabsTrigger as-child value="homework">
+          Homework
+        </TabsTrigger>
 
-          <TabsTrigger value="people">
-            People
-          </TabsTrigger>
+        <TabsTrigger as-child value="people">
+          People
+        </TabsTrigger>
 
-          <TabsTrigger value="materials">
-            Materials
-          </TabsTrigger>
-        </TabsList>
+        <TabsTrigger as-child value="materials">
+          Materials
+        </TabsTrigger>
+      </TabsList>
 
-        <ClassroomCodeMobile :class-name="className" :code="code" />
-      </div>
+      <ClassroomCodeMobile :class-name="className" :code="code" />
+    </div>
 
-      <TabsContent value="bulletin-board" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <ClassroomBulletinBoard
-          :articles-classroom="articlesClassroom"
-          :class-name="className"
-          :class-slug="classSlug"
-          :code="code"
-        />
-      </TabsContent>
+    <TabsContent value="bulletin-board" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
+      <ClassroomBulletinBoard
+        :articles-classroom="articlesClassroom"
+        :class-name="className"
+        :class-slug="classSlug"
+        :code="code"
+      />
+    </TabsContent>
 
-      <TabsContent value="homework" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <ClassroomHomework />
-      </TabsContent>
+    <TabsContent value="homework" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
+      <ClassroomHomework />
+    </TabsContent>
 
-      <TabsContent value="people" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <ClassroomPeople :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
-      </TabsContent>
+    <TabsContent value="people" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
+      <ClassroomPeople :teachers-classroom="teachersClassroom" :students-classroom="studentsClassroom" />
+    </TabsContent>
 
-      <TabsContent value="materials" class="focus-visible:ring-0 focus-visible:ring-offset-0">
-        <ClassroomMaterials :data="data" />
-      </TabsContent>
-    </Tabs>
-  </ClientOnly>
+    <TabsContent value="materials" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
+      <ClassroomMaterials :data="$materialStore.materialClass" />
+    </TabsContent>
+  </Tabs>
 </template>

@@ -7,7 +7,7 @@ import { createColumns } from '~/composables/columns'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { StudentDialogImport } from '@/components/common/dialog/student'
+import { StudentDialogImport, StudentDialogCreateEdit } from '@/components/common/dialog/student'
 import { toast } from 'vue-sonner'
 
 const { $authStore, $generationStore, $academicYearStore, $studentStore, $bus } = useNuxtApp()
@@ -73,7 +73,6 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    // ['name', 'Name'],
     ['email', 'Email'],
     ['gender', 'Gender'],
     ['actions', '', '', {
@@ -109,8 +108,8 @@ const columns = createColumns(
       before: 'email'
     }
   ],
-  'students.update',
-  'students.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<Student>[]
 
 const valueGender = extractValue($studentStore.students, 'gender')
@@ -137,7 +136,7 @@ const handleCloseDialog = () => {
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['student.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 
 const downloadSampleStudents = async () => {
@@ -180,8 +179,12 @@ const downloadSampleStudents = async () => {
           Download Sample Students
         </Button>
 
-        <Button variant="default" @click="isImporting = true" v-if="shouldShowElement">
+        <Button @click="isImporting = true" v-if="shouldShowElement">
           Import Students
+        </Button>
+
+        <Button @click="isCreating = true" v-if="shouldShowElement">
+          Create Student
         </Button>
       </div>
     </div>
@@ -196,6 +199,12 @@ const downloadSampleStudents = async () => {
   <Dialog :open="isImporting" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
       <StudentDialogImport />
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isCreating" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
+      <StudentDialogCreateEdit />
     </DialogContent>
   </Dialog>
 

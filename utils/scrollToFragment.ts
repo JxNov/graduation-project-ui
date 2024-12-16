@@ -27,9 +27,14 @@ const blink = (id: string): number | null => {
 export const scrollToFragment = (id: string): void => {
   const element = document.getElementById(id)
   if (element) {
-    window.scrollTo({
-      top: element.offsetTop - 67,
-      behavior: 'smooth'
+    // window.scrollTo({
+    //   top: element.offsetTop - 67,
+    //   behavior: 'smooth'
+    // })
+
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
     })
 
     const existingTimeoutId = element.getAttribute('data-timeout-id')

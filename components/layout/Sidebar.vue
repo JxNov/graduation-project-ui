@@ -40,7 +40,9 @@ function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
         <Button variant="outline" size="icon" aria-label="Home">
           <Triangle class="size-5 fill-foreground" />
         </Button>
-        <span v-if="isOpen" class="hidden text-xl font-semibold lg:inline-block">Dashboard</span>
+        <span v-if="isOpen" class="hidden text-xl font-semibold lg:inline-block">
+          Tech4School
+        </span>
       </div>
 
       <Button variant="outline" class="absolute top-4 hidden size-6 rounded-full p-0 -right-3 lg:inline-flex"

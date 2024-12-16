@@ -4,8 +4,7 @@ export const navMenu: NavMenuItems = [
   {
     title: 'home',
     icon: 'i-lucide-home',
-    link: '/',
-    permissions: []
+    link: '/'
   },
   {
     title: 'dashboard',
@@ -56,6 +55,11 @@ export const navMenu: NavMenuItems = [
     permissions: ['admin.*']
   },
   {
+    title: 'materials',
+    icon: 'material-symbols:file-present-outline-rounded',
+    link: '/materials'
+  },
+  {
     title: 'roles',
     icon: 'eos-icons:role-binding-outlined',
     link: '/admin/roles',
@@ -89,13 +93,12 @@ export const navMenu: NavMenuItems = [
     title: 'chat',
     icon: 'token:chat',
     link: '/chat',
-    permissions: []
+    permissions: ['admin.*', 'student.*']
   },
   {
     title: 'gemini',
     icon: 'mdi:robot-happy-outline',
-    link: '/gemini',
-    permissions: []
+    link: '/gemini'
   }
 ]
 

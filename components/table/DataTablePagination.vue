@@ -35,6 +35,10 @@ const checkColumn = (table: Table<any>, columnId: string) => {
         {{ table.getFilteredSelectedRowModel().rows.length }} of
         {{ table.getFilteredRowModel().rows.length }} row(s) selected.
       </template>
+
+      <template v-else>
+        {{ table.getFilteredRowModel().rows.length }} row(s) found.
+      </template>
     </div>
     <div class="flex items-center space-x-6 lg:space-x-8">
       <div class="flex items-center space-x-2">

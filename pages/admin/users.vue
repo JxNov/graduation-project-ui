@@ -7,7 +7,7 @@ import { createColumns } from '~/composables/columns'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Badge } from '~/components/ui/badge'
-import { UserDialogAssign } from '~/components/common/dialog/user'
+import { UserDialogAssign, UserDialogCreateEdit } from '~/components/common/dialog/user'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 
 const { $authStore, $userStore, $roleStore, $bus } = useNuxtApp()
@@ -111,7 +111,7 @@ const columns = createColumns(
       accessorKey: 'roles',
       title: 'Roles',
       render: (row) => h('div', { class: 'truncate w-80' },
-        row.original.roles.map((role: any) => h(Badge, {
+        row.original.roles?.map((role: any) => h(Badge, {
           variant: 'outline',
           class: 'mr-1'
         }, () => role))
@@ -122,8 +122,8 @@ const columns = createColumns(
       before: 'actions'
     }
   ],
-  'users.update',
-  'users.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<User>[]
 
 const valueGender = extractValue($userStore.users, 'gender')
@@ -156,7 +156,7 @@ const handleCloseDialog = () => {
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 </script>
 
@@ -168,6 +168,10 @@ const shouldShowElement = computed(() => {
       <div class="flex gap-4">
         <Button variant="default" @click="isAssigning = true" v-if="shouldShowElement">
           Assign roles to users
+        </Button>
+
+        <Button @click="isCreating = true" v-if="shouldShowElement">
+          Create user
         </Button>
       </div>
     </div>
@@ -185,11 +189,11 @@ const shouldShowElement = computed(() => {
     </DialogContent>
   </Dialog>
 
-  <!--  <Dialog :open="isCreating" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogCreateEdit/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isCreating" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <UserDialogCreateEdit />
+    </DialogContent>
+  </Dialog>
 
   <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
   <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->

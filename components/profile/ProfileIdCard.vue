@@ -3,7 +3,7 @@ const { $authStore, $userStore } = useNuxtApp()
 </script>
 
 <template>
-  <Card class="col-span-3 h-fit">
+  <Card class="col-span-4 h-fit">
     <CardHeader class="flex flex-row profiles-start gap-4 select-none">
       <Avatar size="base">
         <AvatarImage :src="$authStore.avatar || ''" :alt="$authStore.user.name" />

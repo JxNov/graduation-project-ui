@@ -10,15 +10,13 @@ export const fetchGeminisService = async (): Promise<Gemini[]> => {
       throw new Error('Failed to get Gemini')
     }
 
-    console.log(response)
-
-    return response.data
+    return response.data.data
   } catch (error) {
     throw error
   }
 }
 
-export const createGeminiService = async (question: string): Promise<Gemini[]> => {
+export const askGeminiService = async (question: string): Promise<any> => {
   const { $axios } = useNuxtApp()
 
   try {

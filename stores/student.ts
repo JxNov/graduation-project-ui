@@ -2,7 +2,8 @@ import type { Student } from '~/schema'
 import {
   fetchStudentsService,
   importStudentsService,
-  exportSampleStudentsService
+  exportSampleStudentsService,
+  createStudentService
 } from '~/services/student'
 import { toast } from 'vue-sonner'
 
@@ -47,6 +48,32 @@ export const useStudentStore = defineStore('student', () => {
     }
   }
 
+  const createStudent = async (data: {
+    name: string,
+    dateOfBirth: string,
+    gender: string,
+    address: string,
+    phone: string,
+    academicYearSlug: string,
+    generationSlug: string,
+  }) => {
+    try {
+      const response = await createStudentService(data)
+
+      if (!response) {
+        throw new Error('Student creation failed!!!')
+      }
+
+      students.value = [...students.value, response]
+
+      toast.success('Student created successfully!!!')
+
+      return response
+    } catch (error) {
+      toast.error('Student creation failed!!!')
+    }
+  }
+
   const replaceStudents = (response: any) => {
     students.value = students.value.map((user: any) => {
       const responseStudent = response.find((res: any) => res.username === user.username)
@@ -67,6 +94,7 @@ export const useStudentStore = defineStore('student', () => {
     exportSampleStudents,
     fetchStudents,
     importStudents,
+    createStudent,
     clearStudents
   }
 })

@@ -3,7 +3,8 @@ import {
   assignRolePermissionService,
   fetchUsersService,
   fetchUserDetailService,
-  updateProfileInformationService
+  updateProfileInformationService,
+  createUserService
 } from '~/services/user'
 import { toast } from 'vue-sonner'
 
@@ -46,9 +47,9 @@ export const useUserStore = defineStore('user', () => {
 
   const updateProfileInformation = async (username: string, data: {
     images: File[],
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword: string,
+    oldPassword?: string,
+    newPassword?: string,
+    confirmPassword?: string,
   }) => {
     try {
       const response = await updateProfileInformationService(username, data)
@@ -66,6 +67,30 @@ export const useUserStore = defineStore('user', () => {
         return
       }
       toast.error('Change student info failed!!!')
+    }
+  }
+
+  const createUser = async (data: {
+    name: string,
+    dateOfBirth: string,
+    gender: string,
+    address: string,
+    phone: string,
+  }) => {
+    try {
+      const response = await createUserService(data)
+
+      if (!response) {
+        throw new Error('Create student failed!!!')
+      }
+
+      users.value = [...users.value, response]
+
+      toast.success('Create student successfully!!!')
+
+      return response
+    } catch (error: any) {
+      toast.error('Create student failed!!!')
     }
   }
 
@@ -92,6 +117,7 @@ export const useUserStore = defineStore('user', () => {
     assignRolePermission,
     fetchUserDetail,
     updateProfileInformation,
+    createUser,
     clearUsers
   }
 })

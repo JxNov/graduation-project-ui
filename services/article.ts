@@ -1,4 +1,4 @@
-import type { Article } from '~/schema'
+import type { Article, Comment } from '~/schema'
 
 export const createArticleService = async (data: {
   content: string
@@ -39,6 +39,59 @@ export const createCommentService = async (data: {
     }
 
     return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const updateCommentService = async (commentId: number, data: {
+  content: string
+}): Promise<Comment> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post(`/v1/comments/${commentId}`, {
+      content: data.content,
+      '_method': 'PATCH'
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const deleteCommentService = async (commentId: number): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.delete(`/v1/comments/${commentId}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const deleteArticleService = async (articleId: number): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.delete(`/v1/articles/force-delete/${articleId}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data
   } catch (error) {
     throw error
   }

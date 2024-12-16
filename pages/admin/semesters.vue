@@ -61,7 +61,7 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Academic Year'],
+    ['name', 'Semester'],
     ['generationName', 'Generation'],
     ['academicYearName', 'Academic Year'],
     ['startDate', 'Start Date'],
@@ -73,16 +73,22 @@ const columns = createColumns(
   ],
   semesterSchema,
   [],
-  'users.update',
-  'users.delete'
+  'admin.update',
+  'admin.delete'
 ) as ColumnDef<Semester>[]
 
 const valueGenerationName = extractValue($semesterStore.semesters, 'generationName')
 const valueAcademicYearName = extractValue($semesterStore.semesters, 'academicYearName')
+const valueSemester = extractValue($semesterStore.semesters, 'name')
 const valueStartDate = extractValue($semesterStore.semesters, 'startDate')
 const valueEndDate = extractValue($semesterStore.semesters, 'endDate')
 
 const filters = [
+  {
+    name: 'name',
+    label: 'Semester',
+    values: valueSemester
+  },
   {
     name: 'generationName',
     label: 'Generation',
@@ -111,7 +117,7 @@ const handleInteractOutside = (event: Event) => {
 }
 
 const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['users.create'])
+  return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
 
 const handleCloseDialog = () => {

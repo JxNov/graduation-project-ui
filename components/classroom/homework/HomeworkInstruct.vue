@@ -9,76 +9,102 @@ import { checkPermissions } from '~/utils/checkPermissions'
 const { $authStore } = useNuxtApp()
 const useIdFunction = () => useId()
 
-defineProps<{
+const props = defineProps<{
   data: any
+  userSubmittedAssignment?: any
 }>()
 
+const isLoading = ref<boolean>(true)
+
 const studentPermissions = checkPermissions($authStore.user.permissions, ['student.read'])
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
+
+watch(() => props.data, (data) => {
+  if (data) {
+    isLoading.value = false
+  }
+})
 </script>
 
 <template>
   <div class="grid lg:grid-cols-12 gap-4 xl:px-24 mt-10">
     <div class="h-fit lg:hidden" v-if="studentPermissions">
-      <HomeworkSubmit />
+      <HomeworkSubmit :data="userSubmittedAssignment" :due-date="data?.dueDate" />
     </div>
+
 
     <Card
       class="lg:col-span-8 2xl:col-span-9"
       :class="{ 'lg:col-span-12 2xl:col-span-12': !studentPermissions }"
     >
       <CardHeader class="flex lg:flex-row justify-between items-center">
-        <div class="flex flex-row items-start gap-4">
+        <div class="flex flex-row items-center gap-2" v-if="isLoading">
+          <div class="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+          <div class="flex flex-col gap-1">
+            <div class="w-32 h-4 bg-gray-200 rounded-full animate-pulse"></div>
+            <div class="w-16 h-4 bg-gray-200 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+
+        <div class="flex flex-row items-start gap-4" v-else>
           <Avatar>
-            <AvatarImage :src="data?.teacher || ''" :alt="data?.teacher" />
-            <AvatarFallback>{{ data?.teacher.split(' ').map((name: string) => name[0]).join('') }}
+            <AvatarImage :src="data?.teacherImage || ''" :alt="data?.teacherName" />
+            <AvatarFallback>{{ data?.teacherName.split(' ').map((name: string) => name[0]).join('') }}
             </AvatarFallback>
           </Avatar>
 
           <div class="flex flex-col gap-2">
             <CardTitle class="text-3xl">{{ data?.title }}</CardTitle>
             <CardDescription>
-              <!--              Nguyen Manh Dung [FPL HN] • 04 thg 11, 2024 (Đã chỉnh sửa 07 thg 11, 2024)-->
-              <!--              {{ data?.teacher }} • {{ data?.createdAt }} (Đã chỉnh sửa {{ data?.updatedAt }})-->
-              {{ data?.teacher }}
+              {{ data?.teacherName }}
             </CardDescription>
-            <!--            <CardTitle>100 points</CardTitle>-->
           </div>
         </div>
 
-        <!--        <div-->
-        <!--          class="w-full flex-row-reverse flex justify-between items-center lg:w-fit lg:flex-col lg:items-end gap-10">-->
-        <!--          <ConfigProvider :use-id="useIdFunction">-->
-        <!--            <DropdownMenu>-->
-        <!--              <DropdownMenuTrigger as-child>-->
-        <!--                <Button-->
-        <!--                  variant="ghost"-->
-        <!--                  class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"-->
-        <!--                >-->
-        <!--                  <DotsVerticalIcon class="h-4 w-4" />-->
-        <!--                  <span class="sr-only">Open menu</span>-->
-        <!--                </Button>-->
-        <!--              </DropdownMenuTrigger>-->
-        <!--              <DropdownMenuContent align="end" class="w-[160px]">-->
-        <!--                <DropdownMenuItem>-->
-        <!--                  Edit-->
-        <!--                </DropdownMenuItem>-->
-        <!--                <DropdownMenuSeparator />-->
+        <div
+          class="w-full flex-row-reverse flex justify-between items-center lg:w-fit lg:flex-col lg:items-end gap-4"
+          v-if="!isLoading"
+        >
+          <ConfigProvider :use-id="useIdFunction" v-if="teacherPermissions">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button
+                  variant="ghost"
+                  class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                >
+                  <DotsVerticalIcon class="h-4 w-4" />
+                  <span class="sr-only">Open menu</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" class="w-[160px]">
+                <DropdownMenuItem>
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
 
-        <!--                <DropdownMenuItem>-->
-        <!--                  Delete-->
-        <!--                </DropdownMenuItem>-->
-        <!--              </DropdownMenuContent>-->
-        <!--            </DropdownMenu>-->
-        <!--          </ConfigProvider>-->
+                <DropdownMenuItem>
+                  Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </ConfigProvider>
 
-        <!--          <CardTitle class="pr-2 ml-14">Đến hạn 11:22 08 thg 11, 2024</CardTitle>-->
-        <!--        </div>-->
-
-        <CardTitle>Đến hạn {{ data?.dueDate }}</CardTitle>
+          <CardTitle
+            class="pr-2 ml-14"
+            v-if="data?.dueDate"
+          >
+            Đến hạn {{ data?.dueDate }}
+          </CardTitle>
+        </div>
       </CardHeader>
 
       <CardContent class="border-t pt-6">
-        <div class="prose">
+        <div class="flex flex-col items-start gap-2" v-if="isLoading">
+          <div class="w-full h-4 bg-gray-200 rounded-full animate-pulse"></div>
+          <div class="w-[90%] h-4 bg-gray-200 rounded-full animate-pulse"></div>
+        </div>
+
+        <div class="prose" v-else>
           {{ data?.criteria }}
         </div>
       </CardContent>
@@ -101,7 +127,7 @@ const studentPermissions = checkPermissions($authStore.user.permissions, ['stude
     </Card>
 
     <div class="hidden lg:block lg:col-span-4 2xl:col-span-3 h-fit" v-if="studentPermissions">
-      <HomeworkSubmit />
+      <HomeworkSubmit :data="userSubmittedAssignment" :due-date="data?.dueDate" />
     </div>
   </div>
 </template>

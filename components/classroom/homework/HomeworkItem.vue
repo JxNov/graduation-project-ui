@@ -1,19 +1,36 @@
 <script setup lang="ts">
 import { ConfigProvider } from 'radix-vue'
 import { DotsVerticalIcon } from '@radix-icons/vue'
+import { checkPermissions } from '~/utils/checkPermissions'
 
 const props = defineProps<{
   homework: any
 }>()
 
+const emits = defineEmits<{
+  (e: 'editHomework', homework: any): void
+  (e: 'deleteHomework', homework: any): void
+}>()
+
+const { $authStore } = useNuxtApp()
 const useIdFunction = () => useId()
 const router = useRouter()
 const route = useRoute()
+
+const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
 
 const isOpen = ref<boolean>(false)
 
 const redirect = (path: string) => {
   router.push(path)
+}
+
+const editHomework = (homework: any) => {
+  emits('editHomework', homework)
+}
+
+const deleteHomework = (homework: any) => {
+  emits('deleteHomework', homework)
 }
 </script>
 
@@ -25,40 +42,42 @@ const redirect = (path: string) => {
         <CardHeader class="flex flex-row justify-between items-center gap-4 select-none">
           <div class="flex flex-row items-center gap-4">
             <Avatar>
-              <AvatarImage :src="homework.teacher || ''" :alt="homework.teacher" />
-              <AvatarFallback>{{ homework.teacher.split(' ').map((name: string) => name[0]).join('') }}</AvatarFallback>
+              <AvatarImage :src="homework.teacherImage || ''" :alt="homework.teacherName" />
+              <AvatarFallback>
+                {{ homework.teacherName.split(' ').map((name: string) => name[0]).join('') }}
+              </AvatarFallback>
             </Avatar>
 
             <CardTitle>{{ homework.title }}</CardTitle>
           </div>
 
-          <!--          <div class="flex flex-row items-center gap-4">-->
-          <!--            <CardDescription>{{ homework.dueDate }}</CardDescription>-->
+          <div class="flex flex-row items-center gap-4">
+            <CardDescription>{{ homework.dueDate }}</CardDescription>
 
-          <!--            <ConfigProvider :use-id="useIdFunction">-->
-          <!--              <DropdownMenu>-->
-          <!--                <DropdownMenuTrigger as-child @click.stop>-->
-          <!--                  <Button-->
-          <!--                    variant="ghost"-->
-          <!--                    class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"-->
-          <!--                  >-->
-          <!--                    <DotsVerticalIcon class="h-4 w-4" />-->
-          <!--                    <span class="sr-only">Open menu</span>-->
-          <!--                  </Button>-->
-          <!--                </DropdownMenuTrigger>-->
-          <!--                <DropdownMenuContent align="end" class="w-[160px]">-->
-          <!--                  <DropdownMenuItem>-->
-          <!--                    Edit-->
-          <!--                  </DropdownMenuItem>-->
-          <!--                  <DropdownMenuSeparator />-->
+            <ConfigProvider :use-id="useIdFunction" v-if="teacherPermissions">
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child @click.stop>
+                  <Button
+                    variant="ghost"
+                    class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+                  >
+                    <DotsVerticalIcon class="h-4 w-4" />
+                    <span class="sr-only">Open menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" class="w-[160px]">
+                  <DropdownMenuItem @click="editHomework(homework)">
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
 
-          <!--                  <DropdownMenuItem>-->
-          <!--                    Delete-->
-          <!--                  </DropdownMenuItem>-->
-          <!--                </DropdownMenuContent>-->
-          <!--              </DropdownMenu>-->
-          <!--            </ConfigProvider>-->
-          <!--          </div>-->
+                  <DropdownMenuItem @click="deleteHomework(homework)">
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ConfigProvider>
+          </div>
         </CardHeader>
       </CollapsibleTrigger>
 
@@ -74,12 +93,12 @@ const redirect = (path: string) => {
 
           <div class="flex flex-row items-start gap-10">
             <div class="border-l-2 pl-4">
-              <p class="text-4xl pb-2">0</p>
+              <p class="text-4xl pb-2">{{ homework.submitted }}</p>
               <CardDescription>Đã nộp</CardDescription>
             </div>
 
             <div class="border-l-2 pl-4">
-              <p class="text-4xl pb-2">0</p>
+              <p class="text-4xl pb-2">{{ homework.notSubmitted }}</p>
               <CardDescription>Đã giao</CardDescription>
             </div>
           </div>

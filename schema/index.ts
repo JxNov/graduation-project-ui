@@ -57,3 +57,12 @@ export type { Gemini } from './gemini'
 
 export { homeworkSchema } from './homework'
 export type { Homework } from './homework'
+
+export { materialSchema, materialBlockSchema } from './material'
+export type { Material, MaterialBlock } from './material'
+
+export { gradeSchema } from './grade'
+export type { Grade } from './grade'
+
+export { subjectSchema } from './subject'
+export type { Subject } from './subject'

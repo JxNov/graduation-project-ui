@@ -2,6 +2,7 @@
 import { getImageFirebase } from '~/utils/imageFirebase'
 
 const { $authStore, $userStore } = useNuxtApp()
+const useIdFunction = () => useId()
 
 onMounted(async () => {
   if (!$userStore.userDetail) {
@@ -15,28 +16,26 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ClientOnly>
-    <Tabs default-value="account" orientation="vertical">
-      <TabsList>
-        <TabsTrigger value="account">
-          Account
-        </TabsTrigger>
+  <Tabs default-value="account">
+    <TabsList>
+      <TabsTrigger as-child value="account">
+        Account
+      </TabsTrigger>
 
-        <TabsTrigger value="change">
-          Change Information
-        </TabsTrigger>
-      </TabsList>
+      <TabsTrigger as-child value="change">
+        Change Information
+      </TabsTrigger>
+    </TabsList>
 
-      <TabsContent value="account">
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
-          <ProfileIdCard />
-          <ProfilePersonalInformation />
-        </div>
-      </TabsContent>
+    <TabsContent value="account" :id="useIdFunction">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-12">
+        <ProfileIdCard />
+        <ProfilePersonalInformation />
+      </div>
+    </TabsContent>
 
-      <TabsContent value="change">
-        <ProfileChangeInformation />
-      </TabsContent>
-    </Tabs>
-  </ClientOnly>
+    <TabsContent value="change" :id="useIdFunction">
+      <ProfileChangeInformation />
+    </TabsContent>
+  </Tabs>
 </template>

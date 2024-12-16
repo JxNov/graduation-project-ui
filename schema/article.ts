@@ -7,6 +7,7 @@ export const articleSchema = z.object({
   className: z.string(),
   teacherName: z.string(),
   teacherImage: z.string(),
+  teacherUsername: z.string(),
   createdAt: z.string(),
   comments: z.array(commentSchema)
 })
