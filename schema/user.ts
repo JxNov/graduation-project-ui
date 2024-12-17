@@ -16,10 +16,10 @@ export const userDetailSchema = z.object({
   username: z.string(),
   image: z.string(),
   email: z.string(),
-  date_of_birth: z.string(),
+  dateOfBirth: z.string(),
   gender: z.string(),
   address: z.string(),
-  phone_number: z.string()
+  phoneNumber: z.string()
 })
 
 export type UserDetail = z.infer<typeof userDetailSchema>

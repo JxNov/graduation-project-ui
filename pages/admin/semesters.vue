@@ -41,13 +41,7 @@ onMounted(async () => {
     console.log(slugs)
   })
 
-  if (!$academicYearStore.academicYears.length) {
-    await $academicYearStore.fetchAcademicYears()
-  }
-
-  if (!$semesterStore.semesters.length) {
-    await $semesterStore.fetchSemesters()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -125,6 +119,20 @@ const handleCloseDialog = () => {
   isEditing.value = false
   isDeleting.value = false
   selectedValue.value = {}
+}
+
+async function fetchData() {
+  const promises = []
+
+  if (!$academicYearStore.academicYears.length) {
+    promises.push($academicYearStore.fetchAcademicYears())
+  }
+
+  if (!$semesterStore.semesters.length) {
+    promises.push($semesterStore.fetchSemesters())
+  }
+
+  await Promise.all(promises)
 }
 </script>
 

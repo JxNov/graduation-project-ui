@@ -17,6 +17,22 @@ export const fetchAcademicYearsService = async (): Promise<AcademicYear[]> => {
   }
 }
 
+export const showAcademicYearService = async (slug: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/academic-years/${slug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export const createAcademicYearService = async (data: {
   name: string
   startDate: string

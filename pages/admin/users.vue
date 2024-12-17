@@ -48,17 +48,7 @@ onMounted(async () => {
     console.log(values)
   })
 
-  if (!$userStore.users.length) {
-    await $userStore.fetchUsers()
-  }
-
-  if (!$roleStore.modules.length) {
-    await $roleStore.fetchModules()
-  }
-
-  if (!$roleStore.roles.length) {
-    await $roleStore.fetchRoles()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -158,6 +148,24 @@ const handleCloseDialog = () => {
 const shouldShowElement = computed(() => {
   return checkPermissions($authStore.user.permissions, ['admin.create'])
 })
+
+async function fetchData() {
+  const promises = []
+
+  if (!$userStore.users.length) {
+    promises.push($userStore.fetchUsers())
+  }
+
+  if (!$roleStore.modules.length) {
+    promises.push($roleStore.fetchModules())
+  }
+
+  if (!$roleStore.roles.length) {
+    promises.push($roleStore.fetchRoles())
+  }
+
+  await Promise.all(promises)
+}
 </script>
 
 <template>

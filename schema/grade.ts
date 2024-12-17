@@ -1,14 +1,13 @@
 import { z } from 'zod'
 
 export const gradeSchema = z.object({
-  subjectName: z.string(),
-  teacherName: z.string(),
-  teacherUsername: z.string(),
   studentName: z.string(),
   studentUsername: z.string(),
-  className: z.string(),
-  semesterName: z.string(),
+  studentImage: z.string(),
+  subjectName: z.string(),
   academicYearName: z.string(),
+  semesterName: z.string(),
+  className: z.string(),
   mouthPoints: z.array(z.number()),
   fifteenMinutesPoints: z.array(z.number()),
   onePeriodPoints: z.array(z.number()),

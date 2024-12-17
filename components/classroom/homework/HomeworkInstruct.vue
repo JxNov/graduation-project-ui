@@ -14,16 +14,8 @@ const props = defineProps<{
   userSubmittedAssignment?: any
 }>()
 
-const isLoading = ref<boolean>(true)
-
 const studentPermissions = checkPermissions($authStore.user.permissions, ['student.read'])
 const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
-
-watch(() => props.data, (data) => {
-  if (data) {
-    isLoading.value = false
-  }
-})
 </script>
 
 <template>
@@ -38,15 +30,7 @@ watch(() => props.data, (data) => {
       :class="{ 'lg:col-span-12 2xl:col-span-12': !studentPermissions }"
     >
       <CardHeader class="flex lg:flex-row justify-between items-center">
-        <div class="flex flex-row items-center gap-2" v-if="isLoading">
-          <div class="w-8 h-8 bg-gray-200 rounded-full animate-pulse"></div>
-          <div class="flex flex-col gap-1">
-            <div class="w-32 h-4 bg-gray-200 rounded-full animate-pulse"></div>
-            <div class="w-16 h-4 bg-gray-200 rounded-full animate-pulse"></div>
-          </div>
-        </div>
-
-        <div class="flex flex-row items-start gap-4" v-else>
+        <div class="flex flex-row items-start gap-4">
           <Avatar>
             <AvatarImage :src="data?.teacherImage || ''" :alt="data?.teacherName" />
             <AvatarFallback>{{ data?.teacherName.split(' ').map((name: string) => name[0]).join('') }}
@@ -61,10 +45,7 @@ watch(() => props.data, (data) => {
           </div>
         </div>
 
-        <div
-          class="w-full flex-row-reverse flex justify-between items-center lg:w-fit lg:flex-col lg:items-end gap-4"
-          v-if="!isLoading"
-        >
+        <div class="w-full flex-row-reverse flex justify-between items-center lg:w-fit lg:flex-col lg:items-end gap-4">
           <ConfigProvider :use-id="useIdFunction" v-if="teacherPermissions">
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
@@ -99,12 +80,7 @@ watch(() => props.data, (data) => {
       </CardHeader>
 
       <CardContent class="border-t pt-6">
-        <div class="flex flex-col items-start gap-2" v-if="isLoading">
-          <div class="w-full h-4 bg-gray-200 rounded-full animate-pulse"></div>
-          <div class="w-[90%] h-4 bg-gray-200 rounded-full animate-pulse"></div>
-        </div>
-
-        <div class="prose" v-else>
+        <div class="prose">
           {{ data?.criteria }}
         </div>
       </CardContent>

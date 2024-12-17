@@ -1,6 +1,9 @@
 import type { Class } from '~/schema'
 import {
   fetchClassesService,
+  fetchClassForTeacherService,
+  fetchClassForStudentService,
+  showClassService,
   createClassService,
   updateClassService,
   deleteClassService,
@@ -15,6 +18,30 @@ export const useClassStore = defineStore('class', () => {
   const fetchClasses = async () => {
     try {
       classes.value = await fetchClassesService()
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const fetchClassForTeacher = async (username: string) => {
+    try {
+      classes.value = await fetchClassForTeacherService(username)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const fetchClassForStudent = async (username: string) => {
+    try {
+      classes.value = await fetchClassForStudentService(username)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const showClass = async (slug: string, query?: string) => {
+    try {
+      return await showClassService(slug, query)
     } catch (error) {
       throw error
     }
@@ -134,6 +161,9 @@ export const useClassStore = defineStore('class', () => {
   return {
     classes,
     fetchClasses,
+    fetchClassForTeacher,
+    fetchClassForStudent,
+    showClass,
     createClass,
     updateClass,
     deleteClass,

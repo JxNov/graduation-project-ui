@@ -9,9 +9,7 @@ const router = useRouter()
 const { $attendanceStore, $bus } = useNuxtApp()
 
 onMounted(async () => {
-  if (!$attendanceStore.attendances.length) {
-    await $attendanceStore.fetchAttendances()
-  }
+  await fetchData()
 })
 
 const columns = createColumns(
@@ -53,6 +51,16 @@ const columns = createColumns(
   '',
   ''
 ) as ColumnDef<Attendance>[]
+
+async function fetchData() {
+  const promises = []
+
+  if (!$attendanceStore.attendances.length) {
+    promises.push($attendanceStore.fetchAttendances())
+  }
+
+  await Promise.all(promises)
+}
 </script>
 
 <template>

@@ -37,7 +37,7 @@ const { setFieldValue, handleSubmit } = useForm({
   validationSchema: formSchema,
   initialValues: {
     score: props.data?.score,
-    feedback: props.data?.feedback
+    feedback: props.data?.feedback || ''
   }
 })
 

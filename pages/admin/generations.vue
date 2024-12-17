@@ -41,9 +41,7 @@ onMounted(async () => {
     console.log(slugs)
   })
 
-  if (!$generationStore.generations.length) {
-    await $generationStore.fetchGenerations()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -101,6 +99,16 @@ const handleCloseDialog = () => {
   isEditing.value = false
   isDeleting.value = false
   selectedValue.value = {}
+}
+
+async function fetchData() {
+  const promises = []
+
+  if (!$generationStore.generations.length) {
+    promises.push($generationStore.fetchGenerations())
+  }
+
+  await Promise.all(promises)
 }
 </script>
 

@@ -46,7 +46,7 @@ export const navMenu: NavMenuItems = [
     title: 'attendances',
     icon: 'material-symbols:person-raised-hand-outline',
     link: '/admin/attendances',
-    permissions: ['admin.*', 'teacher.*']
+    permissions: ['teacher.*']
   },
   {
     title: 'schedules',
