@@ -3,7 +3,8 @@ import {
   fetchGradeService,
   fetchGradeByTeacherService,
   fetchGradeStudentService,
-  createGradeService
+  createGradeService,
+  fetchFinalGradeService
 } from '~/services/grade'
 
 export const useGradeStore = defineStore('grade', () => {
@@ -13,6 +14,7 @@ export const useGradeStore = defineStore('grade', () => {
     try {
       grades.value = await fetchGradeService(query)
     } catch (error) {
+      grades.value = []
       throw error
     }
   }
@@ -68,6 +70,14 @@ export const useGradeStore = defineStore('grade', () => {
     }
   }
 
+  const fetchFinalGrade = async (classSlug: string, academicYearSlug: string) => {
+    try {
+      return await fetchFinalGradeService(classSlug, academicYearSlug)
+    } catch (error) {
+      throw error
+    }
+  }
+
   const clearGrades = () => {
     grades.value = []
   }
@@ -78,6 +88,7 @@ export const useGradeStore = defineStore('grade', () => {
     fetchGradeByTeacher,
     fetchGradeStudent,
     createGrade,
-    clearGrades
+    clearGrades,
+    fetchFinalGrade
   }
 })

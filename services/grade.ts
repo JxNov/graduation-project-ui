@@ -132,3 +132,19 @@ export const createGradeService = async (data: {
     throw error
   }
 }
+
+export const fetchFinalGradeService = async (classSlug: string, academicYearSlug: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/statistic/final/${classSlug}/${academicYearSlug}`)
+
+    if (!response) {
+      throw new Error('No response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
