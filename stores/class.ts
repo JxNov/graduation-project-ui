@@ -8,7 +8,8 @@ import {
   updateClassService,
   deleteClassService,
   distributeStudentsService,
-  assignStudentsToClassService
+  assignStudentsToClassService,
+  promoteStudentsService
 } from '~/services/class'
 import { toast } from 'vue-sonner'
 
@@ -127,6 +128,25 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const promoteStudents = async (slug: string, data: {
+    name: string
+    username: string
+    academicYearSlug: string
+    blockSlug: string
+  }) => {
+    try {
+      const response = await promoteStudentsService(slug, data)
+      replaceClasses(response)
+
+      toast.success('Students promoted to class successfully')
+
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const replaceClasses = (response: any) => {
     const index = classes.value.findIndex(cls => cls.slug === response.slug)
     if (index !== -1) {
@@ -169,6 +189,7 @@ export const useClassStore = defineStore('class', () => {
     deleteClass,
     distributeStudents,
     assignStudentsToClass,
+    promoteStudents,
     clearClasses
   }
 })

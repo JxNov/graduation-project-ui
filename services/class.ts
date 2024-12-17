@@ -172,3 +172,29 @@ export const assignStudentsToClassService = async (data: {
     throw error
   }
 }
+
+export const promoteStudentsService = async (slug: string, data: {
+  name: string
+  username: string
+  academicYearSlug: string
+  blockSlug: string
+}): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post(`/v1/classes/promote-student/${slug}`, {
+      name: data.name,
+      username: data.username,
+      academic_year_slug: data.academicYearSlug,
+      block_slug: data.blockSlug
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

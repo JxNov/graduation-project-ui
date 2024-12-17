@@ -9,6 +9,7 @@ import { Badge } from '~/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 
 const { $authStore, $gradeStore, $classStore, $academicYearStore, $subjectStore } = useNuxtApp()
+const router = useRouter()
 
 const academicYears = ref<any>([])
 const academicYear = ref<string>('')
@@ -263,6 +264,10 @@ const filters: TableFilter[] = [
     values: valueSubject
   }
 ]
+
+const redirect = (path: string) => {
+  router.push(path)
+}
 </script>
 
 <template>
@@ -270,91 +275,99 @@ const filters: TableFilter[] = [
     <div class="flex justify-between items-center">
       <h2 class="text-4xl font-bold tracking-tight">Grades</h2>
 
-      <form @submit.prevent class="flex flex-row items-center gap-4">
-        <div class="bg-card rounded-md">
-          <Select v-model="academicYear">
-            <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a academic year" class="select-none" />
-            </SelectTrigger>
+      <div class="flex items-center gap-4">
+        <form @submit.prevent class="flex flex-row items-center gap-4">
+          <div class="bg-card rounded-md">
+            <Select v-model="academicYear">
+              <SelectTrigger class="min-w-[180px]">
+                <SelectValue placeholder="Select a academic year" class="select-none" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Academic Year</SelectLabel>
-                <SelectItem
-                  v-for="(academicYear, index) in academicYears"
-                  :key="index"
-                  :value="academicYear.slug"
-                >
-                  {{ academicYear.name }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Academic Year</SelectLabel>
+                  <SelectItem
+                    v-for="(academicYear, index) in academicYears"
+                    :key="index"
+                    :value="academicYear.slug"
+                  >
+                    {{ academicYear.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div class="bg-card rounded-md">
-          <Select v-model="cls">
-            <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a class" class="select-none" />
-            </SelectTrigger>
+          <div class="bg-card rounded-md">
+            <Select v-model="cls">
+              <SelectTrigger class="min-w-[180px]">
+                <SelectValue placeholder="Select a class" class="select-none" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Classes</SelectLabel>
-                <SelectItem
-                  v-for="(cls, index) in classes"
-                  :key="index"
-                  :value="cls.classSlug"
-                >
-                  {{ cls.className }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Classes</SelectLabel>
+                  <SelectItem
+                    v-for="(cls, index) in classes"
+                    :key="index"
+                    :value="cls.classSlug"
+                  >
+                    {{ cls.className }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div class="bg-card rounded-md">
-          <Select v-model="semester">
-            <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a semester" class="select-none" />
-            </SelectTrigger>
+          <div class="bg-card rounded-md">
+            <Select v-model="semester">
+              <SelectTrigger class="min-w-[180px]">
+                <SelectValue placeholder="Select a semester" class="select-none" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Semesters</SelectLabel>
-                <SelectItem
-                  v-for="(semester, index) in semestersForSelect"
-                  :key="index"
-                  :value="semester.value"
-                >
-                  {{ semester.label }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Semesters</SelectLabel>
+                  <SelectItem
+                    v-for="(semester, index) in semestersForSelect"
+                    :key="index"
+                    :value="semester.value"
+                  >
+                    {{ semester.label }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
-        <div class="bg-card rounded-md" v-if="!isTeacherForClass">
-          <Select v-model="subject">
-            <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a subject" class="select-none" />
-            </SelectTrigger>
+          <div class="bg-card rounded-md" v-if="!isTeacherForClass">
+            <Select v-model="subject">
+              <SelectTrigger class="min-w-[180px]">
+                <SelectValue placeholder="Select a subject" class="select-none" />
+              </SelectTrigger>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Subjects</SelectLabel>
-                <SelectItem
-                  v-for="(subject, index) in subjects"
-                  :key="index"
-                  :value="subject.slug"
-                >
-                  {{ subject.name }}
-                </SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </form>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Subjects</SelectLabel>
+                  <SelectItem
+                    v-for="(subject, index) in subjects"
+                    :key="index"
+                    :value="subject.slug"
+                  >
+                    {{ subject.name }}
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </form>
+
+        <Button
+          @click="() => redirect('/grades/final')"
+        >
+          Final Grades
+        </Button>
+      </div>
     </div>
 
     <LayoutTable

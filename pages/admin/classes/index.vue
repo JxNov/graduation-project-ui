@@ -7,7 +7,8 @@ import {
   ClassDialogDistribution,
   ClassDialogCreateEdit,
   ClassDialogDelete,
-  ClassDialogAssign
+  ClassDialogAssign,
+  ClassDialogUpToClass
 } from '~/components/common/dialog/class'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { Button } from '~/components/ui/button'
@@ -21,6 +22,7 @@ const isDistribution = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isAssigning = ref<boolean>(false)
+const isUpToClass = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
 const selectedValue = ref<Class | object>({})
 const selectedClassSlug = ref<string>('')
@@ -47,6 +49,11 @@ onMounted(async () => {
     selectedClassSlug.value = ''
   })
 
+  $bus.on('close-dialog-up-to-class', (value: boolean) => {
+    isUpToClass.value = value
+    selectedValue.value = {}
+  })
+
   $bus.on('close-dialog-delete', (value: boolean) => {
     isDeleting.value = value
     selectedValue.value = {}
@@ -69,6 +76,7 @@ onBeforeUnmount(() => {
   $bus.off('open-dialog-delete')
   $bus.off('close-dialog-create-edit')
   $bus.off('close-dialog-assign')
+  $bus.off('close-dialog-up-to-class')
   $bus.off('close-dialog-delete')
   $bus.off('delete-rows')
 })
@@ -108,7 +116,8 @@ const columns = createColumns(
               variant: 'outline',
               size: 'sm',
               onClick: () => {
-                console.log(row.original)
+                selectedValue.value = row.original
+                isUpToClass.value = true
               }
             }, { default: () => 'Up to class' }),
             isAdmin && h(Button, {
@@ -143,6 +152,7 @@ const handleCloseDialog = () => {
   isCreating.value = false
   isEditing.value = false
   isAssigning.value = false
+  isUpToClass.value = false
   isDeleting.value = false
   selectedValue.value = {}
   selectedClassSlug.value = ''
@@ -219,6 +229,12 @@ async function fetchData() {
   <Dialog :open="isEditing" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
       <ClassDialogCreateEdit :data="selectedValue" edit />
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isUpToClass" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <ClassDialogUpToClass :data="selectedValue" />
     </DialogContent>
   </Dialog>
 
