@@ -45,6 +45,10 @@ onMounted(async () => {
   if (!$subjectStore.subjects.length) {
     await $subjectStore.fetchSubjects()
   }
+
+  if (!teacherPermissions) {
+    subject.value = $subjectStore.subjects[0].slug
+  }
 })
 
 watch(() => semesters.value, (value: any) => {

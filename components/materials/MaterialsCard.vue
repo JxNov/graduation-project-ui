@@ -20,7 +20,7 @@ const downloadFile = (filePath: string) => {
   window.open(`https://drive.google.com/uc?export=download&id=${filePath}`, '_blank')
 }
 
-const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
+const studentPermissions = checkPermissions($authStore.user.permissions, ['student.read'])
 
 const editMaterial = (item: any) => {
   $bus.emit('open-dialog-edit-material-block', { isEditing: true, item })
@@ -50,7 +50,7 @@ const deleteMaterial = (item: any) => {
         </div>
 
         <ConfigProvider :use-id="useIdFunction">
-          <DropdownMenu v-if="teacherPermissions">
+          <DropdownMenu v-if="!studentPermissions">
             <DropdownMenuTrigger as-child>
               <Button
                 variant="ghost"
