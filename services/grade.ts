@@ -1,10 +1,36 @@
 import type { Grade } from '~/schema'
 
-export const fetchGradeClassService = async (classSlug: string, semesterSlug: string, yearSlug: string): Promise<Grade[]> => {
+export const fetchGradeService = async (query?: string): Promise<Grade[]> => {
   const { $axios } = useNuxtApp()
 
   try {
-    const response = await $axios.get(`/v1/statistic/list/${classSlug}/${semesterSlug}/${yearSlug}`)
+    let api: string = `/v1/scores/classes`
+    if (query) {
+      api += `?${query}`
+    }
+
+    const response = await $axios.get(api)
+
+    if (!response) {
+      throw new Error('No response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const fetchGradeByTeacherService = async (query?: string): Promise<Grade[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    let api: string = `/v1/scores/classes/teacher`
+    if (query) {
+      api += `?${query}`
+    }
+
+    const response = await $axios.get(api)
 
     if (!response) {
       throw new Error('No response')

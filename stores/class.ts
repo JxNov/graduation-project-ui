@@ -2,6 +2,7 @@ import type { Class } from '~/schema'
 import {
   fetchClassesService,
   fetchClassForTeacherService,
+  fetchClassForStudentService,
   showClassService,
   createClassService,
   updateClassService,
@@ -25,6 +26,14 @@ export const useClassStore = defineStore('class', () => {
   const fetchClassForTeacher = async (username: string) => {
     try {
       classes.value = await fetchClassForTeacherService(username)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const fetchClassForStudent = async (username: string) => {
+    try {
+      classes.value = await fetchClassForStudentService(username)
     } catch (error) {
       throw error
     }
@@ -153,6 +162,7 @@ export const useClassStore = defineStore('class', () => {
     classes,
     fetchClasses,
     fetchClassForTeacher,
+    fetchClassForStudent,
     showClass,
     createClass,
     updateClass,
