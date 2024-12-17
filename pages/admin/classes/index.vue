@@ -15,6 +15,8 @@ import { Button } from '~/components/ui/button'
 const { $authStore, $academicYearStore, $classStore, $teacherStore, $studentStore, $blockStore, $bus } = useNuxtApp()
 const router = useRouter()
 
+const adminPermissions = checkPermissions($authStore.user.permissions, ['admin.create'])
+
 const isDistribution = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
@@ -59,25 +61,7 @@ onMounted(async () => {
     console.log(slugs)
   })
 
-  if (!$teacherStore.teachers.length) {
-    await $teacherStore.fetchTeachers()
-  }
-
-  if (!$studentStore.students.length) {
-    await $studentStore.fetchStudents()
-  }
-
-  if (!$blockStore.blocks.length) {
-    await $blockStore.fetchBlocks()
-  }
-
-  if (!$academicYearStore.academicYears.length) {
-    await $academicYearStore.fetchAcademicYears()
-  }
-
-  if (!$classStore.classes.length) {
-    await $classStore.fetchClasses()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -108,32 +92,36 @@ const columns = createColumns(
     {
       accessorKey: 'button',
       title: '',
-      render: (row) => h('div', { class: 'truncate px-2' },
-        h('div', { class: 'flex items-center gap-2' }, [
-          h(Button, {
-            variant: 'outline',
-            size: 'sm',
-            onClick: () => {
-              router.push(`/admin/classes/${row.original.slug}`)
-            }
-          }, { default: () => 'Detail' }),
-          h(Button, {
-            variant: 'outline',
-            size: 'sm',
-            onClick: () => {
-              console.log(row.original)
-            }
-          }, { default: () => 'Up to class' }),
-          h(Button, {
-            variant: 'outline',
-            size: 'sm',
-            onClick: () => {
-              selectedClassSlug.value = row.original.slug
-              isAssigning.value = true
-            }
-          }, { default: () => 'Assign student' })
-        ])
-      ),
+      render: (row) => {
+        const isAdmin = checkPermissions($authStore.user.permissions, ['admin.create'])
+
+        return h('div', { class: 'truncate px-2' },
+          h('div', { class: 'flex items-center gap-2' }, [
+            h(Button, {
+              variant: 'outline',
+              size: 'sm',
+              onClick: () => {
+                router.push(`/admin/classes/${row.original.slug}`)
+              }
+            }, { default: () => 'Scores' }),
+            isAdmin && h(Button, {
+              variant: 'outline',
+              size: 'sm',
+              onClick: () => {
+                console.log(row.original)
+              }
+            }, { default: () => 'Up to class' }),
+            isAdmin && h(Button, {
+              variant: 'outline',
+              size: 'sm',
+              onClick: () => {
+                selectedClassSlug.value = row.original.slug
+                isAssigning.value = true
+              }
+            }, { default: () => 'Assign student' })
+          ])
+        )
+      },
       options: {
         enableSorting: false,
         enableHiding: false
@@ -150,10 +138,6 @@ const handleInteractOutside = (event: Event) => {
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
 }
 
-const shouldShowElement = computed(() => {
-  return checkPermissions($authStore.user.permissions, ['admin.create'])
-})
-
 const handleCloseDialog = () => {
   isDistribution.value = false
   isCreating.value = false
@@ -163,6 +147,38 @@ const handleCloseDialog = () => {
   selectedValue.value = {}
   selectedClassSlug.value = ''
 }
+
+async function fetchData() {
+  const promises = []
+
+  if (adminPermissions) {
+    if (!$teacherStore.teachers.length) {
+      promises.push($teacherStore.fetchTeachers())
+    }
+
+    if (!$studentStore.students.length) {
+      promises.push($studentStore.fetchStudents())
+    }
+
+    if (!$blockStore.blocks.length) {
+      promises.push($blockStore.fetchBlocks())
+    }
+
+    if (!$academicYearStore.academicYears.length) {
+      promises.push($academicYearStore.fetchAcademicYears())
+    }
+
+    if (!$classStore.classes.length) {
+      promises.push($classStore.fetchClasses())
+    }
+  } else {
+    if (!$classStore.classes.length) {
+      promises.push($classStore.fetchClassForTeacher($authStore.user.username))
+    }
+  }
+
+  await Promise.all(promises)
+}
 </script>
 
 <template>
@@ -171,11 +187,11 @@ const handleCloseDialog = () => {
       <h2 class="text-4xl font-bold tracking-tight">Manage classes</h2>
 
       <div class="flex gap-2">
-        <Button variant="outline" @click="isDistribution = true" v-if="shouldShowElement">
+        <Button variant="outline" @click="isDistribution = true" v-if="adminPermissions">
           Distribution students
         </Button>
 
-        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+        <Button variant="default" @click="isCreating = true" v-if="adminPermissions">
           Create new class
         </Button>
       </div>

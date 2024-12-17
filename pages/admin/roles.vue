@@ -44,13 +44,7 @@ onMounted(async () => {
     // isDeleting.value = true
   })
 
-  if (!$roleStore.modules.length) {
-    await $roleStore.fetchModules()
-  }
-
-  if (!$roleStore.roles.length) {
-    await $roleStore.fetchRoles()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -123,6 +117,20 @@ const handleCloseDialog = () => {
   isEditing.value = false
   isDeleting.value = false
   selectedValue.value = {}
+}
+
+async function fetchData() {
+  const promises = []
+
+  if (!$roleStore.modules.length) {
+    promises.push($roleStore.fetchModules())
+  }
+
+  if (!$roleStore.roles.length) {
+    promises.push($roleStore.fetchRoles())
+  }
+
+  await Promise.all(promises)
 }
 </script>
 

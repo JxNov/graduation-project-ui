@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ConfigProvider } from 'radix-vue'
-import { DotsVerticalIcon } from '@radix-icons/vue'
+import { DotsVerticalIcon, DownloadIcon, OpenInNewWindowIcon } from '@radix-icons/vue'
 import { checkPermissions } from '~/utils/checkPermissions'
 
 const { $authStore, $bus } = useNuxtApp()
@@ -37,7 +37,7 @@ const deleteMaterial = (item: any) => {
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
   >
     <Card v-for="(item, index) in props.data" :key="index"
-          class="transition-all duration-300 ease-in-out shadow-md hover:shadow-xl hover:bg-muted/50 cursor-pointer">
+          class="transition-all duration-300 ease-in-out shadow-md hover:shadow-xl hover:bg-muted/50">
       <CardHeader class="flex flex-row justify-between items-start gap-4">
         <div class="flex flex-col gap-1">
           <CardTitle>
@@ -80,9 +80,10 @@ const deleteMaterial = (item: any) => {
         <img
           v-if="item.filePath"
           :src="`https://drive.google.com/thumbnail?id=${item.filePath}`"
-          class="object-cover w-full h-44 rounded-md aspect-square"
+          class="object-cover w-full h-44 rounded-md aspect-square cursor-pointer"
           :alt="item.title"
           loading="lazy"
+          @click="openFile(item.filePath)"
         />
 
         <p class="text-sm mt-2" v-if="item.description">
@@ -93,9 +94,11 @@ const deleteMaterial = (item: any) => {
       <CardFooter class="flex justify-between items-center gap-2">
         <Button
           type="button"
+          variant="outline"
           class="w-full"
           @click="openFile(item.filePath)"
         >
+          <OpenInNewWindowIcon class="h-4 w-4 mr-1" />
           Open
         </Button>
 
@@ -104,6 +107,7 @@ const deleteMaterial = (item: any) => {
           class="w-full"
           @click="downloadFile(item.filePath)"
         >
+          <DownloadIcon class="h-4 w-4 mr-1" />
           Download
         </Button>
       </CardFooter>

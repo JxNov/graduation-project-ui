@@ -49,17 +49,7 @@ onMounted(async () => {
     console.log(values)
   })
 
-  if (!$generationStore.generations.length) {
-    await $generationStore.fetchGenerations()
-  }
-
-  if (!$academicYearStore.academicYears.length) {
-    await $academicYearStore.fetchAcademicYears()
-  }
-
-  if (!$studentStore.students.length) {
-    await $studentStore.fetchStudents()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -166,6 +156,24 @@ const downloadSampleStudents = async () => {
     toast.error('Download failed!!!')
     isLoaded.value = false
   }
+}
+
+async function fetchData() {
+  const promises = []
+
+  if (!$generationStore.generations.length) {
+    promises.push($generationStore.fetchGenerations())
+  }
+
+  if (!$academicYearStore.academicYears.length) {
+    promises.push($academicYearStore.fetchAcademicYears())
+  }
+
+  if (!$studentStore.students.length) {
+    promises.push($studentStore.fetchStudents())
+  }
+
+  await Promise.all(promises)
 }
 </script>
 

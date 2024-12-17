@@ -16,6 +16,43 @@ export const fetchClassesService = async (): Promise<Class[]> => {
   }
 }
 
+export const fetchClassForTeacherService = async (username: string): Promise<Class[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/classes/teacher/${username}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const showClassService = async (slug: string, query?: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    let api: string = `/v1/classes/${slug}`
+    if (query) {
+      api += `?${query}`
+    }
+
+    const response = await $axios.get(api)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
 export const createClassService = async (data: {
   name: string
   username: string

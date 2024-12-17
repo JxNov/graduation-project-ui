@@ -1,12 +1,12 @@
 import type { AcademicYear } from '~/schema'
 import {
   fetchAcademicYearsService,
+  showAcademicYearService,
   createAcademicYearService,
   updateAcademicYearService,
   deleteAcademicYearService
 } from '~/services/academicYear'
 import { toast } from 'vue-sonner'
-import { skipHydrate } from 'pinia'
 
 export const useAcademicYearStore = defineStore('academic-year', () => {
   const academicYears = ref<AcademicYear[]>([])
@@ -14,6 +14,14 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
   const fetchAcademicYears = async () => {
     try {
       academicYears.value = await fetchAcademicYearsService()
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const showAcademicYear = async (slug: string) => {
+    try {
+      return await showAcademicYearService(slug)
     } catch (error) {
       throw error
     }
@@ -86,6 +94,7 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
   return {
     academicYears,
     fetchAcademicYears,
+    showAcademicYear,
     createAcademicYear,
     updateAcademicYear,
     deleteAcademicYear,

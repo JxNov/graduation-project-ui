@@ -16,7 +16,8 @@ export const useAuthStore = defineStore('auth', () => {
     phoneNumber: '',
     email: '',
     roles: [],
-    permissions: []
+    permissions: [],
+    subjects: []
   })
   const avatar = ref<string>(user.value.image)
 
@@ -64,7 +65,8 @@ export const useAuthStore = defineStore('auth', () => {
       phoneNumber: '',
       email: '',
       roles: [],
-      permissions: []
+      permissions: [],
+      subjects: []
     }
 
     avatar.value = user.value.image

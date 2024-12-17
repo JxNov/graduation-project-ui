@@ -48,7 +48,7 @@ export const createColumns = (
         }
       }
 
-      if (field === 'actions') { // && (canEdit || canDelete)
+      if (field === 'actions' && (canEdit || canDelete)) {
         return {
           id: 'actions',
           accessorKey: 'actions',

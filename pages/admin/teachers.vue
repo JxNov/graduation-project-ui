@@ -55,13 +55,7 @@ onMounted(async () => {
     console.log(values)
   })
 
-  if (!$teacherStore.teachers.length) {
-    await $teacherStore.fetchTeachers()
-  }
-
-  if (!$subjectStore.subjects.length) {
-    await $subjectStore.fetchSubjects()
-  }
+  await fetchData()
 })
 
 onBeforeUnmount(() => {
@@ -186,6 +180,20 @@ const downloadSampleTeachers = async () => {
     toast.error('Download failed!!!')
     isLoaded.value = false
   }
+}
+
+async function fetchData() {
+  const promises = []
+
+  if (!$teacherStore.teachers.length) {
+    promises.push($teacherStore.fetchTeachers())
+  }
+
+  if (!$subjectStore.subjects.length) {
+    promises.push($subjectStore.fetchSubjects())
+  }
+
+  await Promise.all(promises)
 }
 </script>
 

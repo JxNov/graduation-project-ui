@@ -20,10 +20,6 @@ const valueFormatter = (tick: number | Date) => typeof tick === 'number' ? `$ ${
       <h2 class="text-3xl font-bold tracking-tight">
         Dashboard
       </h2>
-      <div class="flex items-center space-x-2">
-        <BaseDateRangePicker />
-        <Button>Download</Button>
-      </div>
     </div>
     <main class="flex flex-1 flex-col gap-4 md:gap-8">
       <div class="grid gap-4 lg:grid-cols-4 md:grid-cols-2 md:gap-8">

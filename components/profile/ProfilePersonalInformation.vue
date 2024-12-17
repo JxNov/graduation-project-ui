@@ -24,7 +24,7 @@ const { $userStore } = useNuxtApp()
       </p>
 
       <p class="text-sm flex justify-between">
-        <strong>Date of Birth:</strong> {{ $userStore.userDetail?.date_of_birth }}
+        <strong>Date of Birth:</strong> {{ $userStore.userDetail?.dateOfBirth }}
       </p>
 
       <p class="text-sm flex justify-between">
