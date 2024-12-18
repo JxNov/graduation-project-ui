@@ -52,11 +52,11 @@ const handleUpdate = (data: any) => {
     <div class="flex justify-between items-center">
       <TabsList>
         <TabsTrigger value="instruct">
-          Instruct
+          Chi tiết
         </TabsTrigger>
 
         <TabsTrigger value="student-homework">
-          Student Homework
+          Bài tập
         </TabsTrigger>
       </TabsList>
 
@@ -68,11 +68,7 @@ const handleUpdate = (data: any) => {
     </TabsContent>
 
     <TabsContent value="student-homework" class="focus-visible:ring-0 focus-visible:ring-offset-0" :id="useIdFunction">
-      <HomeworkStudent
-        :homework="homework"
-        :data="userSubmittedAssignment"
-        @update="handleUpdate"
-      />
+      <HomeworkStudent :homework="homework" :data="userSubmittedAssignment" @update="handleUpdate" />
     </TabsContent>
   </Tabs>
 

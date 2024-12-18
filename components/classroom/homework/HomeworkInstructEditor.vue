@@ -73,7 +73,7 @@ const closeAll = () => {
           <CardFooter class="flex justify-end space-x-2">
             <Button type="button" variant="outline" @click="toggleCollapsible">Hủy</Button>
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Gửi</Button>
           </CardFooter>
         </form>
       </CollapsibleContent>

@@ -77,7 +77,7 @@ const formatNumber = (value: number) => {
                 class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
               >
                 <DotsVerticalIcon class="h-4 w-4" />
-                <span class="sr-only">Open menu</span>
+                <span class="sr-only">Mở menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" class="w-[160px]">
@@ -86,7 +86,7 @@ const formatNumber = (value: number) => {
                 @click="openFileAssignment(data.filePath)"
               >
                 <EyeOpenIcon class="w-4 h-4" />
-                View
+                Xem
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
@@ -95,7 +95,7 @@ const formatNumber = (value: number) => {
                 @click="downloadFileAssignment(data.filePath)"
               >
                 <DownloadIcon class="w-4 h-4" />
-                Download
+                Tải xuống
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

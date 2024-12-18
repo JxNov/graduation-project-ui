@@ -32,9 +32,9 @@ onUnmounted(() => {
 
 const columns = createColumns(
   [
-    ['date', 'Date'],
-    ['shifts', 'Shifts'],
-    ['reason', 'Reason', '', {
+    ['date', 'Ngày'],
+    ['shifts', 'Buổi'],
+    ['reason', 'Lý do', '', {
       enableSorting: false,
       enableHiding: false
     }]
@@ -43,7 +43,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'status',
-      title: 'Status',
+      title: 'Trạng thái',
       render: (row) => h(Badge, {
         class: {
           'bg-green-500 hover:bg-green-600 cursor-default text-white': row.original.status === 'Present',
@@ -63,12 +63,12 @@ const valueShifts = extractValue($attendanceStore.attendanceShow, 'shifts')
 const filters: TableFilter[] = [
   {
     name: 'shifts',
-    label: 'Shifts',
+    label: 'Buổi',
     values: valueShifts
   },
   {
     name: 'status',
-    label: 'Status',
+    label: 'Trạng thái',
     values: valueStatus
   }
 ]
@@ -92,7 +92,7 @@ const handleAttendance = async () => {
             return
           }
 
-          toast.error('You are not connected to the school network')
+          toast.error('Bạn chưa kết nối với mạng trường học')
         }
       })
     })
@@ -114,18 +114,14 @@ const handleCloseDialog = () => {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Attendances</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Điểm danh</h2>
 
       <Button variant="default" @click="handleAttendance">
-        Attendance
+        Điểm danh
       </Button>
     </div>
 
-    <LayoutTable
-      :data="$attendanceStore.attendanceShow"
-      :columns="columns"
-      :filters="filters"
-    />
+    <LayoutTable :data="$attendanceStore.attendanceShow" :columns="columns" :filters="filters" />
   </div>
 
   <Dialog :open="isOpen" @update:open="handleCloseDialog">

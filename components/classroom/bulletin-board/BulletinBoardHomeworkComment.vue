@@ -113,7 +113,7 @@ const updateContent = (value: string) => {
               </div>
 
               <div class="flex justify-end space-x-2">
-                <Button type="submit">Submit</Button>
+                <Button type="submit">Gửi</Button>
               </div>
             </form>
           </CollapsibleContent>

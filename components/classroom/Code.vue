@@ -37,7 +37,7 @@ const copyToClipboard = (text: string) => {
           </TooltipTrigger>
 
           <TooltipContent>
-            <p>Click to copy</p>
+            <p>Nhấn để sao chép</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

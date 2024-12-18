@@ -52,7 +52,7 @@ const deleteComment = async (comment: any) => {
     const response = await $articleStore.deleteComment(comment.id)
 
     if (response.status !== 'success') {
-      throw new Error('Failed to delete comment')
+      throw new Error('Xóa bình luận thất bại')
     }
 
     emits('deleteComment', comment)
@@ -107,12 +107,12 @@ const deleteComment = async (comment: any) => {
                 v-if="$authStore.user.username === comment.username"
                 @click="editComment(comment)"
               >
-                Edit
+                Sửa
               </DropdownMenuItem>
               <DropdownMenuSeparator v-if="$authStore.user.username === comment.username" />
 
               <DropdownMenuItem @click="deleteComment(comment)">
-                Delete
+                Xóa
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

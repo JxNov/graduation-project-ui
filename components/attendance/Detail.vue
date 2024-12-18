@@ -43,7 +43,7 @@ const onSubmit = async () => {
       const response = await $attendanceStore.createAttendance(data)
 
       if (!response) {
-        throw new Error('Failed to create attendance')
+        throw new Error('Điểm danh thất bại')
       }
 
       newId.value = response.id
@@ -54,7 +54,7 @@ const onSubmit = async () => {
     const response = await $attendanceStore.updateAttendance(id.value, data)
 
     if (!response) {
-      throw new Error('Failed to update attendance')
+      throw new Error('Cập nhật điểm danh thất bại')
     }
 
     isLoading.value = false

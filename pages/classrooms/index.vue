@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $classroomStore.joinClassroom(values.code)
 
     if (!response) {
-      throw new Error('Failed to join classroom')
+      throw new Error('Tham gia lớp học thất bại')
     }
 
     isLoading.value = false
@@ -58,19 +58,15 @@ const handleInteractOutside = (event: Event) => {
   <div class="flex justify-end">
     <Button @click="isDialogOpen = true">
       <PlusIcon class="w-6 h-6 mr-2" />
-      Join Classroom
+      Tham gia lớp học
     </Button>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <ClassroomItem
-      v-for="classroom in $classroomStore.classrooms"
-      :key="classroom.classSlug"
-      :classroom="classroom"
-    />
+    <ClassroomItem v-for="classroom in $classroomStore.classrooms" :key="classroom.classSlug" :classroom="classroom" />
 
     <div v-if="!$classroomStore.classrooms.length" class="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4">
-      <p class="text-lg text-center text-gray-500">No classroom found</p>
+      <p class="text-lg text-center text-gray-500">Không tìm thấy lớp học</p>
     </div>
   </div>
 
@@ -78,17 +74,17 @@ const handleInteractOutside = (event: Event) => {
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
       <ScrollArea class="max-h-[650px] w-full px-4">
         <DialogHeader>
-          <DialogTitle>Join Classroom</DialogTitle>
+          <DialogTitle>Tham gia lớp học</DialogTitle>
 
           <DialogDescription>
-            Enter the invitation code to join the classroom
+            Nhập mã tham gia lớp học
           </DialogDescription>
         </DialogHeader>
 
         <form class="space-y-6" @submit="onSubmit">
           <FormField v-slot="{ componentField }" name="code" :validate-on-blur="!isFieldDirty">
             <FormItem>
-              <FormLabel>Code</FormLabel>
+              <FormLabel>Mã lớp</FormLabel>
 
               <FormControl>
                 <Input type="text" placeholder="xxxxxxx" v-bind="componentField" />
@@ -99,7 +95,7 @@ const handleInteractOutside = (event: Event) => {
 
           <DialogFooter>
             <Button type="submit">
-              Join
+              Tham gia
             </Button>
           </DialogFooter>
         </form>

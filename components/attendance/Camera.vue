@@ -83,7 +83,7 @@ async function sendAttendanceDataToServer() {
     const response = await $attendanceStore.updateStudentAttendance(studentPresent.value, { shifts })
 
     if (!response) {
-      throw new Error('Failed to mark attendance')
+      throw new Error('Điểm danh thất bại')
     }
 
     studentPresent.value = ''
@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
         @click="sendAttendanceDataToServer"
         :disabled="isLoading"
       >
-        Attendance
+        Điểm danh
       </Button>
     </div>
   </div>

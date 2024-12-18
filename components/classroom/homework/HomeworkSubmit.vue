@@ -19,7 +19,7 @@ const dataUser = ref<any>(null)
 const formSchema = toTypedSchema(z.object({
   file: z.instanceof(File)
     .refine((file) => file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.type === 'application/zip', {
-      message: 'File must be a PDF, DOCX, or ZIP'
+      message: 'Tệp phải là PDF, DOCX hoặc ZIP'
     })
 }))
 
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $homeworkStore.submitAssignment(route.params.homeworkSlug as string, data)
 
     if (!response) {
-      throw new Error('Failed to submit assignment')
+      throw new Error('Không thể gửi bài tập')
     }
 
     isLoadingForm.value = false
@@ -107,10 +107,7 @@ const formatNumber = (value: number) => {
     <CardHeader class="flex flex-row justify-between items-center">
       <CardTitle class="2xl:text-xl">Bài tập của bạn</CardTitle>
 
-      <CardDescription
-        :class="dataUser?.submittedAt ? 'text-green-500' : 'text-red-500'"
-        v-if="!isLoading"
-      >
+      <CardDescription :class="dataUser?.submittedAt ? 'text-green-500' : 'text-red-500'" v-if="!isLoading">
         {{ dataUser?.submittedAt ? 'Đã nộp' : 'Chưa nộp' }}
       </CardDescription>
     </CardHeader>
@@ -120,14 +117,9 @@ const formatNumber = (value: number) => {
     </CardContent>
 
     <CardContent v-else-if="dataUser?.filePath">
-      <img
-        v-if="dataUser.filePath"
-        :src="`https://drive.google.com/thumbnail?id=${dataUser.filePath}`"
-        class="w-full h-32 object-cover rounded-md aspect-square cursor-pointer select-none"
-        :alt="dataUser.studentName"
-        loading="lazy"
-        @click="openFileAssignment(dataUser.filePath)"
-      />
+      <img v-if="dataUser.filePath" :src="`https://drive.google.com/thumbnail?id=${dataUser.filePath}`"
+        class="w-full h-32 object-cover rounded-md aspect-square cursor-pointer select-none" :alt="dataUser.studentName"
+        loading="lazy" @click="openFileAssignment(dataUser.filePath)" />
 
       <div class="flex justify-between items-center mt-4">
         <p class="text-sm">

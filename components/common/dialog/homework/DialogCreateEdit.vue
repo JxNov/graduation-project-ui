@@ -85,7 +85,7 @@ const onSubmit = handleSubmit(async (values) => {
       const response = await $homeworkStore.updateHomework(props.data.slug, data)
 
       if (!response) {
-        throw new Error('Failed to update material')
+        throw new Error('Cập nhật bài tập thất bại')
       }
 
       handleClose()
@@ -95,7 +95,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $homeworkStore.createHomework(data)
 
     if (!response) {
-      throw new Error('Failed to import students')
+      throw new Error('Tạo mới bài tập thất bại')
     }
 
     handleClose()
@@ -109,27 +109,27 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6 px-1" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle v-if="props.edit">
-        Edit Material for Semester
+        Sửa bài tập
       </DialogTitle>
       <DialogTitle v-else>
-        Create Material for Semester
+        Tạo mới bài tập
       </DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit Material
+        Sửa bài tập
       </DialogDescription>
       <DialogDescription v-else>
-        Create Material
+        Tạo mới bài tập
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="title">
         <FormItem>
-          <FormLabel>Title</FormLabel>
+          <FormLabel>Tiêu đề</FormLabel>
 
           <FormControl>
-            <Input type="text" placeholder="Title..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tiêu đề..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
 
           <FormMessage />
@@ -138,7 +138,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <DatePicker
         name="startDate"
-        label="Start date"
+        label="Ngày hết hạn"
         :model-value="dueDate"
         :disabled="isLoading"
         @update:model-value="handleChangeDueDate"
@@ -146,10 +146,10 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="criteria">
         <FormItem>
-          <FormLabel>Criteria</FormLabel>
+          <FormLabel>Tiêu chí</FormLabel>
           <FormControl>
           <Textarea
-            placeholder="Criteria"
+            placeholder="Tiêu chí"
             class="resize-none h-24"
             v-bind="componentField"
           />
@@ -161,11 +161,11 @@ const onSubmit = handleSubmit(async (values) => {
       <div class="grid grid-cols-2 gap-6">
         <FormField v-slot="{ value }" name="subjectSlug">
           <FormItem>
-            <FormLabel>Subject</FormLabel>
+            <FormLabel>Môn học</FormLabel>
 
             <FormControl>
               <Combobox
-                name="subject"
+                name="môn học"
                 :data="dataSubjectsCombobox"
                 :disabled="isLoading"
                 :model-value="value"
@@ -179,11 +179,11 @@ const onSubmit = handleSubmit(async (values) => {
 
         <FormField v-slot="{ value }" name="semesterSlug">
           <FormItem>
-            <FormLabel>Semester</FormLabel>
+            <FormLabel>Học kỳ</FormLabel>
 
             <FormControl>
               <Combobox
-                name="semester"
+                name="học kỳ"
                 :data="dataSemestersCombobox"
                 :disabled="isLoading"
                 :model-value="value"
@@ -199,11 +199,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

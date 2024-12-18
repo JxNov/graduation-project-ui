@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Role'],
+    ['name', 'Vai trò'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -68,7 +68,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'permissions',
-      title: 'Permissions',
+      title: 'Quyền',
       render: (row) => h('div', { class: 'truncate w-80' },
         row.original.permissions.map((permission: any) => h(Badge, {
           variant: 'outline',
@@ -90,7 +90,7 @@ const valuePermissions = extractValue($roleStore.roles, 'permissions')
 const filters: TableFilter[] = [
   {
     name: 'permissions',
-    label: 'Permissions',
+    label: 'Quyền',
     values: valuePermissions
   }
 ]
@@ -137,10 +137,10 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Roles</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý vai trò</h2>
 
       <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new role
+        Tạo mới vai trò
       </Button>
     </div>
 

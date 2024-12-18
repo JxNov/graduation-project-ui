@@ -33,7 +33,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $articleStore.createArticle(values)
 
     if (!response) {
-      throw new Error('Failed to create article')
+      throw new Error('Tạo mới bài viết thất bại')
     }
 
     setFieldValue('content', '')
@@ -106,7 +106,7 @@ const closeAll = () => {
               Hủy
             </Button>
 
-            <Button type="submit" :disabled="isLoading">Submit</Button>
+            <Button type="submit" :disabled="isLoading">Gửi</Button>
           </CardFooter>
         </form>
       </CollapsibleContent>

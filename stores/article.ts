@@ -35,7 +35,7 @@ export const useArticleStore = defineStore('article', () => {
       const response = await createCommentService(data)
       replaceArticles(response)
 
-      toast.success('Bìn luận thành công')
+      toast.success('Bình luận thành công')
 
       return response
     } catch (error) {

@@ -24,19 +24,19 @@ const initialValues = ref<any>({
 const items = [
   {
     id: 'create',
-    label: 'Create'
+    label: 'Thêm'
   },
   {
     id: 'read',
-    label: 'Read'
+    label: 'Đọc'
   },
   {
     id: 'update',
-    label: 'Update'
+    label: 'Sửa'
   },
   {
     id: 'delete',
-    label: 'Delete'
+    label: 'Xóa'
   }
 ] as const
 
@@ -129,24 +129,24 @@ const handleChange = (checked: boolean, value: string) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle v-if="props.edit">Edit role</DialogTitle>
-      <DialogTitle v-else>Create new role</DialogTitle>
+      <DialogTitle v-if="props.edit">Sửa vai trò</DialogTitle>
+      <DialogTitle v-else>Tạo mới vai trò</DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit role <strong>{{ props.data.name }}</strong> with specific permissions here.
+        Sửa vai trò <strong>{{ props.data.name }}</strong> with specific permissions here.
       </DialogDescription>
       <DialogDescription v-else>
-        Create a new role with specific permissions.
+        Tạo một vai trò mới với các quyền cụ thể.
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên vai trò</FormLabel>
 
           <FormControl>
-            <Input type="text" placeholder="Name..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tên vai trò..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
 
           <FormMessage />
@@ -154,7 +154,7 @@ const handleChange = (checked: boolean, value: string) => {
       </FormField>
 
       <div class="space-y-2">
-        <p class="text-md font-semibold">List of permissions</p>
+        <p class="text-md font-semibold">Danh sách quyền</p>
         <div class="rounded-md border">
           <Table>
             <TableHeader>
@@ -164,17 +164,13 @@ const handleChange = (checked: boolean, value: string) => {
                 </TableCell>
 
                 <TableCell>
-                  Permissions
+                  Quyền
                 </TableCell>
 
                 <TableCell class="w-24">
-                  <Checkbox
-                    :disabled="isLoading"
-                    :checked="selectAll"
-                    @update:checked="handleSelectAll"
-                  />
+                  <Checkbox :disabled="isLoading" :checked="selectAll" @update:checked="handleSelectAll" />
 
-                  Select All
+                  Tất cả
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -189,16 +185,13 @@ const handleChange = (checked: boolean, value: string) => {
                   <TableCell>
                     <FormField name="items">
                       <FormItem class="flex flex-row items-start space-x-3 space-y-0">
-                        <FormField v-for="item in items" :key="item.id"
-                                   type="checkbox"
-                                   :value="`${module.name}.${item.id}`" :unchecked-value="false" name="items">
+                        <FormField v-for="item in items" :key="item.id" type="checkbox"
+                          :value="`${module.name}.${item.id}`" :unchecked-value="false" name="items">
                           <FormItem class="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
-                              <Checkbox
-                                :disabled="isLoading"
+                              <Checkbox :disabled="isLoading"
                                 :checked="selectItems.includes(`${module.name}.${item.id}`)"
-                                @update:checked="checked => handleChange(checked, `${module.name}.${item.id}`)"
-                              />
+                                @update:checked="checked => handleChange(checked, `${module.name}.${item.id}`)" />
                             </FormControl>
 
                             <FormLabel class="font-normal ml-1">
@@ -220,11 +213,11 @@ const handleChange = (checked: boolean, value: string) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

@@ -43,7 +43,7 @@ const onSubmit = handleSubmit(async (values) => {
       })
 
       if (!response) {
-        throw new Error('Failed to update article comment')
+        throw new Error('Không cập nhật được bình luận bài viết')
       }
 
       isOpenDialog.value = false
@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $articleStore.createComment(values)
 
     if (!response) {
-      throw new Error('Failed to create article comment')
+      throw new Error('Không cập nhật được bình luận bài viết')
     }
 
     isOpenDialog.value = false
@@ -156,7 +156,7 @@ watchEffect(() => {
                 Hủy
               </Button>
 
-              <Button type="submit" :disabled="isLoading">Submit</Button>
+              <Button type="submit" :disabled="isLoading">Gửi</Button>
             </CardFooter>
           </form>
         </CollapsibleContent>

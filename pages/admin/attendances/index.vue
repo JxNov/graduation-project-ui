@@ -14,11 +14,11 @@ onMounted(async () => {
 
 const columns = createColumns(
   [
-    ['date', 'Date'],
-    ['className', 'Class'],
-    ['teacherName', 'Teacher'],
-    ['totalStudents', 'Students'],
-    ['attendedStudents', 'Attendances']
+    ['date', 'Ngày'],
+    ['className', 'Lớp'],
+    ['teacherName', 'Giáo viên'],
+    ['totalStudents', 'Học sinh'],
+    ['attendedStudents', 'Điểm danh']
   ],
   attendanceSchema,
   [
@@ -35,9 +35,9 @@ const columns = createColumns(
         }, {
           default: () => {
             if (row.original.id) {
-              return 'Update Attendance'
+              return 'Cập nhật điểm danh'
             } else {
-              return 'Attendance'
+              return 'Điểm danh'
             }
           }
         })
@@ -66,7 +66,7 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Attendances</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Điểm danh</h2>
     </div>
 
     <LayoutTable

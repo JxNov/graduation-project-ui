@@ -128,19 +128,19 @@ async function fetchData() {
     <div class="flex justify-between items-center">
       <TabsList>
         <TabsTrigger as-child value="bulletin-board">
-          Bulletin Board
+          Bảng tin
         </TabsTrigger>
 
         <TabsTrigger as-child value="homework">
-          Homework
+          Bài tập
         </TabsTrigger>
 
         <TabsTrigger as-child value="people">
-          People
+          Thành viên
         </TabsTrigger>
 
         <TabsTrigger as-child value="materials">
-          Materials
+          Tài liệu
         </TabsTrigger>
       </TabsList>
 
