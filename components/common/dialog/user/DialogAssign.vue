@@ -15,19 +15,19 @@ const users = $userStore.users.map(user => ({ label: user.name, value: user.emai
 const items = [
   {
     id: 'create',
-    label: 'Create'
+    label: 'Thêm'
   },
   {
     id: 'read',
-    label: 'Read'
+    label: 'Đọc'
   },
   {
     id: 'update',
-    label: 'Update'
+    label: 'Sửa'
   },
   {
     id: 'delete',
-    label: 'Delete'
+    label: 'Xóa'
   }
 ] as const
 
@@ -86,7 +86,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $userStore.assignRolePermission(values)
 
     if (!response) {
-      throw new Error('Failed to assign role and permission')
+      throw new Error('Không thể chỉ định vai trò và quyền')
     }
 
     isLoading.value = false
@@ -100,25 +100,21 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle>Assign Role</DialogTitle>
+      <DialogTitle>Gán vai trò</DialogTitle>
 
       <DialogDescription>
-        Assign a role to the selected user
+        Gán vai trò cho người dùng đã chọn
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ value }" name="users">
         <FormItem>
-          <FormLabel>Users</FormLabel>
+          <FormLabel>Người dùng</FormLabel>
 
           <FormControl>
-            <TagsCombobox
-              placeholder="Select users"
-              :data="users"
-              v-bind:model-value="value"
-              @update:model-value="value"
-            />
+            <TagsCombobox placeholder="Chọn người dùng" :data="users" v-bind:model-value="value"
+              @update:model-value="value" />
           </FormControl>
 
           <FormMessage />
@@ -126,21 +122,16 @@ const onSubmit = handleSubmit(async (values) => {
       </FormField>
 
       <div class="space-y-2">
-        <p class="text-md font-semibold">List of roles</p>
+        <p class="text-md font-semibold">Danh sách vai trò</p>
 
         <FormField name="roles">
           <FormItem>
             <div class="grid grid-cols-4 gap-4">
-              <FormField
-                v-for="role in $roleStore.roles" v-slot="{ handleChange }"
-                :key="role.slug" type="checkbox"
-                :value="role.slug" :unchecked-value="false" name="roles"
-              >
+              <FormField v-for="role in $roleStore.roles" v-slot="{ handleChange }" :key="role.slug" type="checkbox"
+                :value="role.slug" :unchecked-value="false" name="roles">
                 <FormItem class="flex flex-row items-start space-x-3 space-y-0">
                   <FormControl>
-                    <Checkbox
-                      @update:checked="handleChange"
-                    />
+                    <Checkbox @update:checked="handleChange" />
                   </FormControl>
 
                   <FormLabel class="font-normal">
@@ -155,7 +146,7 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
 
       <div class="space-y-2">
-        <p class="text-md font-semibold">List of permissions</p>
+        <p class="text-md font-semibold">Danh sách quyền</p>
         <div class="rounded-md border">
           <Table>
             <TableHeader>
@@ -165,17 +156,13 @@ const onSubmit = handleSubmit(async (values) => {
                 </TableCell>
 
                 <TableCell>
-                  Permissions
+                  Quyền
                 </TableCell>
 
                 <TableCell class="w-24">
-                  <Checkbox
-                    :disabled="isLoading"
-                    :checked="selectAll"
-                    @update:checked="handleSelectAll"
-                  />
+                  <Checkbox :disabled="isLoading" :checked="selectAll" @update:checked="handleSelectAll" />
 
-                  Select All
+                  Tất cả
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -190,21 +177,13 @@ const onSubmit = handleSubmit(async (values) => {
                   <TableCell>
                     <FormField name="items">
                       <FormItem class="flex flex-row items-start space-x-3 space-y-0">
-                        <FormField
-                          v-for="item in items"
-                          :key="item.id"
-                          type="checkbox"
-                          :value="`${module.name}.${item.id}`"
-                          :unchecked-value="false"
-                          name="items"
-                        >
+                        <FormField v-for="item in items" :key="item.id" type="checkbox"
+                          :value="`${module.name}.${item.id}`" :unchecked-value="false" name="items">
                           <FormItem class="flex flex-row items-start space-x-3 space-y-0">
                             <FormControl>
-                              <Checkbox
-                                :disabled="isLoading"
+                              <Checkbox :disabled="isLoading"
                                 :checked="selectItems.includes(`${module.name}.${item.id}`)"
-                                @update:checked="checked => handleChange(checked, `${module.name}.${item.id}`)"
-                              />
+                                @update:checked="checked => handleChange(checked, `${module.name}.${item.id}`)" />
                             </FormControl>
 
                             <FormLabel class="font-normal ml-1">
@@ -226,11 +205,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

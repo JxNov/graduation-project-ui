@@ -18,7 +18,7 @@ export const useChatStore = defineStore('chat', () => {
       const response = await getChatPreviewAdminService()
 
       if (!response) {
-        throw new Error('No chat previews found')
+        throw new Error('Không tìm thấy bản xem trước trò chuyện nào')
       }
 
       chatPreviews.value = response
@@ -33,7 +33,7 @@ export const useChatStore = defineStore('chat', () => {
       const response = await getChatPreviewStudentsService()
 
       if (!response) {
-        throw new Error('No chat previews found')
+        throw new Error('Không tìm thấy bản xem trước trò chuyện nào')
       }
 
       chatPreviews.value = response
@@ -48,7 +48,7 @@ export const useChatStore = defineStore('chat', () => {
       const response = await getChatAdminService(id)
 
       if (!response) {
-        throw new Error('No chat found')
+        throw new Error('Không tìm thấy cuộc trò chuyện nào')
       }
 
       chats.value = response
@@ -71,7 +71,7 @@ export const useChatStore = defineStore('chat', () => {
       const response = await createChatAdminService(username, message)
 
       if (!response) {
-        throw new Error('Failed to send message')
+        throw new Error('Không gửi được tin nhắn')
       }
 
       return response
@@ -85,7 +85,7 @@ export const useChatStore = defineStore('chat', () => {
       const response = await createChatStudentService(message)
 
       if (!response) {
-        throw new Error('Failed to send message')
+        throw new Error('Không gửi được tin nhắn')
       }
 
       return response

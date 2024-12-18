@@ -70,7 +70,7 @@ const columns = createColumns(
   [
     ['select'],
     ['email', 'Email'],
-    ['gender', 'Gender'],
+    ['gender', 'Giới tính'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -80,7 +80,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'name',
-      title: 'Name',
+      title: 'Tên',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -105,7 +105,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'subjects',
-      title: 'Subjects',
+      title: 'Môn học',
       render: (row) => h('div', { class: 'truncate' },
         row.original.subjects.map((permission: any) => h(Badge, {
           variant: 'outline',
@@ -125,12 +125,12 @@ const valueSubjects = extractValue($teacherStore.teachers, 'subjects')
 const filters: TableFilter[] = [
   {
     name: 'gender',
-    label: 'Gender',
+    label: 'Giới tính',
     values: valueGender
   },
   {
     name: 'subjects',
-    label: 'Subjects',
+    label: 'Môn học',
     values: valueSubjects
   }
 ]
@@ -160,7 +160,7 @@ const downloadSampleTeachers = async () => {
     const response = await $teacherStore.exportSampleTeachers()
 
     if (!response) {
-      throw new Error('Export failed')
+      throw new Error('Tải file thất bại')
     }
 
     const url = URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
@@ -173,11 +173,11 @@ const downloadSampleTeachers = async () => {
     URL.revokeObjectURL(url)
     document.body.removeChild(a)
 
-    toast.success('Download success!!!')
+    toast.success('Tải file thành công!!!')
 
     isLoaded.value = false
   } catch (error) {
-    toast.error('Download failed!!!')
+    toast.error('Tải file thất bại!!!')
     isLoaded.value = false
   }
 }
@@ -200,19 +200,19 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Teachers</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý giáo viên</h2>
 
       <div class="flex gap-4">
         <Button variant="outline" @click="downloadSampleTeachers" v-if="shouldShowElement" :disabled="isLoaded">
-          Download Sample Teachers
+          Tải file mẫu giáo viên
         </Button>
 
         <Button variant="default" @click="isImporting = true" v-if="shouldShowElement">
-          Import Teachers
+          Nhập giáo viên
         </Button>
 
         <Button @click="isAssigning = true" v-if="shouldShowElement">
-          Assign Subjects to Teachers
+          Phân môn học cho giáo viên
         </Button>
       </div>
     </div>

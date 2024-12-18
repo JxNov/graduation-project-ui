@@ -43,12 +43,12 @@ const redirect = (path: string) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" class="w-[160px]">
             <DropdownMenuItem>
-              Edit
+              Sửa
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
             <DropdownMenuItem>
-              Delete
+              Xóa
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

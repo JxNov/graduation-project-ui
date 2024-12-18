@@ -16,15 +16,15 @@ export const useClassroomStore = defineStore('classroom', () => {
       const response = await joinClassroomService(code)
 
       if (!response) {
-        throw new Error('Invalid response')
+        throw new Error('Phản hồi không hợp lệ')
       }
 
       classrooms.value.push(response)
-      toast.success('Successfully joined classroom')
+      toast.success('Đã tham gia lớp học thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to join classroom')
+      toast.error('Không thể tham gia lớp học')
       throw error
     }
   }

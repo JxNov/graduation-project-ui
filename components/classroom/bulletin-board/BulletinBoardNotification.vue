@@ -99,12 +99,12 @@ watchEffect(() => {
               class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
             >
               <DotsVerticalIcon class="h-4 w-4" />
-              <span class="sr-only">Open menu</span>
+              <span class="sr-only">Mở menu</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" class="w-[160px]">
             <DropdownMenuItem @click="handleDeleteArticle">
-              Delete
+              Xóa
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

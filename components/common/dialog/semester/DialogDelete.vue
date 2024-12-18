@@ -27,9 +27,9 @@ const handleDelete = async () => {
 
 <template>
   <DialogHeader>
-    <DialogTitle>Delete semester</DialogTitle>
+    <DialogTitle>Xóa học kỳ</DialogTitle>
     <DialogDescription>
-      Are you sure you want to delete <strong>{{ data.name }}</strong> semester?
+      Bạn có chắc chắn muốn xóa học kỳ <strong>{{ data.name }}</strong>?
     </DialogDescription>
   </DialogHeader>
 

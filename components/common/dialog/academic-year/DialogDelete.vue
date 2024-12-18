@@ -27,19 +27,19 @@ const handleDelete = async () => {
 
 <template>
   <DialogHeader>
-    <DialogTitle>Delete academic year</DialogTitle>
+    <DialogTitle>Xóa năm học</DialogTitle>
     <DialogDescription>
-      Are you sure you want to delete <strong>{{ data.name }}</strong> academic year?
+      Bạn có chắc chắn muốn xóa năm học <strong>{{ data.name }}</strong> ?
     </DialogDescription>
   </DialogHeader>
 
   <DialogFooter class="gap-2">
     <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-      Cancel
+      Hủy
     </Button>
 
     <Button type="button" variant="default" @click="handleDelete" :disabled="isLoading">
-      Delete
+      Xóa
     </Button>
   </DialogFooter>
 </template>

@@ -18,7 +18,7 @@ export const useGeminiStore = defineStore('gemini', () => {
       const response = await askGeminiService(question)
 
       if (!response) {
-        throw new Error('Failed to create Gemini')
+        throw new Error('Không tạo được cuộc trò chuyện')
       }
 
       return response

@@ -43,8 +43,8 @@ const handleSelectLink = (path: string) => {
   <Button variant="outline" size="sm"
           class="w-full flex-1 justify-between gap-1 font-normal md:w-56 md:flex-initial md:gap-3"
           @click="openCommand = !openCommand">
-    <span class="hidden sm:inline-flex">Search functionality</span>
-    <span class="sm:hidden">Search...</span>
+    <span class="hidden sm:inline-flex">Chức năng tìm kiếm</span>
+    <span class="sm:hidden">Tìm kiếm...</span>
 
     <BaseKbd>
       <span class="text-xs">{{ metaSymbol }}</span>K
@@ -52,10 +52,10 @@ const handleSelectLink = (path: string) => {
   </Button>
 
   <CommandDialog v-model:open="openCommand">
-    <CommandInput placeholder="Type a command or search..." />
+    <CommandInput placeholder="Nhập lệnh hoặc tìm kiếm..." />
 
     <CommandList>
-      <CommandEmpty>No results found.</CommandEmpty>
+      <CommandEmpty>Không tìm thấy kết quả nào.</CommandEmpty>
 
       <template v-for="nav in navMenuGroup" :key="nav.title">
         <CommandGroup

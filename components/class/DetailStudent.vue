@@ -156,23 +156,23 @@ const onSubmit = handleSubmit(async (values) => {
           <TableBody>
             <TableRow class="border-none hover:bg-transparent">
               <TableHead class="border-r w-14" rowspan="1">
-                Mouth Points
+                Điểm miệng
               </TableHead>
 
               <TableHead class="border-r w-14" rowspan="1">
-                Fifteen Minutes Points
+                Điểm 15 phút
               </TableHead>
 
               <TableHead class="border-r w-14" rowspan="1">
-                One Period Points
+                Điểm 1 tiết
               </TableHead>
 
               <TableHead class="border-r w-14" rowspan="1">
-                Mid Semester Points
+                Điểm giữa kỳ
               </TableHead>
 
               <TableHead class="w-14" rowspan="1">
-                End Semester Points
+                Điểm cuối kỳ
               </TableHead>
             </TableRow>
 
@@ -349,35 +349,35 @@ const onSubmit = handleSubmit(async (values) => {
 
               <TableHead class="border-r" rowspan="1">
                 <div class="flex justify-between items-center">
-                  <p class="text-sm text-primary">Coefficient</p>
+                  <p class="text-sm text-primary">Hệ số</p>
                   <p class="text-sm text-primary">{{ values.coefficientMouthPoints }}</p>
                 </div>
               </TableHead>
 
               <TableHead class="border-r" rowspan="1">
                 <div class="flex justify-between items-center">
-                  <p class="text-sm text-primary">Coefficient</p>
+                  <p class="text-sm text-primary">Hệ số</p>
                   <p class="text-sm text-primary">{{ values.coefficientFifteenMinutesPoints }}</p>
                 </div>
               </TableHead>
 
               <TableHead class="border-r" rowspan="1">
                 <div class="flex justify-between items-center">
-                  <p class="text-sm text-primary">Coefficient</p>
+                  <p class="text-sm text-primary">Hệ số</p>
                   <p class="text-sm text-primary">{{ values.coefficientOnePeriodPoints }}</p>
                 </div>
               </TableHead>
 
               <TableHead class="border-r" rowspan="1">
                 <div class="flex justify-between items-center">
-                  <p class="text-sm text-primary">Coefficient</p>
+                  <p class="text-sm text-primary">Hệ số</p>
                   <p class="text-sm text-primary">{{ values.coefficientMidSemesterPoints }}</p>
                 </div>
               </TableHead>
 
               <TableHead rowspan="1">
                 <div class="flex justify-between items-center">
-                  <p class="text-sm text-primary">Coefficient</p>
+                  <p class="text-sm text-primary">Hệ số</p>
                   <p class="text-sm text-primary">{{ values.coefficientEndSemesterPoints }}</p>
                 </div>
               </TableHead>
@@ -388,18 +388,12 @@ const onSubmit = handleSubmit(async (values) => {
                 <div class="flex gap-2">
                   <FormField v-slot="{ value }" name="mouthPoints">
                     <FormItem v-for="(point, index) in value" :key="index" class="w-full">
-                      <NumberField
-                        :min="0"
-                        :max="10"
-                        :step="0.01"
-                        :model-value="point"
-                        :disabled="isLoading"
+                      <NumberField :min="0" :max="10" :step="0.01" :model-value="point" :disabled="isLoading"
                         @update:model-value="(v) => {
                           const newPoints = [...value]
                           newPoints[index] = v
                           setFieldValue('mouthPoints', newPoints)
-                        }"
-                      >
+                        }">
                         <NumberFieldContent>
                           <FormControl>
                             <NumberFieldInput :id="`mouthPoints${index}`" />
@@ -415,18 +409,12 @@ const onSubmit = handleSubmit(async (values) => {
                 <div class="flex gap-2">
                   <FormField v-slot="{ value }" name="fifteenMinutesPoints">
                     <FormItem v-for="(point, index) in value" :key="index" class="w-full">
-                      <NumberField
-                        :min="0"
-                        :max="10"
-                        :step="0.01"
-                        :model-value="point"
-                        :disabled="isLoading"
+                      <NumberField :min="0" :max="10" :step="0.01" :model-value="point" :disabled="isLoading"
                         @update:model-value="(v) => {
                           const newPoints = [...value]
                           newPoints[index] = v
                           setFieldValue('fifteenMinutesPoints', newPoints)
-                        }"
-                      >
+                        }">
                         <NumberFieldContent>
                           <FormControl>
                             <NumberFieldInput :id="`fifteenMinutesPoints${index}`" />
@@ -442,18 +430,12 @@ const onSubmit = handleSubmit(async (values) => {
                 <div class="flex gap-2">
                   <FormField v-slot="{ value }" name="onePeriodPoints">
                     <FormItem v-for="(point, index) in value" :key="index" class="w-full">
-                      <NumberField
-                        :min="0"
-                        :max="10"
-                        :step="0.01"
-                        :model-value="point"
-                        :disabled="isLoading"
+                      <NumberField :min="0" :max="10" :step="0.01" :model-value="point" :disabled="isLoading"
                         @update:model-value="(v) => {
                           const newPoints = [...value]
                           newPoints[index] = v
                           setFieldValue('onePeriodPoints', newPoints)
-                        }"
-                      >
+                        }">
                         <NumberFieldContent>
                           <FormControl>
                             <NumberFieldInput :id="`onePeriodPoints${index}`" />
@@ -469,18 +451,12 @@ const onSubmit = handleSubmit(async (values) => {
                 <div class="flex">
                   <FormField v-slot="{ value }" name="midSemesterPoints">
                     <FormItem v-for="(point, index) in value" :key="index" class="w-full">
-                      <NumberField
-                        :min="0"
-                        :max="10"
-                        :step="0.01"
-                        :model-value="point"
-                        :disabled="isLoading"
+                      <NumberField :min="0" :max="10" :step="0.01" :model-value="point" :disabled="isLoading"
                         @update:model-value="(v) => {
                           const newPoints = [...value]
                           newPoints[index] = v
                           setFieldValue('midSemesterPoints', newPoints)
-                        }"
-                      >
+                        }">
                         <NumberFieldContent>
                           <NumberFieldDecrement />
                           <FormControl>
@@ -498,18 +474,12 @@ const onSubmit = handleSubmit(async (values) => {
                 <div class="flex">
                   <FormField v-slot="{ value }" name="endSemesterPoints">
                     <FormItem v-for="(point, index) in value" :key="index" class="w-full">
-                      <NumberField
-                        :min="0"
-                        :max="10"
-                        :step="0.01"
-                        :model-value="point"
-                        :disabled="isLoading"
+                      <NumberField :min="0" :max="10" :step="0.01" :model-value="point" :disabled="isLoading"
                         @update:model-value="(v) => {
                           const newPoints = [...value]
                           newPoints[index] = v
                           setFieldValue('endSemesterPoints', newPoints)
-                        }"
-                      >
+                        }">
                         <NumberFieldContent>
                           <NumberFieldDecrement />
                           <FormControl>
@@ -529,17 +499,12 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
 
     <div class="flex justify-end gap-4 mt-4">
-      <Button
-        variant="outline"
-        type="button"
-        @click="() => emits('close', false)"
-        :disabled="isLoading"
-      >
-        Cancel
+      <Button variant="outline" type="button" @click="() => emits('close', false)" :disabled="isLoading">
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save
+        Lưu
       </Button>
     </div>
   </form>

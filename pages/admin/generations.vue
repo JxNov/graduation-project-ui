@@ -55,9 +55,9 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Generation'],
-    ['startDate', 'Start Date'],
-    ['endDate', 'End Date'],
+    ['name', 'Khóa học sinh'],
+    ['startDate', 'Ngày bắt đầu'],
+    ['endDate', 'Ngày kết thúc'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -75,12 +75,12 @@ const valueEndDate = extractValue($generationStore.generations, 'endDate')
 const filters = [
   {
     name: 'startDate',
-    label: 'Start Date',
+    label: 'Ngày bắt đầu',
     values: valueStartDate
   },
   {
     name: 'endDate',
-    label: 'End Date',
+    label: 'Ngày kết thúc',
     values: valueEndDate
   }
 ]
@@ -115,9 +115,9 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Generations</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý khóa học sinh</h2>
       <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new generation
+        Tạo mới khóa học sinh
       </Button>
     </div>
 

@@ -43,15 +43,11 @@ watchEffect(async () => {
 <template>
   <div class="bg-card rounded-md overflow-hidden">
     <TooltipProvider :delay-duration="0">
-      <ResizablePanelGroup
-        id="resize-panel-group-1"
-        direction="horizontal"
-        class="h-full max-h-[820px] items-stretch"
-      >
+      <ResizablePanelGroup id="resize-panel-group-1" direction="horizontal" class="h-full max-h-[820px] items-stretch">
         <ResizablePanel class="max-w-[350px]" :id="useIdFunction">
           <div class="flex items-center px-4 py-5">
             <h1 class="text-2xl font-bold">
-              Inbox
+              Hộp thư
             </h1>
           </div>
           <Separator />
@@ -59,7 +55,7 @@ watchEffect(async () => {
             <form>
               <div class="relative">
                 <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-                <Input v-model="searchValue" placeholder="Search" class="pl-8" />
+                <Input v-model="searchValue" placeholder="Tìm kiếm..." class="pl-8" />
               </div>
             </form>
           </div>

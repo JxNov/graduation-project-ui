@@ -79,7 +79,7 @@ const onSubmit = handleSubmit(async (values) => {
       const response = await $academicYearStore.createAcademicYear(values)
 
       if (!response) {
-        throw new Error('Failed to create academic year')
+        throw new Error('Tạo mới năm học thất bại')
       }
 
       isLoading.value = false
@@ -90,7 +90,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $academicYearStore.updateAcademicYear(props.data.slug, values)
 
     if (!response) {
-      throw new Error('Failed to update academic year')
+      throw new Error('Cập nhật năm học thất bại')
     }
 
     isLoading.value = false
@@ -104,58 +104,43 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle v-if="props.edit">Edit academic year</DialogTitle>
-      <DialogTitle v-else>Create new academic year</DialogTitle>
+      <DialogTitle v-if="props.edit">Sửa năm học</DialogTitle>
+      <DialogTitle v-else>Tạo mới năm học</DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit academic year <strong>{{ props.data.name }}</strong>.
+        Sửa năm học <strong>{{ props.data.name }}</strong>.
       </DialogDescription>
       <DialogDescription v-else>
-        Create a new academic year.
+        Tạo mới 1 năm học.
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên năm học</FormLabel>
 
           <FormControl>
-            <Input type="text" placeholder="Name..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tên năm học..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
 
           <FormMessage />
         </FormItem>
       </FormField>
 
-      <DatePickerNotSelectedPrevious
-        name="startDate"
-        label="Start date"
-        :model-value="startDate"
-        :disabled="isLoading"
-        @update:model-value="handleStartDateChange"
-      />
+      <DatePickerNotSelectedPrevious name="startDate" label="Ngày bắt đầu" :model-value="startDate"
+        :disabled="isLoading" @update:model-value="handleStartDateChange" />
 
-      <DatePickerNotSelectedPrevious
-        name="endDate"
-        label="End date"
-        :model-value="endDate"
-        :disabled="isLoading"
-        @update:model-value="handleEndDateChange"
-      />
+      <DatePickerNotSelectedPrevious name="endDate" label="Ngày kết thúc" :model-value="endDate" :disabled="isLoading"
+        @update:model-value="handleEndDateChange" />
 
       <FormField v-slot="{ value }" name="generationSlug">
         <FormItem>
-          <FormLabel>Generation</FormLabel>
+          <FormLabel>Khóa học sinh</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="generation"
-              :data="dataCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('generationSlug', $event)"
-            />
+            <Combobox name="khóa học sinh" :data="dataCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('generationSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -165,10 +150,10 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

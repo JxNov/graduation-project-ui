@@ -16,27 +16,18 @@ const checkLocale = (localeCode: string) => {
   <DropdownMenuSub>
     <DropdownMenuSubTrigger>
       <span>
-        {{ $t('auth.language.title') }}
+        Ngôn ngữ
       </span>
     </DropdownMenuSubTrigger>
 
     <DropdownMenuPortal>
       <DropdownMenuSubContent>
-        <DropdownMenuItem
-          v-for="locale in availableLocales"
-          :key="locale.code"
-          @click="changeLocale(locale.code)"
-        >
+        <DropdownMenuItem v-for="locale in availableLocales" :key="locale.code" @click="changeLocale(locale.code)">
           <Icon :name="`emojione-v1:flag-for-${locale.flag}`" size="16" />
           <span class="ml-2">
             {{ $t(`auth.language.${locale.code}`) }}
           </span>
-          <Icon
-            v-if="checkLocale(locale.code)"
-            name="i-radix-icons-check"
-            size="16"
-            class="ml-4"
-          />
+          <Icon v-if="checkLocale(locale.code)" name="i-radix-icons-check" size="16" class="ml-4" />
         </DropdownMenuItem>
       </DropdownMenuSubContent>
     </DropdownMenuPortal>

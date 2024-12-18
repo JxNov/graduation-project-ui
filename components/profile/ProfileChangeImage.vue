@@ -146,7 +146,7 @@ watch(capturedImages, (newValue) => {
 <template>
   <Card class="col-span-8 h-fit">
     <CardHeader class="flex flex-row profiles-start gap-4 select-none">
-      Take Multiple Images
+      Chụp nhiều ảnh
     </CardHeader>
 
     <CardContent class="min-h-64">

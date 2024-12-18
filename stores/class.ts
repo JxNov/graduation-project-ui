@@ -53,11 +53,11 @@ export const useClassStore = defineStore('class', () => {
       const response = await createClassService(data)
       replaceClasses(response)
 
-      toast.success('Class created successfully')
+      toast.success('Lớp được tạo thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to create class')
+      toast.error('Không tạo được lớp')
       throw error
     }
   }
@@ -72,11 +72,11 @@ export const useClassStore = defineStore('class', () => {
       const response = await updateClassService(slug, data)
       replaceClasses(response)
 
-      toast.success('Class updated successfully')
+      toast.success('Lớp được cập nhật thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to update class')
+      toast.error('Không thể cập nhật lớp học')
       throw error
     }
   }
@@ -86,9 +86,9 @@ export const useClassStore = defineStore('class', () => {
       await deleteClassService(slug)
       classes.value = classes.value.filter(cls => cls.slug !== slug)
 
-      toast.success('Class deleted successfully')
+      toast.success('Lớp đã được xóa thành công')
     } catch (error) {
-      toast.error('Failed to delete class')
+      toast.error('Không thể xóa lớp học')
       throw error
     }
   }
@@ -102,11 +102,11 @@ export const useClassStore = defineStore('class', () => {
       }
 
       await fetchClasses()
-      toast.success('Students distributed successfully')
+      toast.success('Phân chia học sinh vào lớp thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to distribute students')
+      toast.error('Không thể phân chia học sinh')
       throw error
     }
   }
@@ -119,7 +119,7 @@ export const useClassStore = defineStore('class', () => {
       const response = await assignStudentsToClassService(data)
       incrementNumberOfStudents(data.classSlug)
 
-      toast.success('Students assigned to class successfully')
+      toast.success('Thêm học sinh vào lớp thành công')
 
       return response
     } catch (error: any) {
@@ -138,7 +138,7 @@ export const useClassStore = defineStore('class', () => {
       const response = await promoteStudentsService(slug, data)
       replaceClasses(response)
 
-      toast.success('Students promoted to class successfully')
+      toast.success('Lên lớp thành công')
 
       return response
     } catch (error: any) {

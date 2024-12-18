@@ -36,7 +36,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $classStore.distributeStudents(values.academicYearSlug, values.blockSlug)
 
     if (!response) {
-      throw new Error('Failed to update class')
+      throw new Error('Phân lớp học sinh thất bại')
     }
 
     isLoading.value = false
@@ -50,24 +50,19 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle>Distribution students</DialogTitle>
+      <DialogTitle>Phân lớp học sinh</DialogTitle>
 
-      <DialogDescription>Distribute students to a block in an academic year</DialogDescription>
+      <DialogDescription>Phân bố học sinh theo khối trong năm học</DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ value }" name="academicYearSlug">
         <FormItem>
-          <FormLabel>Academic year</FormLabel>
+          <FormLabel>Năm học</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="academic year"
-              :data="dataAcademicYearsCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('academicYearSlug', $event)"
-            />
+            <Combobox name="năm học" :data="dataAcademicYearsCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('academicYearSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -76,16 +71,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="blockSlug">
         <FormItem>
-          <FormLabel>Block</FormLabel>
+          <FormLabel>Khối</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="block"
-              :data="dataBlocksCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('blockSlug', $event)"
-            />
+            <Combobox name="khối" :data="dataBlocksCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('blockSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -95,11 +85,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Distribute
+        Lưu
       </Button>
     </DialogFooter>
   </form>

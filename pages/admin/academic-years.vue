@@ -55,10 +55,10 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Academic Year'],
-    ['generationName', 'Generation'],
-    ['startDate', 'Start Date'],
-    ['endDate', 'End Date'],
+    ['name', 'Năm học'],
+    ['generationName', 'Khóa học sinh'],
+    ['startDate', 'Ngày bắt đầu'],
+    ['endDate', 'Ngày kết thúc'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -77,17 +77,17 @@ const valueEndDate = extractValue($academicYearStore.academicYears, 'endDate')
 const filters = [
   {
     name: 'generationName',
-    label: 'Generation',
+    label: 'Khóa học',
     values: valueGenerationName
   },
   {
     name: 'startDate',
-    label: 'Start Date',
+    label: 'Ngày bắt đầu',
     values: valueStartDate
   },
   {
     name: 'endDate',
-    label: 'End Date',
+    label: 'Ngày kết thúc',
     values: valueEndDate
   }
 ]
@@ -126,9 +126,9 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage academic years</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý năm học</h2>
       <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new academic year
+        Tạo mới năm học
       </Button>
     </div>
 

@@ -36,7 +36,7 @@ const onSubmit = async () => {
     const response = await $geminiStore.askGemini(question)
 
     if (!response) {
-      throw new Error('Failed to ask question')
+      throw new Error('Gửi câu hỏi thất bại')
     }
 
     isLoading.value = false
@@ -49,7 +49,7 @@ const onSubmit = async () => {
 }
 
 const renderAnswer = (answer: string) => {
-  if (!answer) return 'No answer yet'
+  if (!answer) return 'Chưa có câu trả lời'
   return answer
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
     .replace(/```(.*?)```/g, '<code>$1</code>')
@@ -97,7 +97,7 @@ const renderAnswer = (answer: string) => {
           <div class="grid gap-4">
             <Textarea
               class="p-4 h-24 resize-none"
-              :placeholder="`Enter your question here...`"
+              :placeholder="`Nhập câu hỏi của bạn vào đây...`"
               :disabled="isLoading"
               v-model="text"
             />
@@ -108,7 +108,7 @@ const renderAnswer = (answer: string) => {
               class="ml-auto"
               :disabled="isLoading"
             >
-              Send
+              Gửi
             </Button>
           </div>
         </form>
@@ -120,7 +120,7 @@ const renderAnswer = (answer: string) => {
         <div class="grid gap-4">
             <Textarea
               class="p-4 h-24 resize-none"
-              :placeholder="`Enter your question here...`"
+              :placeholder="`Nhập câu hỏi của bạn vào đây...`"
               :disabled="isLoading"
               v-model="text"
             />
@@ -131,7 +131,7 @@ const renderAnswer = (answer: string) => {
             class="ml-auto"
             :disabled="isLoading"
           >
-            Send
+            Gửi
           </Button>
         </div>
       </form>

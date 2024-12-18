@@ -23,12 +23,12 @@ export const useStudentStore = defineStore('student', () => {
       const response = await exportSampleStudentsService()
 
       if (!response) {
-        throw new Error('Students export failed!!!')
+        throw new Error('Xuất file mẫu học sinh thất bại!!!')
       }
 
       return response
     } catch (error) {
-      toast.error('Students export failed!!!')
+      toast.error('Xuất file mẫu học sinh thất bại!!!')
     }
   }
 
@@ -37,14 +37,14 @@ export const useStudentStore = defineStore('student', () => {
       const response = await importStudentsService(data)
 
       if (!response) {
-        throw new Error('Students import failed!!!')
+        throw new Error('Nhập học sinh thất bại!!!')
       }
 
-      toast.success('Students imported successfully!!!')
+      toast.success('Nhập học sinh thành công!!!')
 
       return response
     } catch (error) {
-      toast.error('Students import failed!!!')
+      toast.error('Nhập học sinh thất bại!!!')
     }
   }
 
@@ -61,16 +61,16 @@ export const useStudentStore = defineStore('student', () => {
       const response = await createStudentService(data)
 
       if (!response) {
-        throw new Error('Student creation failed!!!')
+        throw new Error('Tạo mới học sinh thất bại!!!')
       }
 
       students.value = [...students.value, response]
 
-      toast.success('Student created successfully!!!')
+      toast.success('Tạo mới học sinh thành công!!!')
 
       return response
     } catch (error) {
-      toast.error('Student creation failed!!!')
+      toast.error('Tạo mới học sinh thất bại!!!')
     }
   }
 

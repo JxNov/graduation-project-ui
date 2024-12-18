@@ -32,12 +32,9 @@ const deleteMaterial = (item: any) => {
 </script>
 
 <template>
-  <div
-    v-if="props.data?.length"
-    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
-  >
+  <div v-if="props.data?.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
     <Card v-for="(item, index) in props.data" :key="index"
-          class="transition-all duration-300 ease-in-out shadow-md hover:shadow-xl hover:bg-muted/50">
+      class="transition-all duration-300 ease-in-out shadow-md hover:shadow-xl hover:bg-muted/50">
       <CardHeader class="flex flex-row justify-between items-start gap-4">
         <div class="flex flex-col gap-1">
           <CardTitle>
@@ -52,24 +49,19 @@ const deleteMaterial = (item: any) => {
         <ConfigProvider :use-id="useIdFunction">
           <DropdownMenu v-if="!studentPermissions">
             <DropdownMenuTrigger as-child>
-              <Button
-                variant="ghost"
-                class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-              >
+              <Button variant="ghost" class="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
                 <DotsVerticalIcon class="h-4 w-4" />
-                <span class="sr-only">Open menu</span>
+                <span class="sr-only">Mở menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" class="w-[160px]">
-              <DropdownMenuItem
-                @click="editMaterial(item)"
-              >
-                Edit
+              <DropdownMenuItem @click="editMaterial(item)">
+                Sửa
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
               <DropdownMenuItem @click="deleteMaterial(item)">
-                Delete
+                Xóa
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -77,14 +69,9 @@ const deleteMaterial = (item: any) => {
       </CardHeader>
 
       <CardContent>
-        <img
-          v-if="item.filePath"
-          :src="`https://drive.google.com/thumbnail?id=${item.filePath}`"
-          class="object-cover w-full h-44 rounded-md aspect-square cursor-pointer"
-          :alt="item.title"
-          loading="lazy"
-          @click="openFile(item.filePath)"
-        />
+        <img v-if="item.filePath" :src="`https://drive.google.com/thumbnail?id=${item.filePath}`"
+          class="object-cover w-full h-44 rounded-md aspect-square cursor-pointer" :alt="item.title" loading="lazy"
+          @click="openFile(item.filePath)" />
 
         <p class="text-sm mt-2" v-if="item.description">
           {{ item.description }}
@@ -92,23 +79,14 @@ const deleteMaterial = (item: any) => {
       </CardContent>
 
       <CardFooter class="flex justify-between items-center gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          class="w-full"
-          @click="openFile(item.filePath)"
-        >
+        <Button type="button" variant="outline" class="w-full" @click="openFile(item.filePath)">
           <OpenInNewWindowIcon class="h-4 w-4 mr-1" />
-          Open
+          Mở
         </Button>
 
-        <Button
-          type="button"
-          class="w-full"
-          @click="downloadFile(item.filePath)"
-        >
+        <Button type="button" class="w-full" @click="downloadFile(item.filePath)">
           <DownloadIcon class="h-4 w-4 mr-1" />
-          Download
+          Tải xuống
         </Button>
       </CardFooter>
     </Card>
@@ -116,7 +94,7 @@ const deleteMaterial = (item: any) => {
 
   <div v-else class="flex justify-center items-center h-96">
     <p class="text-2xl">
-      No materials found
+      Không tìm thấy tài liệu nào
     </p>
   </div>
 </template>

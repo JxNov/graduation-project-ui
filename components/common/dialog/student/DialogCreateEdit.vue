@@ -35,13 +35,13 @@ const formSchema = toTypedSchema(z.object({
   name: z.string().max(50),
   dateOfBirth: z.string(),
   gender: z.enum(['Male', 'Female'], {
-    required_error: 'You need to select a notification type.'
+    required_error: 'Bạn cần chọn giới tính.'
   }),
   address: z.string(),
   phone: z.string().min(10).refine((value) => {
     return !isNaN(Number(value))
   }, {
-    message: 'Phone number must be a number not a string.'
+    message: 'Số điện thoại phải là số chứ không phải chuỗi.'
   }),
   academicYearSlug: z.string(),
   generationSlug: z.string()
@@ -76,7 +76,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
 
     if (!response) {
-      throw new Error('Failed to create user')
+      throw new Error('Tạo mới học sinh thất bại')
     }
 
     isLoading.value = false
@@ -91,20 +91,20 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle>
-        Create student
+        Tạo mới học sinh
       </DialogTitle>
 
       <DialogDescription>
-        Create student account
+        Tạo mới 1 học sinh
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name" :validate-on-blur="!isFieldDirty">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên học sinh</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Full name" v-bind="componentField" />
+            <Input type="text" placeholder="Tên học sinh" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -112,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <DatePicker
         name="startDate"
-        label="Start date"
+        label="Ngày sinh"
         :model-value="dateOfBirth"
         :disabled="isLoading"
         @update:model-value="handleChangeDateOfBirth"
@@ -120,7 +120,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" type="radio" name="gender">
         <FormItem class="space-y-3">
-          <FormLabel>Gender</FormLabel>
+          <FormLabel>Giới tính</FormLabel>
 
           <FormControl>
             <RadioGroup
@@ -132,7 +132,7 @@ const onSubmit = handleSubmit(async (values) => {
                   <RadioGroupItem value="Male" />
                 </FormControl>
                 <FormLabel class="font-normal">
-                  Male
+                  Nam
                 </FormLabel>
               </FormItem>
 
@@ -141,7 +141,7 @@ const onSubmit = handleSubmit(async (values) => {
                   <RadioGroupItem value="Female" />
                 </FormControl>
                 <FormLabel class="font-normal">
-                  Female
+                  Nữ
                 </FormLabel>
               </FormItem>
             </RadioGroup>
@@ -152,7 +152,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="address" :validate-on-blur="!isFieldDirty">
         <FormItem>
-          <FormLabel>Address</FormLabel>
+          <FormLabel>Địa chỉ</FormLabel>
           <FormControl>
             <Input type="text" placeholder="Ex: Me Linh - Ha Noi" v-bind="componentField" />
           </FormControl>
@@ -162,7 +162,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="phone" :validate-on-blur="!isFieldDirty">
         <FormItem>
-          <FormLabel>Phone</FormLabel>
+          <FormLabel>Số điện thoại</FormLabel>
           <FormControl>
             <Input type="text" placeholder="Ex: 0123456789" v-bind="componentField" />
           </FormControl>
@@ -172,11 +172,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="generationSlug">
         <FormItem>
-          <FormLabel>Generation</FormLabel>
+          <FormLabel>Khóa học sinh</FormLabel>
 
           <FormControl>
             <Combobox
-              name="generation"
+              name="khóa học sinh"
               :data="dataGenerationsCombobox"
               :disabled="isLoading"
               :model-value="value"
@@ -190,11 +190,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="academicYearSlug">
         <FormItem>
-          <FormLabel>Academic year</FormLabel>
+          <FormLabel>Năm học</FormLabel>
 
           <FormControl>
             <Combobox
-              name="academic year"
+              name="năm học"
               :data="dataAcademicYearsCombobox"
               :disabled="isLoading"
               :model-value="value"
@@ -209,11 +209,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

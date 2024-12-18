@@ -86,7 +86,7 @@ const onSubmit = handleSubmit(async (values) => {
       const response = await $generationStore.createGeneration(values)
 
       if (!response) {
-        throw new Error('Create generation failed')
+        throw new Error('Tạo mới khóa học sinh thất bại')
       }
 
       isLoading.value = false
@@ -97,7 +97,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $generationStore.updateGeneration(props.data.slug, values)
 
     if (!response) {
-      throw new Error('Update generation failed')
+      throw new Error('Cập nhật khóa học sinh thất bại')
     }
 
     isLoading.value = false
@@ -111,51 +111,41 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle v-if="props.edit">Edit generation</DialogTitle>
-      <DialogTitle v-else>Create new generation</DialogTitle>
+      <DialogTitle v-if="props.edit">Sửa khóa học sinh</DialogTitle>
+      <DialogTitle v-else>Tạo mới khóa học sinh</DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit generation <strong>{{ props.data.name }}</strong>.
+        Sửa khóa học sinh <strong>{{ props.data.name }}</strong>.
       </DialogDescription>
       <DialogDescription v-else>
-        Create a new generation.
+        Tạo mới 1 khóa học sinh
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên khóa học sinh</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Name..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tên khóa học sinh..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
           <FormMessage />
         </FormItem>
       </FormField>
 
-      <DatePickerNotSelectedPrevious
-        name="startDate"
-        label="Start date"
-        :model-value="startDate"
-        :disabled="isLoading"
-        @update:modelValue="handleStartDateChange"
-      />
+      <DatePickerNotSelectedPrevious name="startDate" label="Ngày bắt đầu" :model-value="startDate"
+        :disabled="isLoading" @update:modelValue="handleStartDateChange" />
 
-      <DatePickerNotSelectedPrevious
-        name="endDate"
-        label="End date"
-        :model-value="endDate"
-        :disabled="isLoading"
-        @update:modelValue="handleEndDateChange"
-      />
+      <DatePickerNotSelectedPrevious name="endDate" label="Ngày kết thúc" :model-value="endDate" :disabled="isLoading"
+        @update:modelValue="handleEndDateChange" />
     </div>
 
     <DialogFooter>
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

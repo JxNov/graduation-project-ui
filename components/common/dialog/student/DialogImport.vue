@@ -63,25 +63,20 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle>Import Student</DialogTitle>
+      <DialogTitle>Nhập học sinh</DialogTitle>
 
       <DialogDescription>
-        Import students from a Excel file
+        Nhập học sinh từ file Excel
       </DialogDescription>
     </DialogHeader>
 
     <FormField v-slot="{ value }" name="generationSlug">
       <FormItem>
-        <FormLabel>Generation</FormLabel>
+        <FormLabel>Khóa học</FormLabel>
 
         <FormControl>
-          <Combobox
-            name="generation"
-            :data="dataGenerationsCombobox"
-            :disabled="isLoading"
-            :model-value="value"
-            @update:model-value="setFieldValue('generationSlug', $event)"
-          />
+          <Combobox name="khóa học" :data="dataGenerationsCombobox" :disabled="isLoading" :model-value="value"
+            @update:model-value="setFieldValue('generationSlug', $event)" />
         </FormControl>
 
         <FormMessage />
@@ -90,16 +85,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <FormField v-slot="{ value }" name="academicYearSlug">
       <FormItem>
-        <FormLabel>Academic year</FormLabel>
+        <FormLabel>Năm học</FormLabel>
 
         <FormControl>
-          <Combobox
-            name="academic year"
-            :data="dataAcademicYearsCombobox"
-            :disabled="isLoading"
-            :model-value="value"
-            @update:model-value="setFieldValue('academicYearSlug', $event)"
-          />
+          <Combobox name="năm học" :data="dataAcademicYearsCombobox" :disabled="isLoading" :model-value="value"
+            @update:model-value="setFieldValue('academicYearSlug', $event)" />
         </FormControl>
 
         <FormMessage />
@@ -109,10 +99,7 @@ const onSubmit = handleSubmit(async (values) => {
     <FormField name="file">
       <FormItem>
         <FormControl>
-          <BaseDropzone
-            :max-files="1"
-            @update:model-value="setFieldValue('file', $event)"
-          />
+          <BaseDropzone :max-files="1" @update:model-value="setFieldValue('file', $event)" />
         </FormControl>
         <FormMessage />
       </FormItem>
@@ -120,11 +107,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

@@ -27,19 +27,19 @@ const handleDelete = async () => {
 
 <template>
   <DialogHeader>
-    <DialogTitle>Delete Generation</DialogTitle>
+    <DialogTitle>Xóa khóa học sinh</DialogTitle>
     <DialogDescription>
-      Are you sure you want to delete <strong>{{ data.name }}</strong> generation?
+      Bạn có chắc chắn muốn xóa khóa học sinh <strong>{{ data.name }}</strong> ?
     </DialogDescription>
   </DialogHeader>
 
   <DialogFooter>
     <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-      Cancel
+      Hủy
     </Button>
 
     <Button type="button" variant="default" @click="handleDelete" :disabled="isLoading">
-      Delete
+      Xóa
     </Button>
   </DialogFooter>
 </template>

@@ -37,11 +37,11 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
       const response = await createAcademicYearService(data)
       replaceAcademicYears(response)
 
-      toast.success('Academic year created successfully')
+      toast.success('Tạo mới năm học thành công')
 
       return response
     } catch (error) {
-      toast.error('Academic year created failed')
+      toast.error('Tạo mới năm học thất bại')
     }
   }
 
@@ -55,11 +55,11 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
       const response = await updateAcademicYearService(slug, data)
       replaceAcademicYears(response)
 
-      toast.success('Academic year updated successfully')
+      toast.success('Cập nhật năm học thành công')
 
       return response
     } catch (error) {
-      toast.error('Academic year updated failed')
+      toast.error('Cập nhật năm học thất bại')
     }
   }
 
@@ -68,9 +68,9 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
       await deleteAcademicYearService(slug)
       academicYears.value = academicYears.value.filter(academicYear => academicYear.slug !== slug)
 
-      toast.success('Academic year deleted successfully')
+      toast.success('Xóa năm học thành công')
     } catch (error) {
-      toast.error('Academic year deleted failed')
+      toast.error('Xóa năm học thất bại')
     }
   }
 

@@ -5,8 +5,8 @@ definePageMeta({
   layout: 'blank'
 })
 
-const title = t('auth.login.title')
-const description = t('auth.login.title')
+const title = 'Đăng nhập'
+const description = 'Nhập email của bạn dưới đây để đăng nhập vào tài khoản của bạn'
 
 useSeoMeta({
   title,
@@ -24,10 +24,10 @@ useSeoMeta({
     <div class="grid mx-auto max-w-sm gap-6">
       <div class="grid gap-2 text-center">
         <h1 class="text-2xl font-semibold tracking-tight">
-          {{ $t('auth.login.title') }}
+          Đăng nhập
         </h1>
         <p class="text-balance text-sm text-muted-foreground">
-          {{ $t('auth.login.subtitle') }}
+          Nhập email của bạn dưới đây để đăng nhập vào tài khoản của bạn
         </p>
       </div>
       <AuthSignIn />

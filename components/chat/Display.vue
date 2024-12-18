@@ -55,7 +55,7 @@ const onSubmit = async () => {
     const response = await $chatStore.createChatAdmin(studentUsername.value, text.value)
 
     if (!response) {
-      throw new Error('Failed to send message')
+      throw new Error('Gửi tin nhắn thất bại')
     }
 
     text.value = ''
@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="line-clamp-1 text-xs">
-              <span class="font-medium">Reply-To:</span> {{ preview.title }}
+              <span class="font-medium">Trả lời:</span> {{ preview.title }}
             </div>
           </div>
         </div>
@@ -105,8 +105,7 @@ onBeforeUnmount(() => {
         <template v-for="mess in messages" :key="mess.messageID">
           <div class="flex items-center gap-2" v-if="$authStore.user.username !== mess.username">
             <div
-              v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username"
-            >
+              v-if="!messages[messages.indexOf(mess) + 1] || messages[messages.indexOf(mess) + 1].username !== mess.username">
               <Avatar>
                 <AvatarFallback>
                   {{ mess.name.split(' ').map((name: string) => name[0]).join('') }}
@@ -136,20 +135,11 @@ onBeforeUnmount(() => {
       <div class="p-4">
         <form @submit.prevent="onSubmit">
           <div class="grid gap-4">
-            <Textarea
-              class="p-4 h-24 resize-none"
-              :placeholder="`Reply ${preview.title}...`"
-              :disabled="isLoading"
-              v-model="text"
-            />
+            <Textarea class="p-4 h-24 resize-none" :placeholder="`Trả lời ${preview.title}...`" :disabled="isLoading"
+              v-model="text" />
 
-            <Button
-              type="submit"
-              size="sm"
-              class="ml-auto"
-              :disabled="isLoading"
-            >
-              Send
+            <Button type="submit" size="sm" class="ml-auto" :disabled="isLoading">
+              Gửi
             </Button>
           </div>
         </form>
@@ -157,7 +147,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div v-else class="p-8 text-center text-muted-foreground">
-      No message selected
+      Không có tin nhắn nào được chọn
     </div>
   </div>
 </template>

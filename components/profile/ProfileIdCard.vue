@@ -24,7 +24,7 @@ const { $authStore, $userStore } = useNuxtApp()
       </p>
 
       <p class="text-sm flex justify-between">
-        <strong>Phone:</strong> {{ $userStore.userDetail?.phoneNumber }}
+        <strong>Số điện thoại:</strong> {{ $userStore.userDetail?.phoneNumber }}
       </p>
     </CardContent>
   </Card>

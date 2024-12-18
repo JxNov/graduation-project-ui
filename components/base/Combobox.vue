@@ -45,14 +45,14 @@ const value = computed({
         >
           {{ value
           ? data.find((val) => val.value === value)?.label
-          : `Select ${props.name}...` }}
+          : `Chọn ${props.name}...` }}
           <CaretSortIcon class="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent class="max-w-full p-0">
         <Command>
-          <CommandInput class="h-9" :placeholder="`Search ${props.name}...`" />
-          <CommandEmpty>No {{ props.name }} found.</CommandEmpty>
+          <CommandInput class="h-9" :placeholder="`Tìm kiếm ${props.name}...`" />
+          <CommandEmpty>Không có {{ props.name }} được tìm thấy.</CommandEmpty>
           <CommandList>
             <CommandGroup>
               <CommandItem

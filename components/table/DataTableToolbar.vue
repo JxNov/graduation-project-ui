@@ -35,7 +35,7 @@ const handleReset = () => {
   <div class="flex items-center justify-between">
     <div class="flex flex-1 items-center space-x-2">
       <Input
-        placeholder="Filter..."
+        placeholder="Lọc..."
         v-model="searchValue"
         class="h-8 w-[150px] lg:w-[250px]"
       />
@@ -54,7 +54,7 @@ const handleReset = () => {
         class="h-8 px-2 lg:px-3"
         @click="handleReset"
       >
-        Reset
+        Bỏ lọc
         <Cross2Icon class="ml-2 h-4 w-4" />
       </Button>
     </div>

@@ -75,7 +75,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'name',
-      title: 'Name',
+      title: 'Tên học sinh',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -99,7 +99,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'mouthPoints',
-      title: 'Mouth Points',
+      title: 'Điểm miệng',
       render: (row) => h('div',
         row.original.mouthPoints?.map((mouthPoint: any) => h(Badge, {
           variant: 'outline',
@@ -110,7 +110,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'fifteenMinutesPoints',
-      title: '15 Minutes Points',
+      title: 'Điểm 15 phút',
       render: (row) => h('div',
         row.original.fifteenMinutesPoints?.map((fifteenMinutesPoint: any) => h(Badge, {
           variant: 'outline',
@@ -121,7 +121,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'onePeriodPoints',
-      title: '1 Period Points',
+      title: 'Điểm 1 tiết',
       render: (row) => h('div',
         row.original.onePeriodPoints?.map((onePeriodPoint: any) => h(Badge, {
           variant: 'outline',
@@ -132,7 +132,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'midSemesterPoints',
-      title: 'Mid Term Points',
+      title: 'Điểm giữa kỳ',
       render: (row) => h('div',
         row.original.midSemesterPoints?.map((midTermPoint: any) => h(Badge, {
           variant: 'outline',
@@ -143,7 +143,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'endSemesterPoints',
-      title: 'End Term Points',
+      title: 'Điểm cuối kỳ',
       render: (row) => h('div',
         row.original.endSemesterPoints?.map((endTermPoint: any) => h(Badge, {
           variant: 'outline',
@@ -154,7 +154,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'averageScore',
-      title: 'Average Score',
+      title: 'Điểm trung bình',
       render: (row) => row.original.averageScore && h(Badge, {
         variant: 'outline',
         class: 'mr-1'
@@ -229,18 +229,18 @@ const handleUpdateScore = (score: any) => {
 
       <div class="flex flex-col sm:items-end gap-2">
         <CardTitle>
-          {{ students.length }} student(s)
+          {{ students.length }} học sinh
         </CardTitle>
 
         <form @submit.prevent class="flex flex-row items-center gap-4">
           <Select v-model="subject">
             <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a subject" class="select-none" />
+              <SelectValue placeholder="Môn học" class="select-none" />
             </SelectTrigger>
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Subjects</SelectLabel>
+                <SelectLabel>Môn học</SelectLabel>
                 <SelectItem
                   v-for="(subject, index) in subjects"
                   :key="index"
@@ -254,12 +254,12 @@ const handleUpdateScore = (score: any) => {
 
           <Select v-model="semester">
             <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a semester" class="select-none" />
+              <SelectValue placeholder="Học kỳ" class="select-none" />
             </SelectTrigger>
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Semesters</SelectLabel>
+                <SelectLabel>Học kỳ</SelectLabel>
                 <SelectItem
                   v-for="(semester, index) in semestersForSelect"
                   :key="index"

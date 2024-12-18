@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $teacherStore.assignSubjectToTeacher(values.teacher, values.subjects)
 
     if (!response) {
-      throw new Error('Failed to assign role and permission')
+      throw new Error('Chia môn học cho giáo viên thất bại')
     }
 
     isLoading.value = false
@@ -53,22 +53,22 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle>
-        Assign students to class
+       Chia môn học cho giáo viên
       </DialogTitle>
 
       <DialogDescription>
-        Assign students to class
+        Phân công giáo viên dạy môn học
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ value }" name="teacher">
         <FormItem>
-          <FormLabel>Teacher</FormLabel>
+          <FormLabel>Giáo viên</FormLabel>
 
           <FormControl>
             <Combobox
-              name="teacher"
+              name="giáo viên"
               :data="dataTeachersCombobox"
               :disabled="isLoading"
               :model-value="value"
@@ -82,11 +82,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="subjects">
         <FormItem>
-          <FormLabel>Subjects</FormLabel>
+          <FormLabel>Môn học</FormLabel>
 
           <FormControl>
             <TagsCombobox
-              placeholder="Select subjects"
+              placeholder="Chọn môn học"
               :data="subjects"
               v-bind:model-value="value"
               @update:model-value="value"
@@ -100,11 +100,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

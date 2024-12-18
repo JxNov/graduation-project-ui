@@ -28,11 +28,11 @@ export const useSemesterStore = defineStore('semester', () => {
       const response = await createSemesterService(data)
       replaceSemesters(response)
 
-      toast.success('Semester created successfully')
+      toast.success('Tạo mới học kỳ thành công')
 
       return response
     } catch (error) {
-      toast.error('Semester created failed')
+      toast.error('Tạo mới học kỳ thất bại')
     }
   }
 
@@ -46,11 +46,11 @@ export const useSemesterStore = defineStore('semester', () => {
       const response = await updateSemesterService(slug, data)
       replaceSemesters(response)
 
-      toast.success('Semester updated successfully')
+      toast.success('Cập nhật học kỳ thành công')
 
       return response
     } catch (error) {
-      toast.error('Semester updated failed')
+      toast.error('Cập nhật học kỳ thất abị')
     }
   }
 
@@ -59,9 +59,9 @@ export const useSemesterStore = defineStore('semester', () => {
       await deleteSemesterService(slug)
       semesters.value = semesters.value.filter(semester => semester.slug !== slug)
 
-      toast.success('Semester deleted successfully')
+      toast.success('Xóa học kỳ thành công')
     } catch (error) {
-      toast.error('Semester deleted failed')
+      toast.error('Xóa học kỳ thất bại')
     }
   }
 
