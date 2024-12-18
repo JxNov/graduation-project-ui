@@ -7,7 +7,7 @@ import { createColumns } from '~/composables/columns'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Badge } from '~/components/ui/badge'
-import { UserDialogAssign, UserDialogCreateEdit } from '~/components/common/dialog/user'
+import { UserDialogAssign, UserDialogCreateEdit, UserDialogRestorePassword } from '~/components/common/dialog/user'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 
 const { $authStore, $userStore, $roleStore, $bus } = useNuxtApp()
@@ -16,6 +16,7 @@ const isAssigning = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
+const isRestoring = ref<boolean>(false)
 const selectedValue = ref<User | object>({})
 
 onMounted(async () => {
@@ -44,6 +45,10 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
+  $bus.on('close-dialog-restore', (value: boolean) => {
+    isRestoring.value = value
+  })
+
   $bus.on('delete-rows', (values: User[]) => {
     console.log(values)
   })
@@ -57,6 +62,7 @@ onBeforeUnmount(() => {
   $bus.off('close-dialog-assign')
   $bus.off('close-dialog-create-edit')
   $bus.off('close-dialog-delete')
+  $bus.off('close-dialog-restore')
   $bus.off('delete-rows')
 })
 
@@ -142,6 +148,7 @@ const handleCloseDialog = () => {
   isCreating.value = false
   isEditing.value = false
   isDeleting.value = false
+  isRestoring.value = false
   selectedValue.value = {}
 }
 
@@ -174,7 +181,11 @@ async function fetchData() {
       <h2 class="text-4xl font-bold tracking-tight">Quản lý người dùng</h2>
 
       <div class="flex gap-4">
-        <Button variant="default" @click="isAssigning = true" v-if="shouldShowElement">
+        <Button variant="outline" @click="isRestoring = true" v-if="shouldShowElement">
+          Khôi phục mật khẩu người dùng
+        </Button>
+
+        <Button variant="outline" @click="isAssigning = true" v-if="shouldShowElement">
           Gán vai trò cho người dùng
         </Button>
 
@@ -200,6 +211,12 @@ async function fetchData() {
   <Dialog :open="isCreating" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
       <UserDialogCreateEdit />
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isRestoring" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[450px]" @interact-outside="handleInteractOutside">
+      <UserDialogRestorePassword />
     </DialogContent>
   </Dialog>
 

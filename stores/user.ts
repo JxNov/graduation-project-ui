@@ -4,7 +4,8 @@ import {
   fetchUsersService,
   fetchUserDetailService,
   updateProfileInformationService,
-  createUserService
+  createUserService,
+  forgotPasswordService
 } from '~/services/user'
 import { toast } from 'vue-sonner'
 
@@ -94,6 +95,24 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const forgotPassword = async (data: {
+    email: string[]
+  }) => {
+    try {
+      const response = await forgotPasswordService(data)
+
+      if (!response) {
+        throw new Error('Có lỗi xảy ra khi khôi phục mật khẩu')
+      }
+
+      toast.success('Khôi phục mật khẩu thành công')
+      return response
+    } catch (error: any) {
+      toast.error('Có lỗi xảy ra khi khôi phục mật khẩu')
+      throw error
+    }
+  }
+
   const replaceUsers = (response: any) => {
     users.value = users.value.map((user: any) => {
       const responseUser = response.find((res: any) => res.username === user.username)
@@ -118,6 +137,7 @@ export const useUserStore = defineStore('user', () => {
     fetchUserDetail,
     updateProfileInformation,
     createUser,
+    forgotPassword,
     clearUsers
   }
 })

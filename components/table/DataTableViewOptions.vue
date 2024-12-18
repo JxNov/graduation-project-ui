@@ -38,17 +38,17 @@ const handleDelete = () => {
 
 <template>
   <div class="flex flex-1 items-center space-x-2">
-    <Button
-      variant="outline"
-      size="sm"
-      class="ml-auto hidden h-8 lg:flex"
-      v-if="selectedRows > 0"
-      @click="handleDelete"
-      :id="useIdFunction"
-    >
-      <TrashIcon class="mr-2 h-4 w-4" />
-      Delete ({{ selectedRows }})
-    </Button>
+<!--    <Button-->
+<!--      variant="outline"-->
+<!--      size="sm"-->
+<!--      class="ml-auto hidden h-8 lg:flex"-->
+<!--      v-if="selectedRows > 0"-->
+<!--      @click="handleDelete"-->
+<!--      :id="useIdFunction"-->
+<!--    >-->
+<!--      <TrashIcon class="mr-2 h-4 w-4" />-->
+<!--      Delete ({{ selectedRows }})-->
+<!--    </Button>-->
 
     <DropdownMenu>
       <DropdownMenuTrigger as-child>

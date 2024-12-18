@@ -77,6 +77,8 @@ const handleAttendance = async () => {
   try {
     const response = await fetch(`/api/network-info`)
     const data = await response.json()
+    if (!response.ok) throw new Error(data.message)
+    if (!data || !Object.keys(data).length) throw new Error('Bạn không kết nối với mạng trường')
 
     Object.keys(data).forEach((key) => {
       const networks = data[key]
@@ -92,12 +94,12 @@ const handleAttendance = async () => {
             return
           }
 
-          toast.error('You are not connected to the school network')
+          toast.error('Bạn không kết nối với mạng trường')
         }
       })
     })
   } catch (error) {
-    console.error(error)
+    toast.error('Bạn không kết nối với mạng trường')
   }
 }
 
