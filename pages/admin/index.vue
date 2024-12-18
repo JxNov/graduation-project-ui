@@ -18,7 +18,7 @@ const valueFormatter = (tick: number | Date) => typeof tick === 'number' ? `$ ${
   <div class="w-full flex flex-col gap-4">
     <div class="flex flex-wrap items-center justify-between gap-2">
       <h2 class="text-3xl font-bold tracking-tight">
-        Dashboard
+        Bảng điều khiển
       </h2>
     </div>
     <main class="flex flex-1 flex-col gap-4 md:gap-8">
@@ -26,64 +26,64 @@ const valueFormatter = (tick: number | Date) => typeof tick === 'number' ? `$ ${
         <Card>
           <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle class="text-sm font-medium">
-              Total Revenue
+              Số khóa học sinh
             </CardTitle>
             <DollarSign class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
-              $45,231.89
+              2
             </div>
             <p class="text-xs text-muted-foreground">
-              +20.1% from last month
+              2 khóa học sinh
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle class="text-sm font-medium">
-              Subscriptions
+              Số giáo viên
             </CardTitle>
             <Users class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
-              +2350
+              333
             </div>
             <p class="text-xs text-muted-foreground">
-              +180.1% from last month
+              333 giáo viên
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle class="text-sm font-medium">
-              Sales
+              Số lượng học sinh
             </CardTitle>
             <CreditCard class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
-              +12,234
+              666
             </div>
             <p class="text-xs text-muted-foreground">
-              +19% from last month
+              666 học sinh
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader class="flex flex-row items-center justify-between pb-2 space-y-0">
             <CardTitle class="text-sm font-medium">
-              Active Now
+              Số lượng lớp học
             </CardTitle>
             <Activity class="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div class="text-2xl font-bold">
-              +573
+              666
             </div>
             <p class="text-xs text-muted-foreground">
-              +201 since last hour
+              666 lớp học
             </p>
           </CardContent>
         </Card>
@@ -105,16 +105,11 @@ const valueFormatter = (tick: number | Date) => typeof tick === 'number' ? `$ ${
             </Button>
           </CardHeader>
           <CardContent>
-            <BarChart
-              :data="data"
-              index="name"
-              :categories="['total', 'predicted']"
-              :y-formatter="(tick, i) => {
-                return typeof tick === 'number'
-                  ? `$ ${new Intl.NumberFormat('us').format(tick).toString()}`
-                  : ''
-              }"
-            />
+            <BarChart :data="data" index="name" :categories="['total', 'predicted']" :y-formatter="(tick, i) => {
+              return typeof tick === 'number'
+                ? `$ ${new Intl.NumberFormat('us').format(tick).toString()}`
+                : ''
+            }" />
           </CardContent>
         </Card>
         <Card>
@@ -122,12 +117,7 @@ const valueFormatter = (tick: number | Date) => typeof tick === 'number' ? `$ ${
             <CardTitle>Recent Sales</CardTitle>
           </CardHeader>
           <CardContent class="grid gap-8">
-            <DonutChart
-              index="name"
-              :category="'total'"
-              :data="data"
-              :value-formatter="valueFormatter"
-            />
+            <DonutChart index="name" :category="'total'" :data="data" :value-formatter="valueFormatter" />
 
             <div class="grid gap-4">
               <div class="flex flex-row items-center justify-between">

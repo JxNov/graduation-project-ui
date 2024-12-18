@@ -140,7 +140,7 @@ onMounted(async () => {
           <DropdownMenuTrigger as-child>
             <Button id="radix-vue-dropdown-menu-trigger-1" variant="secondary" size="icon" class="rounded-full">
               <CircleUser class="h-5 w-5" />
-              <span class="sr-only">Toggle user menu</span>
+              <span class="sr-only">Chuyển đổi menu người dùng</span>
             </Button>
           </DropdownMenuTrigger>
 
@@ -167,7 +167,7 @@ onMounted(async () => {
             <DropdownMenuGroup>
               <NuxtLink to="/profile">
                 <DropdownMenuItem class="cursor-pointer">
-                  {{ $t('auth.profile.title') }}
+                  Hồ sơ
                 </DropdownMenuItem>
               </NuxtLink>
 
@@ -178,7 +178,7 @@ onMounted(async () => {
             <DropdownMenuSeparator />
 
             <DropdownMenuItem @click="handleLogout">
-              {{ $t('auth.logout') }}
+              Đăng xuất
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

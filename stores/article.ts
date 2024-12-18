@@ -19,11 +19,11 @@ export const useArticleStore = defineStore('article', () => {
       const response = await createArticleService(data)
       replaceArticles(response)
 
-      toast.success('Article created successfully')
+      toast.success('Tạo mới thông báo thành công')
 
       return response
     } catch (error) {
-      toast.error('Article created failed')
+      toast.error('Tạo mới thông báo thất bại')
     }
   }
 
@@ -35,11 +35,11 @@ export const useArticleStore = defineStore('article', () => {
       const response = await createCommentService(data)
       replaceArticles(response)
 
-      toast.success('Comment created successfully')
+      toast.success('Bìn luận thành công')
 
       return response
     } catch (error) {
-      toast.error('Comment created failed')
+      toast.error('Bình luận thất bại')
     }
   }
 
@@ -50,14 +50,14 @@ export const useArticleStore = defineStore('article', () => {
       const response = await updateCommentService(commentId, data)
 
       if (!response) {
-        throw new Error('Invalid response')
+        throw new Error('Phản hồi không hợp lệ')
       }
 
-      toast.success('Comment updated successfully')
+      toast.success('Sửa bình luận thành công')
 
       return response
     } catch (error) {
-      toast.error('Comment updated failed')
+      toast.error('Sửa bình luận thất bại')
     }
   }
 
@@ -66,13 +66,13 @@ export const useArticleStore = defineStore('article', () => {
       const response = await deleteCommentService(commentId)
 
       if (!response) {
-        throw new Error('Invalid response')
+        throw new Error('Phản hồi không hợp lệ')
       }
 
-      toast.success('Comment deleted successfully')
+      toast.success('Xóa bình luận thành công')
       return response
     } catch (error) {
-      toast.error('Comment deleted failed')
+      toast.error('Xóa bình luận thất bại')
     }
   }
 
@@ -81,13 +81,13 @@ export const useArticleStore = defineStore('article', () => {
       const response = await deleteArticleService(articleId)
 
       if (!response) {
-        throw new Error('Invalid response')
+        throw new Error('Phản hồi không hợp lệ')
       }
 
-      toast.success('Article deleted successfully')
+      toast.success('Xóa thông báo thành công')
       return response
     } catch (error) {
-      toast.error('Article deleted failed')
+      toast.error('Xóa thông báo thất bại')
     }
   }
 

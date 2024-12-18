@@ -43,11 +43,11 @@ export const useRoleStore = defineStore('role', () => {
       const response = await createRoleService(data)
       replaceRoles(response)
 
-      toast.success('Role created successfully')
+      toast.success('Tạo vai trò thành công')
 
       return response
     } catch (error) {
-      toast.error('Role created failed')
+      toast.error('Tạo vai trò thất bại')
     }
   }
 
@@ -56,11 +56,11 @@ export const useRoleStore = defineStore('role', () => {
       const response = await updateRoleService(slug, data)
       replaceRoles(response)
 
-      toast.success('Role updated successfully')
+      toast.success('Cập nhật vai trò thành công')
 
       return response
     } catch (error) {
-      toast.error('Role updated failed')
+      toast.error('Cập nhật vai trò thất bại')
     }
   }
 
@@ -69,9 +69,9 @@ export const useRoleStore = defineStore('role', () => {
       await deleteRoleService(slug)
       roles.value = roles.value.filter(role => role.slug !== slug)
 
-      toast.success('Role deleted successfully')
+      toast.success('Xóa vai trò thành công')
     } catch (error) {
-      toast.error('Failed to delete role')
+      toast.error('Xóa vai trò thất bại')
     }
   }
 

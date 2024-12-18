@@ -81,7 +81,7 @@ const onSubmit = handleSubmit(async (values) => {
         <Card class="col-span-4">
           <CardHeader class="flex flex-row profiles-start gap-4">
             <h2 class="text-lg font-semibold">
-              Change Password
+              Đổi mật khẩu
             </h2>
           </CardHeader>
 
@@ -89,7 +89,7 @@ const onSubmit = handleSubmit(async (values) => {
             <FormField v-slot="{ componentField }" name="oldPassword" :validate-on-blur="!isFieldDirty">
               <FormItem>
                 <FormLabel>
-                  Old Password
+                 Mật khẩu cũ
                 </FormLabel>
 
                 <FormControl>
@@ -114,7 +114,7 @@ const onSubmit = handleSubmit(async (values) => {
             <FormField v-slot="{ componentField }" name="newPassword" :validate-on-blur="!isFieldDirty">
               <FormItem>
                 <FormLabel>
-                  New Password
+                  Mật khẩu mới
                 </FormLabel>
 
                 <FormControl>
@@ -139,7 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
             <FormField v-slot="{ componentField }" name="confirmPassword" :validate-on-blur="!isFieldDirty">
               <FormItem>
                 <FormLabel>
-                  Confirm Password
+                  Xác nhận mật khẩu
                 </FormLabel>
 
                 <FormControl>
@@ -169,7 +169,7 @@ const onSubmit = handleSubmit(async (values) => {
           type="submit"
           :disabled="isLoading"
         >
-          Update Information
+          Cập nhật thông tin
         </Button>
       </div>
     </div>

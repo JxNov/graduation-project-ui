@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
 
     if (!response) {
-      throw new Error('Failed to assign role and permission')
+      throw new Error('Thêm học sinh vào lớp không thành công')
     }
 
     isLoading.value = false
@@ -53,26 +53,22 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle>
-        Assign students to class
+        Thêm học sinh vào lớp
       </DialogTitle>
 
       <DialogDescription>
-        Assign students to class
+        Thêm học sinh vào lớp
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ value }" name="students">
         <FormItem>
-          <FormLabel>Students</FormLabel>
+          <FormLabel>Học sinh</FormLabel>
 
           <FormControl>
-            <TagsCombobox
-              placeholder="Select students"
-              :data="students"
-              v-bind:model-value="value"
-              @update:model-value="value"
-            />
+            <TagsCombobox placeholder="Chọn học sinh" :data="students" v-bind:model-value="value"
+              @update:model-value="value" />
           </FormControl>
 
           <FormMessage />
@@ -82,11 +78,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

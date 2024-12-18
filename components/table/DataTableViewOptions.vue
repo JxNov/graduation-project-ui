@@ -59,11 +59,11 @@ const handleDelete = () => {
           :id="useIdFunction"
         >
           <MixerHorizontalIcon class="mr-2 h-4 w-4" />
-          View
+          Xem
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <DropdownMenuLabel>Chuyển đổi cột</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <DropdownMenuCheckboxItem

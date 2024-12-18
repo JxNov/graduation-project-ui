@@ -23,11 +23,11 @@ export const useGenerationStore = defineStore('generation', () => {
       const response = await createGenerationService(data)
       replaceGenerations(response)
 
-      toast.success('Generation created successfully')
+      toast.success('Tạo mới khóa học sinh thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to create generation')
+      toast.error('Tạo mới khóa học sinh thất bại')
     }
   }
 
@@ -40,11 +40,11 @@ export const useGenerationStore = defineStore('generation', () => {
       const response = await updateGenerationService(slug, data)
       replaceGenerations(response)
 
-      toast.success('Generation updated successfully')
+      toast.success('Cập nhật khóa học sinh thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to update generation')
+      toast.error('Cập nhật khóa học sinh thành công')
     }
   }
 
@@ -53,9 +53,9 @@ export const useGenerationStore = defineStore('generation', () => {
       await deleteGenerationService(slug)
       generations.value = generations.value.filter(generation => generation.slug !== slug)
 
-      toast.success('Generation deleted successfully')
+      toast.success('Xóa khóa học sinh thành công')
     } catch (error) {
-      toast.error('Failed to delete generation')
+      toast.error('Xóa khóa học sinh thất bại')
     }
   }
 

@@ -120,7 +120,7 @@ watch(() => subject.value, async (value: any) => {
 const fields = [
   {
     accessorKey: 'mouthPoints',
-    title: 'Mouth Points',
+    title: 'Điểm miệng',
     render: (row: any) => h('div',
       row.original.mouthPoints?.map((mouthPoint: any) => h(Badge, {
         variant: 'outline',
@@ -131,7 +131,7 @@ const fields = [
   },
   {
     accessorKey: 'fifteenMinutesPoints',
-    title: '15 Minutes Points',
+    title: 'Điểm 15 phút',
     render: (row: any) => h('div',
       row.original.fifteenMinutesPoints?.map((fifteenMinutesPoint: any) => h(Badge, {
         variant: 'outline',
@@ -142,7 +142,7 @@ const fields = [
   },
   {
     accessorKey: 'onePeriodPoints',
-    title: '1 Period Points',
+    title: 'Điểm 1 tiết',
     render: (row: any) => h('div',
       row.original.onePeriodPoints?.map((onePeriodPoint: any) => h(Badge, {
         variant: 'outline',
@@ -153,7 +153,7 @@ const fields = [
   },
   {
     accessorKey: 'midSemesterPoints',
-    title: 'Mid Term Points',
+    title: 'Điểm giữa kỳ',
     render: (row: any) => h('div',
       row.original.midSemesterPoints?.map((midTermPoint: any) => h(Badge, {
         variant: 'outline',
@@ -164,7 +164,7 @@ const fields = [
   },
   {
     accessorKey: 'endSemesterPoints',
-    title: 'End Term Points',
+    title: 'Điểm cuối kỳ',
     render: (row: any) => h('div',
       row.original.endSemesterPoints?.map((endTermPoint: any) => h(Badge, {
         variant: 'outline',
@@ -175,7 +175,7 @@ const fields = [
   },
   {
     accessorKey: 'averageScore',
-    title: 'Average Score',
+    title: 'Điểm trung bình',
     render: (row: any) => row.original.averageScore && h(Badge, {
       variant: 'outline',
       class: 'mr-1'
@@ -189,7 +189,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'studentName',
-      title: 'Name',
+      title: 'Tên học sinh',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -220,13 +220,13 @@ const columns = createColumns(
 
 const columnsTeacherForClass = createColumns(
   [
-    ['subjectName', 'Subject']
+    ['subjectName', 'Môn học']
   ],
   gradeSchema,
   [
     {
       accessorKey: 'studentName',
-      title: 'Name',
+      title: 'Tên học sinh',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -260,7 +260,7 @@ const valueSubject = extractValue($gradeStore.grades, 'className')
 const filters: TableFilter[] = [
   {
     name: 'subjectName',
-    label: 'Subject',
+    label: 'Môn học',
     values: valueSubject
   }
 ]
@@ -280,17 +280,13 @@ const redirect = (path: string) => {
           <div class="bg-card rounded-md">
             <Select v-model="academicYear">
               <SelectTrigger class="min-w-[180px]">
-                <SelectValue placeholder="Select a academic year" class="select-none" />
+                <SelectValue placeholder="Năm học" class="select-none" />
               </SelectTrigger>
 
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Academic Year</SelectLabel>
-                  <SelectItem
-                    v-for="(academicYear, index) in academicYears"
-                    :key="index"
-                    :value="academicYear.slug"
-                  >
+                  <SelectLabel>Năm học</SelectLabel>
+                  <SelectItem v-for="(academicYear, index) in academicYears" :key="index" :value="academicYear.slug">
                     {{ academicYear.name }}
                   </SelectItem>
                 </SelectGroup>
@@ -301,17 +297,13 @@ const redirect = (path: string) => {
           <div class="bg-card rounded-md">
             <Select v-model="cls">
               <SelectTrigger class="min-w-[180px]">
-                <SelectValue placeholder="Select a class" class="select-none" />
+                <SelectValue placeholder="Lớp" class="select-none" />
               </SelectTrigger>
 
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Classes</SelectLabel>
-                  <SelectItem
-                    v-for="(cls, index) in classes"
-                    :key="index"
-                    :value="cls.classSlug"
-                  >
+                  <SelectLabel>Lớp</SelectLabel>
+                  <SelectItem v-for="(cls, index) in classes" :key="index" :value="cls.classSlug">
                     {{ cls.className }}
                   </SelectItem>
                 </SelectGroup>
@@ -322,17 +314,13 @@ const redirect = (path: string) => {
           <div class="bg-card rounded-md">
             <Select v-model="semester">
               <SelectTrigger class="min-w-[180px]">
-                <SelectValue placeholder="Select a semester" class="select-none" />
+                <SelectValue placeholder="Học kỳ" class="select-none" />
               </SelectTrigger>
 
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Semesters</SelectLabel>
-                  <SelectItem
-                    v-for="(semester, index) in semestersForSelect"
-                    :key="index"
-                    :value="semester.value"
-                  >
+                  <SelectLabel>Học kỳ</SelectLabel>
+                  <SelectItem v-for="(semester, index) in semestersForSelect" :key="index" :value="semester.value">
                     {{ semester.label }}
                   </SelectItem>
                 </SelectGroup>
@@ -343,17 +331,13 @@ const redirect = (path: string) => {
           <div class="bg-card rounded-md" v-if="!isTeacherForClass">
             <Select v-model="subject">
               <SelectTrigger class="min-w-[180px]">
-                <SelectValue placeholder="Select a subject" class="select-none" />
+                <SelectValue placeholder="Môn học" class="select-none" />
               </SelectTrigger>
 
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Subjects</SelectLabel>
-                  <SelectItem
-                    v-for="(subject, index) in subjects"
-                    :key="index"
-                    :value="subject.slug"
-                  >
+                  <SelectLabel>Môn học</SelectLabel>
+                  <SelectItem v-for="(subject, index) in subjects" :key="index" :value="subject.slug">
                     {{ subject.name }}
                   </SelectItem>
                 </SelectGroup>
@@ -362,18 +346,13 @@ const redirect = (path: string) => {
           </div>
         </form>
 
-        <Button
-          @click="() => redirect('/grades/final')"
-        >
-          Final Grades
+        <Button @click="() => redirect('/grades/final')">
+          Điểm tổng kết
         </Button>
       </div>
     </div>
 
-    <LayoutTable
-      :data="$gradeStore.grades"
-      :columns="isTeacherForClass ? columnsTeacherForClass : columns"
-      :filters="isTeacherForClass ? filters : []"
-    />
+    <LayoutTable :data="$gradeStore.grades" :columns="isTeacherForClass ? columnsTeacherForClass : columns"
+      :filters="isTeacherForClass ? filters : []" />
   </div>
 </template>

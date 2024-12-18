@@ -6,7 +6,7 @@ const color = useColorMode()
   <DropdownMenuSub>
     <DropdownMenuSubTrigger>
       <span>
-        {{ $t('auth.theme.title') }}
+        Chủ đề
       </span>
     </DropdownMenuSubTrigger>
 
@@ -15,7 +15,7 @@ const color = useColorMode()
         <DropdownMenuItem @click="color.preference = 'light'">
           <Icon name="i-ph-sun-dim-duotone" size="16" />
           <span class="ml-2">
-            {{ $t('auth.theme.light') }}
+           Sáng
           </span>
           <Icon v-if="color.preference === 'light'" name="i-radix-icons-check" size="16" class="ml-auto" />
         </DropdownMenuItem>
@@ -23,7 +23,7 @@ const color = useColorMode()
         <DropdownMenuItem @click="color.preference = 'dark'">
           <Icon name="i-ph-moon-stars-duotone" size="16" />
           <span class="ml-2">
-            {{ $t('auth.theme.dark') }}
+            Tối
           </span>
           <Icon v-if="color.preference === 'dark'" name="i-radix-icons-check" size="16" class="ml-auto" />
         </DropdownMenuItem>
@@ -31,7 +31,7 @@ const color = useColorMode()
         <DropdownMenuItem @click="color.preference = 'system'">
           <Icon name="i-lucide-monitor" size="16" />
           <span class="ml-2">
-            {{ $t('auth.theme.system') }}
+            Hệ thống
           </span>
           <Icon v-if="color.preference === 'system'" name="i-radix-icons-check" size="16" class="ml-auto" />
         </DropdownMenuItem>

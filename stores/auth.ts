@@ -28,9 +28,9 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = await profileService()
       $generalStore.isLogged = true
 
-      toast.success('Login success!!!')
+      toast.success('Đăng nhập thành công!!!')
     } catch (error) {
-      toast.error('Login failed!!!')
+      toast.error('Đăng nhập thất bại!!!')
     }
   }
 
@@ -40,9 +40,9 @@ export const useAuthStore = defineStore('auth', () => {
       navigateTo('/login')
       await logoutService()
 
-      toast.success('Logout success!!!')
+      toast.success('Đăng xuất thành công!!!')
     } catch (error) {
-      toast.error('Logout failed!!!')
+      toast.error('Đăng xuất thất bại!!!')
     }
   }
 

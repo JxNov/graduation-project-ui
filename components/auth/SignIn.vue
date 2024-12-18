@@ -32,7 +32,7 @@ const onSubmit = handleSubmit(async (values) => {
   await $authStore.login(values)
 
   if (!$generalStore.isLogged) {
-    toast.error('Invalid credentials')
+    toast.error('Thông tin xác thực không hợp lệ')
     isLoading.value = false
     return
   }
@@ -49,7 +49,7 @@ const onSubmit = handleSubmit(async (values) => {
         <FormItem class="mb-4">
           <FormLabel>Email</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="example@mail.com" v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="example@tech4school.edu.vn" v-bind="componentField" :disabled="isLoading" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -57,7 +57,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="password">
         <FormItem>
-          <FormLabel>Password</FormLabel>
+          <FormLabel>Mật khẩu</FormLabel>
           <FormControl>
             <div class="relative">
               <component

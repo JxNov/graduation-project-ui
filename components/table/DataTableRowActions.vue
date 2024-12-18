@@ -49,14 +49,14 @@ const handleDelete = () => {
       <DropdownMenuContent align="end" class="w-[160px]">
         <DropdownMenuItem @click="handleEdit">
           <!--        v-if="permissionEdit"-->
-          Edit
+          Sửa
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <!--      v-if="permissionEdit && permissionDelete"-->
 
         <DropdownMenuItem @click="handleDelete">
           <!--        v-if="permissionDelete"-->
-          Delete
+          Xóa
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

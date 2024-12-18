@@ -96,11 +96,11 @@ const deleteUploadedFile = (index: number) => {
       <div v-else class="flex items-center flex-col gap-1.5">
         <div class="flex items-center flex-row gap-0.5 text-sm font-medium">
           <UploadIcon class="mr-2 h-4 w-4" />
-          Upload files
+          Tải tập tin lên
         </div>
 
         <div v-if="maxSize" class="text-xs text-gray-400 font-medium">
-          Max. file size: {{ props.maxSize }} MB
+          Kích thước tối đa {{ props.maxSize }} MB
         </div>
       </div>
     </div>

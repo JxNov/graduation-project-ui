@@ -19,12 +19,12 @@ export const useTeacherStore = defineStore('teacher', () => {
       const response = await exportSampleTeachersService()
 
       if (!response) {
-        throw new Error('Teachers export failed!!!')
+        throw new Error('Xuất file mẫu giáo viên thất bại!!!')
       }
 
       return response
     } catch (error) {
-      toast.error('Teachers export failed!!!')
+      toast.error('Xuất file mẫu giáo viên thất bại!!!')
     }
   }
 
@@ -33,14 +33,14 @@ export const useTeacherStore = defineStore('teacher', () => {
       const response = await importTeachersService(data)
 
       if (!response) {
-        throw new Error('Teachers import failed!!!')
+        throw new Error('Nhập giáo viên thất bại!!!')
       }
 
-      toast.success('Teachers imported successfully!!!')
+      toast.success('Nhập giáo viên thành công!!!')
 
       return response
     } catch (error) {
-      toast.error('Teachers import failed!!!')
+      toast.error('Nhập giáo vuên thất bại!!!')
     }
   }
 
@@ -50,14 +50,14 @@ export const useTeacherStore = defineStore('teacher', () => {
       replaceTeachers(response)
 
       if (!response) {
-        throw new Error('Assign subject to teacher failed!!!')
+        throw new Error('Gán môn cho giáo viên thất bại!!!')
       }
 
-      toast.success('Assign subject to teacher successfully!!!')
+      toast.success('Gán môn cho giáo viên thành công!!!')
 
       return response
     } catch (error) {
-      toast.error('Assign subject to teacher failed!!!')
+      toast.error('Gán môn cho giáo viên thất bại!!!')
     }
   }
 

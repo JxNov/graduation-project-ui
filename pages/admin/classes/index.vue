@@ -84,10 +84,10 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Class'],
-    ['teacherName', 'Teacher'],
-    ['numberOfStudents', 'Number of students'],
-    ['code', 'Invite code', '', {
+    ['name', 'Lớp học'],
+    ['teacherName', 'GVCN'],
+    ['numberOfStudents', 'Số lượng học sinh'],
+    ['code', 'Mã lớp', '', {
       enableSorting: false
     }],
     ['actions', '', '', {
@@ -111,7 +111,7 @@ const columns = createColumns(
               onClick: () => {
                 router.push(`/admin/classes/${row.original.slug}`)
               }
-            }, { default: () => 'Scores' }),
+            }, { default: () => 'Điểm' }),
             isAdmin && h(Button, {
               variant: 'outline',
               size: 'sm',
@@ -119,7 +119,7 @@ const columns = createColumns(
                 selectedValue.value = row.original
                 isUpToClass.value = true
               }
-            }, { default: () => 'Up to class' }),
+            }, { default: () => 'Lên lớp' }),
             isAdmin && h(Button, {
               variant: 'outline',
               size: 'sm',
@@ -127,7 +127,7 @@ const columns = createColumns(
                 selectedClassSlug.value = row.original.slug
                 isAssigning.value = true
               }
-            }, { default: () => 'Assign student' })
+            }, { default: () => 'Thêm học sinh' })
           ])
         )
       },
@@ -194,24 +194,20 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage classes</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý lớp học</h2>
 
       <div class="flex gap-2">
         <Button variant="outline" @click="isDistribution = true" v-if="adminPermissions">
-          Distribution students
+          Phân lớp học sinh
         </Button>
 
         <Button variant="default" @click="isCreating = true" v-if="adminPermissions">
-          Create new class
+          Tạo mới lớp học
         </Button>
       </div>
     </div>
 
-    <LayoutTable
-      :data="$classStore.classes"
-      :columns="columns"
-      :filters="[]"
-    />
+    <LayoutTable :data="$classStore.classes" :columns="columns" :filters="[]" />
   </div>
 
   <Dialog :open="isDistribution" @update:open="handleCloseDialog">

@@ -51,7 +51,7 @@ const onSubmit = async () => {
     const response = await $chatStore.createChatStudent(text.value)
 
     if (!response) {
-      throw new Error('Failed to send message')
+      throw new Error('Gửi tin nhắn thất bại')
     }
 
     text.value = ''
@@ -85,7 +85,7 @@ onBeforeUnmount(() => {
                 </div>
 
                 <div class="line-clamp-1 text-xs">
-                  <span class="font-medium">Send:</span> Admin
+                  <span class="font-medium">Đến:</span> Admin
                 </div>
               </div>
             </div>
@@ -129,7 +129,7 @@ onBeforeUnmount(() => {
               <div class="grid gap-4">
                 <Textarea
                   class="p-4 h-24 resize-none"
-                  placeholder="Send message to admin..."
+                  placeholder="Gửi tin nhắn cho quản trị viên..."
                   :disabled="isLoading"
                   v-model="text"
                 />
@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
                   class="ml-auto"
                   :disabled="isLoading"
                 >
-                  Send
+                  Gửi
                 </Button>
               </div>
             </form>

@@ -30,7 +30,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $teacherStore.importTeachers({ file })
 
     if (!response) {
-      throw new Error('Failed to import students')
+      throw new Error('Nhập giáo viên thất bại')
     }
 
     handleClose()
@@ -43,10 +43,10 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle>Import Teacher</DialogTitle>
+      <DialogTitle>Nhập giáo viên</DialogTitle>
 
       <DialogDescription>
-        Import teachers from a Excel file
+        Nhập giáo viên từ file Excel
       </DialogDescription>
     </DialogHeader>
 
@@ -64,11 +64,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

@@ -41,12 +41,12 @@ export const useMaterialStore = defineStore('material', () => {
         const response = await createMaterialClassService(data)
 
         if (!response) {
-          throw new Error('Failed to create material class')
+          throw new Error('Tạo tài liệu lớp học thất bại')
         }
 
         materialClass.value = [...materialClass.value, response]
 
-        toast.success('Material class created successfully')
+        toast.success('Tạo tài liệu lớp học thành công')
 
         return response
       } catch (error) {
@@ -65,12 +65,12 @@ export const useMaterialStore = defineStore('material', () => {
         const response = await createMaterialBlockService(data)
 
         if (!response) {
-          throw new Error('Failed to create material block')
+          throw new Error('Tạo tài liệu khối thất bại')
         }
 
         materialBlock.value = [...materialBlock.value, response]
 
-        toast.success('Material block created successfully')
+        toast.success('Tạo tài liệu khối thành công')
 
         return response
       } catch (error: any) {
@@ -93,7 +93,7 @@ export const useMaterialStore = defineStore('material', () => {
         const response = await updateMaterialClassService(materialSlug, data)
 
         if (!response) {
-          throw new Error('Failed to update material class')
+          throw new Error('Cập nhật tài liệu lớp học thất bại')
         }
 
         materialClass.value = materialClass.value.map((material) => {
@@ -104,7 +104,7 @@ export const useMaterialStore = defineStore('material', () => {
           return material
         })
 
-        toast.success('Material class updated successfully')
+        toast.success('Cập nhật tài liệu lớp học thàn công')
 
         return response
       } catch (error) {
@@ -123,7 +123,7 @@ export const useMaterialStore = defineStore('material', () => {
         const response = await updateMaterialBlockService(materialSlug, data)
 
         if (!response) {
-          throw new Error('Failed to update material block')
+          throw new Error('Cập nhật tài liệu khối thất bại')
         }
 
         materialBlock.value = materialBlock.value.map((material) => {
@@ -134,7 +134,7 @@ export const useMaterialStore = defineStore('material', () => {
           return material
         })
 
-        toast.success('Material block updated successfully')
+        toast.success('Cập nhật tài liệu khối thành công')
 
         return response
       } catch (error) {
@@ -149,7 +149,7 @@ export const useMaterialStore = defineStore('material', () => {
         materialClass.value = materialClass.value.filter((material) => material.slug !== materialSlug)
         materialBlock.value = materialBlock.value.filter((material) => material.slug !== materialSlug)
 
-        toast.success('Material deleted successfully')
+        toast.success('Xóa tài liệu thành công')
       } catch (error) {
         throw error
       }

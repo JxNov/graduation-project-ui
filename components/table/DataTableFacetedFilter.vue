@@ -146,7 +146,7 @@ $bus.on('reset-filters', clearFilters)
       <Command :filter-function="filterFunction">
         <CommandInput :placeholder="title" />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>Không tìm thấy kết quả nào.</CommandEmpty>
           <CommandGroup>
             <template
               v-for="option in facets"
@@ -193,11 +193,11 @@ $bus.on('reset-filters', clearFilters)
             <CommandSeparator />
             <CommandGroup>
               <CommandItem
-                :value="{ label: 'Clear filters' }"
+                :value="{ label: 'Xóa bộ lọc' }"
                 class="justify-center text-center"
                 @select="column?.setFilterValue(undefined); selectedValues.clear()"
               >
-                Clear filters
+              Xóa bộ lọc
               </CommandItem>
             </CommandGroup>
           </template>

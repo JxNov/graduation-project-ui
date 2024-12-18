@@ -64,7 +64,7 @@ const columns = createColumns(
   [
     ['select'],
     ['email', 'Email'],
-    ['gender', 'Gender'],
+    ['gender', 'Giới tính'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -74,7 +74,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'name',
-      title: 'Name',
+      title: 'Tên',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -107,7 +107,7 @@ const valueGender = extractValue($studentStore.students, 'gender')
 const filters: TableFilter[] = [
   {
     name: 'gender',
-    label: 'Gender',
+    label: 'Giới tính',
     values: valueGender
   }
 ]
@@ -136,7 +136,7 @@ const downloadSampleStudents = async () => {
     const response = await $studentStore.exportSampleStudents()
 
     if (!response) {
-      throw new Error('Export failed')
+      throw new Error('Tải file thất bại')
     }
 
     const url = URL.createObjectURL(new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
@@ -149,11 +149,11 @@ const downloadSampleStudents = async () => {
     URL.revokeObjectURL(url)
     document.body.removeChild(a)
 
-    toast.success('Download success!!!')
+    toast.success('Tải file thành công!!!')
 
     isLoaded.value = false
   } catch (error) {
-    toast.error('Download failed!!!')
+    toast.error('Tải file thất bại!!!')
     isLoaded.value = false
   }
 }
@@ -180,28 +180,24 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Students</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý học sinh</h2>
 
       <div class="flex gap-4">
         <Button variant="outline" @click="downloadSampleStudents" v-if="shouldShowElement" :disabled="isLoaded">
-          Download Sample Students
+          Tải file mẫu học sinh
         </Button>
 
         <Button @click="isImporting = true" v-if="shouldShowElement">
-          Import Students
+          Nhập học sinh
         </Button>
 
         <Button @click="isCreating = true" v-if="shouldShowElement">
-          Create Student
+          Tạo mới học sinh
         </Button>
       </div>
     </div>
 
-    <LayoutTable
-      :data="$studentStore.students"
-      :columns="columns"
-      :filters="filters"
-    />
+    <LayoutTable :data="$studentStore.students" :columns="columns" :filters="filters" />
   </div>
 
   <Dialog :open="isImporting" @update:open="handleCloseDialog">

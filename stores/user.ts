@@ -29,11 +29,11 @@ export const useUserStore = defineStore('user', () => {
       const response = await assignRolePermissionService(data)
       replaceUsers(response)
 
-      toast.success('Role permission assigned successfully')
+      toast.success('Quyền và vai trò được chỉ định thành công')
 
       return response
     } catch (error) {
-      toast.error('Failed to assign role permission')
+      toast.error('Không thể chỉ định quyền vai trò')
     }
   }
 
@@ -55,10 +55,10 @@ export const useUserStore = defineStore('user', () => {
       const response = await updateProfileInformationService(username, data)
 
       if (!response) {
-        throw new Error('Change student info failed!!!')
+        throw new Error('Thay đổi thông tin học sinh không thành công!!!')
       }
 
-      toast.success('Change student info successfully!!!')
+      toast.success('Thay đổi thông tin học sinh thành công!!!')
 
       return response
     } catch (error: any) {
@@ -66,7 +66,7 @@ export const useUserStore = defineStore('user', () => {
         toast.error(error.response.data.error)
         return
       }
-      toast.error('Change student info failed!!!')
+      toast.error('Thay đổi thông tin học sinh không thành công!!!')
     }
   }
 
@@ -81,16 +81,16 @@ export const useUserStore = defineStore('user', () => {
       const response = await createUserService(data)
 
       if (!response) {
-        throw new Error('Create student failed!!!')
+        throw new Error('Tạo học sinh không thành công!!!')
       }
 
       users.value = [...users.value, response]
 
-      toast.success('Create student successfully!!!')
+      toast.success('Tạo học sinh thành công!!!')
 
       return response
     } catch (error: any) {
-      toast.error('Create student failed!!!')
+      toast.error('Tạo học sinh không thành công!!!')
     }
   }
 

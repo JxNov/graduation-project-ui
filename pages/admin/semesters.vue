@@ -55,11 +55,11 @@ onBeforeUnmount(() => {
 const columns = createColumns(
   [
     ['select'],
-    ['name', 'Semester'],
-    ['generationName', 'Generation'],
-    ['academicYearName', 'Academic Year'],
-    ['startDate', 'Start Date'],
-    ['endDate', 'End Date'],
+    ['name', 'Học kỳ'],
+    ['generationName', 'Khóa học sinh'],
+    ['academicYearName', 'Năm học'],
+    ['startDate', 'Ngày bắt đầu'],
+    ['endDate', 'Ngày kết thúc'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -80,27 +80,27 @@ const valueEndDate = extractValue($semesterStore.semesters, 'endDate')
 const filters = [
   {
     name: 'name',
-    label: 'Semester',
+    label: 'Học kỳ',
     values: valueSemester
   },
   {
     name: 'generationName',
-    label: 'Generation',
+    label: 'Khóa học sinh',
     values: valueGenerationName
   },
   {
     name: 'academicYearName',
-    label: 'Academic Year',
+    label: 'Năm học',
     values: valueAcademicYearName
   },
   {
     name: 'startDate',
-    label: 'Start Date',
+    label: 'Ngày bắt đầu',
     values: valueStartDate
   },
   {
     name: 'endDate',
-    label: 'End Date',
+    label: 'Ngày kết thúc',
     values: valueEndDate
   }
 ]
@@ -139,9 +139,9 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage semesters</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý học kỳ</h2>
       <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new semester
+        Tạo mới học kỳ
       </Button>
     </div>
 

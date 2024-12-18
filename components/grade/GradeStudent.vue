@@ -54,13 +54,13 @@ watch(() => cls.value, async (value: any) => {
 
 const columns = createColumns(
   [
-    ['subjectName', 'Subject']
+    ['subjectName', 'Môn học']
   ],
   gradeSchema,
   [
     {
       accessorKey: 'mouthPoints',
-      title: 'Mouth Points',
+      title: 'Điểm miệng',
       render: (row) => h('div',
         row.original.mouthPoints?.map((mouthPoint: any) => h(Badge, {
           variant: 'outline',
@@ -71,7 +71,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'fifteenMinutesPoints',
-      title: '15 Minutes Points',
+      title: 'Điểm 15 phút',
       render: (row) => h('div',
         row.original.fifteenMinutesPoints?.map((fifteenMinutesPoint: any) => h(Badge, {
           variant: 'outline',
@@ -82,7 +82,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'onePeriodPoints',
-      title: '1 Period Points',
+      title: 'Điểm 1 tiết',
       render: (row) => h('div',
         row.original.onePeriodPoints?.map((onePeriodPoint: any) => h(Badge, {
           variant: 'outline',
@@ -93,7 +93,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'midSemesterPoints',
-      title: 'Mid Term Points',
+      title: 'Điểm giữa kỳ',
       render: (row) => h('div',
         row.original.midSemesterPoints?.map((midTermPoint: any) => h(Badge, {
           variant: 'outline',
@@ -104,7 +104,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'endSemesterPoints',
-      title: 'End Term Points',
+      title: 'Điểm cuối kỳ',
       render: (row) => h('div',
         row.original.endSemesterPoints?.map((endTermPoint: any) => h(Badge, {
           variant: 'outline',
@@ -115,7 +115,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'averageScore',
-      title: 'Average Score',
+      title: 'Điểm trung bình',
       render: (row) => row.original.averageScore && h(Badge, {
         variant: 'outline',
         class: 'mr-1'
@@ -140,23 +140,19 @@ const filters: TableFilter[] = [
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Grades</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Điểm</h2>
 
       <form @submit.prevent class="flex flex-row items-center gap-4">
         <div class="bg-card rounded-md">
           <Select v-model="cls">
             <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a class" class="select-none" />
+              <SelectValue placeholder="Lớp" class="select-none" />
             </SelectTrigger>
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Classes</SelectLabel>
-                <SelectItem
-                  v-for="(cls, index) in classes"
-                  :key="index"
-                  :value="cls.slug"
-                >
+                <SelectLabel>Lớp</SelectLabel>
+                <SelectItem v-for="(cls, index) in classes" :key="index" :value="cls.slug">
                   {{ cls.name }}
                 </SelectItem>
               </SelectGroup>
@@ -167,17 +163,13 @@ const filters: TableFilter[] = [
         <div class="bg-card rounded-md">
           <Select v-model="semester">
             <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a semester" class="select-none" />
+              <SelectValue placeholder="Học kỳ" class="select-none" />
             </SelectTrigger>
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Semesters</SelectLabel>
-                <SelectItem
-                  v-for="(semester, index) in semestersForSelect"
-                  :key="index"
-                  :value="semester.value"
-                >
+                <SelectLabel>Học kỳ</SelectLabel>
+                <SelectItem v-for="(semester, index) in semestersForSelect" :key="index" :value="semester.value">
                   {{ semester.label }}
                 </SelectItem>
               </SelectGroup>
@@ -187,10 +179,6 @@ const filters: TableFilter[] = [
       </form>
     </div>
 
-    <LayoutTable
-      :data="$gradeStore.grades"
-      :columns="columns"
-      :filters="filters"
-    />
+    <LayoutTable :data="$gradeStore.grades" :columns="columns" :filters="filters" />
   </div>
 </template>

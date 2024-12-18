@@ -35,14 +35,14 @@ export const useHomeworkStore = defineStore('homework', () => {
         replaceHomeworks(response)
 
         if (!response) {
-          throw new Error('Failed to create homework')
+          throw new Error('Tạo bài tập thất bại')
         }
 
-        toast.success('Homework created successfully')
+        toast.success('Tạo bài tập thành công')
 
         return response
       } catch (error) {
-        toast.error('Failed to create homework')
+        toast.error('Tạo bài tập thất bại')
       }
     }
 
@@ -60,14 +60,14 @@ export const useHomeworkStore = defineStore('homework', () => {
         replaceHomeworks(response)
 
         if (!response) {
-          throw new Error('Failed to update homework')
+          throw new Error('Cập nhật bài tập thất bại')
         }
 
-        toast.success('Homework updated successfully')
+        toast.success('Cập nhật bài tập thành công')
 
         return response
       } catch (error) {
-        toast.error('Failed to update homework')
+        toast.error('Cập nhật bài tập thất bại')
       }
     }
 

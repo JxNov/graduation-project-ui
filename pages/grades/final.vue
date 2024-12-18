@@ -48,18 +48,18 @@ onMounted(async () => {
 
 const columns = createColumns(
   [
-    ['semesterScore1', 'Score semester 1'],
-    ['semesterPerformance1', 'Performance semester 1'],
-    ['semesterScore2', 'Score semester 2'],
-    ['semesterPerformance2', 'Performance semester 2'],
-    ['academicYearScore', 'Score academic year'],
-    ['academicYearPerformance', 'Performance academic year']
+    ['semesterScore1', 'Điểm học kỳ 1'],
+    ['semesterPerformance1', 'Học lực học kỳ 1'],
+    ['semesterScore2', 'Điểm kỳ 2'],
+    ['semesterPerformance2', 'Học lực học kỳ 2'],
+    ['academicYearScore', 'Điểm tổng kết'],
+    ['academicYearPerformance', 'Học lực']
   ],
   gradeSchema,
   [
     {
       accessorKey: 'studentName',
-      title: 'Name',
+      title: 'Tên học sinh',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -94,7 +94,7 @@ const onSubmit = async () => {
     const response = await $gradeStore.fetchFinalGrade(cls.value, academicYear.value)
 
     if (!response) {
-      throw new Error('No data found')
+      throw new Error('Không tìm thấy dữ liệu')
     }
 
     data.value = response.finalScores
@@ -109,23 +109,19 @@ const onSubmit = async () => {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Final Grades</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Điểm tổng kết</h2>
 
       <form @submit.prevent="onSubmit" class="flex flex-row items-center gap-4">
         <div class="bg-card rounded-md">
           <Select v-model="academicYear">
             <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a academic year" class="select-none" />
+              <SelectValue placeholder="Năm học" class="select-none" />
             </SelectTrigger>
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Academic Year</SelectLabel>
-                <SelectItem
-                  v-for="(academicYear, index) in academicYears"
-                  :key="index"
-                  :value="academicYear.slug"
-                >
+                <SelectLabel>Năm học</SelectLabel>
+                <SelectItem v-for="(academicYear, index) in academicYears" :key="index" :value="academicYear.slug">
                   {{ academicYear.name }}
                 </SelectItem>
               </SelectGroup>
@@ -136,17 +132,13 @@ const onSubmit = async () => {
         <div class="bg-card rounded-md">
           <Select v-model="cls">
             <SelectTrigger class="min-w-[180px]">
-              <SelectValue placeholder="Select a class" class="select-none" />
+              <SelectValue placeholder="Lớp" class="select-none" />
             </SelectTrigger>
 
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Classes</SelectLabel>
-                <SelectItem
-                  v-for="(cls, index) in classes"
-                  :key="index"
-                  :value="cls.classSlug"
-                >
+                <SelectLabel>Lớp</SelectLabel>
+                <SelectItem v-for="(cls, index) in classes" :key="index" :value="cls.classSlug">
                   {{ cls.className }}
                 </SelectItem>
               </SelectGroup>
@@ -154,19 +146,12 @@ const onSubmit = async () => {
           </Select>
         </div>
 
-        <Button
-          type="submit"
-          :loading="isLoading"
-        >
-          Check
+        <Button type="submit" :loading="isLoading">
+          Kiểm tra
         </Button>
       </form>
     </div>
 
-    <LayoutTable
-      :data="data"
-      :columns="columns"
-      :filters="[]"
-    />
+    <LayoutTable :data="data" :columns="columns" :filters="[]" />
   </div>
 </template>

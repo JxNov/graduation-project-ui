@@ -32,18 +32,18 @@ const checkColumn = (table: Table<any>, columnId: string) => {
   <div class="flex items-center justify-between px-2">
     <div class="flex-1 text-sm text-muted-foreground">
       <template v-if="checkColumn(table, 'select')">
-        {{ table.getFilteredSelectedRowModel().rows.length }} of
-        {{ table.getFilteredRowModel().rows.length }} row(s) selected.
+        {{ table.getFilteredSelectedRowModel().rows.length }} trên
+        {{ table.getFilteredRowModel().rows.length }} hàng được chọn.
       </template>
 
       <template v-else>
-        {{ table.getFilteredRowModel().rows.length }} row(s) found.
+        {{ table.getFilteredRowModel().rows.length }} hàng được tìm thấy.
       </template>
     </div>
     <div class="flex items-center space-x-6 lg:space-x-8">
       <div class="flex items-center space-x-2">
         <p class="text-sm font-medium">
-          Rows per page
+          Hàng trên mỗi trang
         </p>
         <Select
           :model-value="`${table.getState().pagination.pageSize}`"
@@ -61,7 +61,7 @@ const checkColumn = (table: Table<any>, columnId: string) => {
         </Select>
       </div>
       <div class="flex w-[100px] items-center justify-center text-sm font-medium">
-        Page {{ table.getState().pagination.pageIndex + 1 }} of
+        Trang {{ table.getState().pagination.pageIndex + 1 }} trên
         {{ table.getPageCount() }}
       </div>
       <div class="flex items-center space-x-2">

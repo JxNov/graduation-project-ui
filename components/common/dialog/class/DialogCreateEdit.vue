@@ -66,7 +66,7 @@ const onSubmit = handleSubmit(async (values) => {
       const response = await $classStore.createClass(values)
 
       if (!response) {
-        throw new Error('Failed to create class')
+        throw new Error('Tạo mới lớp học thất bại')
       }
 
       isLoading.value = false
@@ -77,7 +77,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $classStore.updateClass(props.data.slug, values)
 
     if (!response) {
-      throw new Error('Failed to update class')
+      throw new Error('Cập nhật lớp học thất bại')
     }
 
     isLoading.value = false
@@ -91,23 +91,23 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle v-if="props.edit">Edit class</DialogTitle>
-      <DialogTitle v-else>Create new class</DialogTitle>
+      <DialogTitle v-if="props.edit">Sửa lớp học</DialogTitle>
+      <DialogTitle v-else>Tạo mới lớp học</DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit class <strong>{{ props.data.name }}</strong>.
+        Sửa lớp học <strong>{{ props.data.name }}</strong>.
       </DialogDescription>
       <DialogDescription v-else>
-        Create a new class.
+        Tạo mới 1 lớp học.
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên lớp</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Name..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tên lớp..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -115,16 +115,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="username">
         <FormItem>
-          <FormLabel>Teacher</FormLabel>
+          <FormLabel>GVCN</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="teacher"
-              :data="dataTeachersCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('username', $event)"
-            />
+            <Combobox name="giáo viên chủ nhiệm" :data="dataTeachersCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('username', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -133,16 +128,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="academicYearSlug">
         <FormItem>
-          <FormLabel>Academic year</FormLabel>
+          <FormLabel>Năm học</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="academic year"
-              :data="dataAcademicYearsCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('academicYearSlug', $event)"
-            />
+            <Combobox name="năm học" :data="dataAcademicYearsCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('academicYearSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -151,16 +141,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="blockSlug">
         <FormItem>
-          <FormLabel>Block</FormLabel>
+          <FormLabel>Khối</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="block"
-              :data="dataBlocksCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('blockSlug', $event)"
-            />
+            <Combobox name="khối" :data="dataBlocksCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('blockSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -170,11 +155,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

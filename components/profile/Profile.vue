@@ -19,11 +19,11 @@ onMounted(async () => {
   <Tabs default-value="account">
     <TabsList>
       <TabsTrigger as-child value="account">
-        Account
+        Tài khoản
       </TabsTrigger>
 
       <TabsTrigger as-child value="change">
-        Change Information
+       Thay đổi thông tin
       </TabsTrigger>
     </TabsList>
 

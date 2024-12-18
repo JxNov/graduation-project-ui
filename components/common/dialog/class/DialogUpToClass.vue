@@ -58,7 +58,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
 
     if (!response) {
-      throw new Error('Failed to promote students')
+      throw new Error('Lên lớp thất bại')
     }
 
     isLoading.value = false
@@ -73,20 +73,20 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle>
-        Up to class
+        Lên lớp
       </DialogTitle>
 
       <DialogDescription>
-        Up to class
+        Lên lớp khi kết thúc năm học
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên lớp</FormLabel>
           <FormControl>
-            <Input type="text" placeholder="Name..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tên lớp..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -94,16 +94,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="username">
         <FormItem>
-          <FormLabel>Teacher</FormLabel>
+          <FormLabel>GVCN</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="teacher"
-              :data="dataTeachersCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('username', $event)"
-            />
+            <Combobox name="giáo viên chủ nhiệm" :data="dataTeachersCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('username', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -112,16 +107,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="academicYearSlug">
         <FormItem>
-          <FormLabel>Academic year</FormLabel>
+          <FormLabel>Năm học</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="academic year"
-              :data="dataAcademicYearsCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('academicYearSlug', $event)"
-            />
+            <Combobox name="năm học" :data="dataAcademicYearsCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('academicYearSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -130,16 +120,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="blockSlug">
         <FormItem>
-          <FormLabel>Block</FormLabel>
+          <FormLabel>Khối</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="block"
-              :data="dataBlocksCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('blockSlug', $event)"
-            />
+            <Combobox name="khối" :data="dataBlocksCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('blockSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -149,11 +134,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

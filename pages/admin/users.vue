@@ -64,7 +64,7 @@ const columns = createColumns(
   [
     ['select'],
     ['email', 'Email'],
-    ['gender', 'Gender'],
+    ['gender', 'Giới tính'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -74,7 +74,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'name',
-      title: 'Name',
+      title: 'Tên',
       render: (row) => h('div', { class: 'flex items-center gap-2' }, {
         default: () => {
           return [
@@ -99,7 +99,7 @@ const columns = createColumns(
     },
     {
       accessorKey: 'roles',
-      title: 'Roles',
+      title: 'Vai trò',
       render: (row) => h('div', { class: 'truncate w-80' },
         row.original.roles?.map((role: any) => h(Badge, {
           variant: 'outline',
@@ -122,12 +122,12 @@ const valueRoles = extractValue($userStore.users, 'roles')
 const filters: TableFilter[] = [
   {
     name: 'gender',
-    label: 'Gender',
+    label: 'Giới tính',
     values: valueGender
   },
   {
     name: 'roles',
-    label: 'Role',
+    label: 'Vai trò',
     values: valueRoles
   }
 ]
@@ -171,15 +171,15 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Users</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý người dùng</h2>
 
       <div class="flex gap-4">
         <Button variant="default" @click="isAssigning = true" v-if="shouldShowElement">
-          Assign roles to users
+          Gán vai trò cho người dùng
         </Button>
 
         <Button @click="isCreating = true" v-if="shouldShowElement">
-          Create user
+          Tạo mới người dùng
         </Button>
       </div>
     </div>

@@ -65,7 +65,7 @@ const onSubmit = handleSubmit(async (values) => {
       const response = await $materialStore.updateMaterialClass(props.data.slug, data)
 
       if (!response) {
-        throw new Error('Failed to import students')
+        throw new Error('Cập nhật tài liệu thất bại')
       }
 
       handleClose()
@@ -75,7 +75,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $materialStore.createMaterialClass(data)
 
     if (!response) {
-      throw new Error('Failed to import students')
+      throw new Error('Thêm mới tài liệu thất bại')
     }
 
     handleClose()
@@ -88,26 +88,26 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6 px-1" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle v-if="props.edit">Edit Material</DialogTitle>
+      <DialogTitle v-if="props.edit">Sửa tài liệu</DialogTitle>
       <DialogTitle v-else>
-        Create Material for Class
+        Thêm mới tài liệu
       </DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit Material
+        Sửa tài liệu
       </DialogDescription>
       <DialogDescription v-else>
-        Create Material
+        Thêm mới tài liệu lớp học
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="title">
         <FormItem>
-          <FormLabel>Title</FormLabel>
+          <FormLabel>Tiêu đề</FormLabel>
 
           <FormControl>
-            <Input type="text" placeholder="Title..." v-bind="componentField" :disabled="isLoading" />
+            <Input type="text" placeholder="Tiêu đề..." v-bind="componentField" :disabled="isLoading" />
           </FormControl>
 
           <FormMessage />
@@ -116,13 +116,9 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="description">
         <FormItem>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>Mô tả</FormLabel>
           <FormControl>
-          <Textarea
-            placeholder="Material description"
-            class="resize-none h-24"
-            v-bind="componentField"
-          />
+            <Textarea placeholder="Mô tả tài liệu" class="resize-none h-24" v-bind="componentField" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -130,12 +126,9 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField name="file">
         <FormItem>
-          <FormLabel>File</FormLabel>
+          <FormLabel>Tài liệu</FormLabel>
           <FormControl>
-            <BaseDropzone
-              :max-files="1"
-              @update:model-value="setFieldValue('file', $event)"
-            />
+            <BaseDropzone :max-files="1" @update:model-value="setFieldValue('file', $event)" />
           </FormControl>
           <FormMessage />
         </FormItem>
@@ -143,16 +136,11 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ value }" name="subjectSlug">
         <FormItem>
-          <FormLabel>Subject</FormLabel>
+          <FormLabel>Môn học</FormLabel>
 
           <FormControl>
-            <Combobox
-              name="subject"
-              :data="dataSubjectsCombobox"
-              :disabled="isLoading"
-              :model-value="value"
-              @update:model-value="setFieldValue('subjectSlug', $event)"
-            />
+            <Combobox name="môn học" :data="dataSubjectsCombobox" :disabled="isLoading" :model-value="value"
+              @update:model-value="setFieldValue('subjectSlug', $event)" />
           </FormControl>
 
           <FormMessage />
@@ -162,11 +150,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

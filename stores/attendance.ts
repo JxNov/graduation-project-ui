@@ -42,13 +42,13 @@ export const useAttendanceStore = defineStore('attendance', () => {
       const response = await createAttendanceService(data)
 
       if (!response) {
-        throw new Error('Create attendance failed!!!')
+        throw new Error('Điểm danh thất bại!!!')
       }
 
-      toast.success('Attendance created successfully!!!')
+      toast.success('Điểm danh thành công!!!')
       return response
     } catch (error) {
-      toast.error('Attendance created failed!!!')
+      toast.error('Điểm danh thất bại!!!')
       throw error
     }
   }
@@ -65,13 +65,13 @@ export const useAttendanceStore = defineStore('attendance', () => {
       const response = await updateAttendanceService(id, data)
 
       if (!response) {
-        throw new Error('Update attendance failed!!!')
+        throw new Error('Cập nhật điểm danh thất bại!!!')
       }
 
-      toast.success('Attendance updated successfully!!!')
+      toast.success('Cập nhật điểm danh thành công!!!')
       return response
     } catch (error) {
-      toast.error('Attendance updated failed!!!')
+      toast.error('Cập nhật điểm danh thất bại!!!')
       throw error
     }
   }
@@ -91,13 +91,13 @@ export const useAttendanceStore = defineStore('attendance', () => {
       const response = await updateStudentAttendanceService(username, data)
 
       if (!response) {
-        throw new Error('Update student attendance failed!!!')
+        throw new Error('Cập nhật diểm danh thất bại!!!')
       }
 
-      toast.success('Student attendance updated successfully!!!')
+      toast.success('Cập nhật điểm danh thành công!!!')
       return response
     } catch (error) {
-      toast.error('Student attendance updated failed!!!')
+      toast.error('Cập nhật diểm danh thất bại!!!')
       throw error
     }
   }
