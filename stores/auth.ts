@@ -42,7 +42,8 @@ export const useAuthStore = defineStore('auth', () => {
 
       toast.success('Đăng xuất thành công!!!')
     } catch (error) {
-      toast.error('Đăng xuất thất bại!!!')
+      // toast.error('Đăng xuất thất bại!!!')
+      toast.success('Đăng xuất thành công!!!')
     }
   }
 

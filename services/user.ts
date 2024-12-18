@@ -114,3 +114,23 @@ export const createUserService = async (data: {
     throw error
   }
 }
+
+export const forgotPasswordService = async (data: {
+  email: string[]
+}): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch('/v1/users/forgot-password', {
+      email: data.email
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
