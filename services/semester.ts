@@ -81,3 +81,35 @@ export const deleteSemesterService = async (slug: string): Promise<void> => {
     throw error
   }
 }
+
+export const trashSemesterService = async (): Promise<Semester[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/semesters/trash')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const restoreSemesterService = async (slug: string): Promise<Semester> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/semesters/restore/${slug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

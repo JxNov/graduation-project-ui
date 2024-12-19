@@ -17,7 +17,11 @@ export const useAttendanceStore = defineStore('attendance', () => {
   const fetchAttendances = async () => {
     try {
       attendances.value = await fetchAttendancesService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        attendances.value = []
+      }
+
       throw error
     }
   }
@@ -79,7 +83,10 @@ export const useAttendanceStore = defineStore('attendance', () => {
   const showAttendance = async () => {
     try {
       attendanceShow.value = await showAttendanceService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        attendanceShow.value = []
+      }
       throw error
     }
   }
@@ -93,6 +100,8 @@ export const useAttendanceStore = defineStore('attendance', () => {
       if (!response) {
         throw new Error('Cập nhật diểm danh thất bại!!!')
       }
+
+      attendanceShow.value = [...attendanceShow.value, response]
 
       toast.success('Cập nhật điểm danh thành công!!!')
       return response

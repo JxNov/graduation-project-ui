@@ -16,7 +16,11 @@ export const useHomeworkStore = defineStore('homework', () => {
     const fetchHomeworks = async (classSlug: string) => {
       try {
         homeworks.value = await fetchHomeworkClassService(classSlug)
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 404) {
+          homeworks.value = []
+        }
+
         throw error
       }
     }

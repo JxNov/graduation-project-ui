@@ -2,9 +2,7 @@
 const { $geminiStore } = useNuxtApp()
 
 onMounted(async () => {
-  if (!$geminiStore.geminis.length) {
-    await $geminiStore.fetchGeminis()
-  }
+  await $geminiStore.fetchGeminis()
 })
 </script>
 

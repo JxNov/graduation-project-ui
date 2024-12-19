@@ -101,25 +101,12 @@ onBeforeUnmount(() => {
 })
 
 async function fetchData() {
-  const promises = []
-
-  if (!$homeworkStore.homeworks.length) {
-    promises.push($homeworkStore.fetchHomeworks(route.params.classroomSlug as string))
-  }
-
-  if (!$materialStore.materialClass.length) {
-    promises.push($materialStore.fetchMaterialClass(classSlug))
-  }
-
-  if (!$subjectStore.subjects.length) {
-    promises.push($subjectStore.fetchSubjects())
-  }
-
-  if (!$semesterStore.semesters.length) {
-    promises.push($semesterStore.fetchSemesters())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $homeworkStore.fetchHomeworks(route.params.classroomSlug as string),
+    $materialStore.fetchMaterialClass(classSlug),
+    $subjectStore.fetchSubjects(),
+    $semesterStore.fetchSemesters()
+  ])
 }
 </script>
 

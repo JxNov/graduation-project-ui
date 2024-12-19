@@ -27,9 +27,7 @@ const data = ref<any>([])
 const isLoading = ref<boolean>(false)
 
 onMounted(async () => {
-  if (!$classStore.classes.length) {
-    await $classStore.fetchClassForTeacher($authStore.user.username)
-  }
+  await $classStore.fetchClassForTeacher($authStore.user.username)
 
   const { classes: classAcademicYear } = await $academicYearStore.showAcademicYear($classStore.classes[0].academicYearSlug)
   classes.value = classAcademicYear.filter((cls: any) => cls.classSlug === $classStore.classes[0].slug)

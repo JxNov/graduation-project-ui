@@ -3,17 +3,24 @@ import {
   fetchSemestersService,
   createSemesterService,
   updateSemesterService,
-  deleteSemesterService
+  deleteSemesterService,
+  trashSemesterService,
+  restoreSemesterService
 } from '~/services/semester'
 import { toast } from 'vue-sonner'
 
 export const useSemesterStore = defineStore('semester', () => {
   const semesters = ref<Semester[]>([])
+  const trashSemesters = ref<Semester[]>([])
 
   const fetchSemesters = async () => {
     try {
       semesters.value = await fetchSemestersService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        semesters.value = []
+      }
+
       throw error
     }
   }
@@ -65,6 +72,37 @@ export const useSemesterStore = defineStore('semester', () => {
     }
   }
 
+  const trashSemester = async () => {
+    try {
+      trashSemesters.value = await trashSemesterService()
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        trashSemesters.value = []
+      }
+
+      throw error
+    }
+  }
+
+  const restoreSemester = async (slug: string) => {
+    try {
+      const response = await restoreSemesterService(slug)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      trashSemesters.value = trashSemesters.value.filter(semester => semester.slug !== slug)
+      semesters.value = [...semesters.value, response]
+
+      toast.success('Khôi phục học kỳ thành công')
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const replaceSemesters = (response: any) => {
     const index = semesters.value.findIndex(semester => semester.slug === response.slug)
     if (index !== -1) {
@@ -84,10 +122,13 @@ export const useSemesterStore = defineStore('semester', () => {
 
   return {
     semesters,
+    trashSemesters,
     fetchSemesters,
     createSemester,
     updateSemester,
     deleteSemester,
+    trashSemester,
+    restoreSemester,
     clearSemesters
   }
 })

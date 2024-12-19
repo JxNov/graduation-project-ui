@@ -25,13 +25,7 @@ const semestersForSelect = computed(() => {
 })
 
 onMounted(async () => {
-  if (!$classStore.classes.length) {
-    await $classStore.fetchClasses()
-  }
-
-  if (!$subjectStore.subjects.length) {
-    await $subjectStore.fetchSubjects()
-  }
+  await fetchData()
 
   const {
     semesters: semesterAcademicYear,
@@ -186,6 +180,13 @@ const filters: TableFilter[] = [
     values: valueSubject
   }
 ]
+
+async function fetchData() {
+  await Promise.all([
+    $classStore.fetchClasses(),
+    $subjectStore.fetchSubjects()
+  ])
+}
 </script>
 
 <template>

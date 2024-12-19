@@ -53,13 +53,9 @@ const columns = createColumns(
 ) as ColumnDef<Attendance>[]
 
 async function fetchData() {
-  const promises = []
-
-  if (!$attendanceStore.attendances.length) {
-    promises.push($attendanceStore.fetchAttendances())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $attendanceStore.fetchAttendances()
+  ])
 }
 </script>
 

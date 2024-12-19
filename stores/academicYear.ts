@@ -4,17 +4,23 @@ import {
   showAcademicYearService,
   createAcademicYearService,
   updateAcademicYearService,
-  deleteAcademicYearService
+  deleteAcademicYearService,
+  trashAcademicYearService,
+  restoreAcademicYearService
 } from '~/services/academicYear'
 import { toast } from 'vue-sonner'
 
 export const useAcademicYearStore = defineStore('academic-year', () => {
   const academicYears = ref<AcademicYear[]>([])
+  const trashAcademicYears = ref<AcademicYear[]>([])
 
   const fetchAcademicYears = async () => {
     try {
       academicYears.value = await fetchAcademicYearsService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        academicYears.value = []
+      }
       throw error
     }
   }
@@ -74,6 +80,36 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
     }
   }
 
+  const trashAcademicYear = async () => {
+    try {
+      trashAcademicYears.value = await trashAcademicYearService()
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        trashAcademicYears.value = []
+      }
+      throw error
+    }
+  }
+
+  const restoreAcademicYear = async (slug: string) => {
+    try {
+      const response = await restoreAcademicYearService(slug)
+
+      if (!response) {
+        throw new Error('Không thể khôi phục năm học')
+      }
+
+      trashAcademicYears.value = trashAcademicYears.value.filter(academicYear => academicYear.slug !== slug)
+      replaceAcademicYears(response)
+
+      toast.success('Khôi phục năm học thành công')
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const replaceAcademicYears = (response: any) => {
     const index = academicYears.value.findIndex(academicYear => academicYear.slug === response.slug)
     if (index !== -1) {
@@ -93,11 +129,14 @@ export const useAcademicYearStore = defineStore('academic-year', () => {
 
   return {
     academicYears,
+    trashAcademicYears,
     fetchAcademicYears,
     showAcademicYear,
     createAcademicYear,
     updateAcademicYear,
     deleteAcademicYear,
+    trashAcademicYear,
+    restoreAcademicYear,
     clearAcademicYears
   }
 })

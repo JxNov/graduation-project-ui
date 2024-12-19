@@ -9,17 +9,24 @@ import {
   deleteClassService,
   distributeStudentsService,
   assignStudentsToClassService,
-  promoteStudentsService
+  promoteStudentsService,
+  trashClassService,
+  restoreClassService
 } from '~/services/class'
 import { toast } from 'vue-sonner'
 
 export const useClassStore = defineStore('class', () => {
   const classes = ref<Class[]>([])
+  const trashClasses = ref<Class[]>([])
 
   const fetchClasses = async () => {
     try {
       classes.value = await fetchClassesService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classes.value = []
+      }
+
       throw error
     }
   }
@@ -27,7 +34,11 @@ export const useClassStore = defineStore('class', () => {
   const fetchClassForTeacher = async (username: string) => {
     try {
       classes.value = await fetchClassForTeacherService(username)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classes.value = []
+      }
+
       throw error
     }
   }
@@ -35,7 +46,11 @@ export const useClassStore = defineStore('class', () => {
   const fetchClassForStudent = async (username: string) => {
     try {
       classes.value = await fetchClassForStudentService(username)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classes.value = []
+      }
+
       throw error
     }
   }
@@ -147,6 +162,37 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const trashClass = async () => {
+    try {
+      trashClasses.value = await trashClassService()
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        trashClasses.value = []
+      }
+
+      throw error
+    }
+  }
+
+  const restoreClass = async (slug: string) => {
+    try {
+      const response = await restoreClassService(slug)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      trashClasses.value = trashClasses.value.filter(cls => cls.slug !== slug)
+      classes.value = [...classes.value, response]
+
+      toast.success('Khôi phục lớp học thành công')
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const replaceClasses = (response: any) => {
     const index = classes.value.findIndex(cls => cls.slug === response.slug)
     if (index !== -1) {
@@ -180,6 +226,7 @@ export const useClassStore = defineStore('class', () => {
 
   return {
     classes,
+    trashClasses,
     fetchClasses,
     fetchClassForTeacher,
     fetchClassForStudent,
@@ -190,6 +237,8 @@ export const useClassStore = defineStore('class', () => {
     distributeStudents,
     assignStudentsToClass,
     promoteStudents,
+    trashClass,
+    restoreClass,
     clearClasses
   }
 })

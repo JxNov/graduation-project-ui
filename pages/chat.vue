@@ -22,15 +22,13 @@ const subscribeToPrivateChannel = (username: string) => {
 }
 
 onMounted(async () => {
-  if (!$chatStore.chatPreviews.length) {
-    if (!studentPermissions) {
-      await $chatStore.getChatPreviewAdmin()
-      for (const chat of $chatStore.chatPreviews) {
-        await $chatStore.getChatAdmin(chat.id)
-        const usernameAll = $chatStore.chats.map(chat => chat.messages.map(message => message.username)).flat()
-        const usernameUnique = [...new Set(usernameAll)]
-        subscribeToPrivateChannel(usernameUnique.find(username => username !== $authStore.user.username) || '')
-      }
+  if (!studentPermissions) {
+    await $chatStore.getChatPreviewAdmin()
+    for (const chat of $chatStore.chatPreviews) {
+      await $chatStore.getChatAdmin(chat.id)
+      const usernameAll = $chatStore.chats.map(chat => chat.messages.map(message => message.username)).flat()
+      const usernameUnique = [...new Set(usernameAll)]
+      subscribeToPrivateChannel(usernameUnique.find(username => username !== $authStore.user.username) || '')
     }
   }
 })

@@ -7,6 +7,7 @@ export const studentSchema = z.object({
   dateOfBirth: z.string(),
   gender: z.string(),
   phoneNumber: z.string(),
+  address: z.string(),
   email: z.string()
 })
 

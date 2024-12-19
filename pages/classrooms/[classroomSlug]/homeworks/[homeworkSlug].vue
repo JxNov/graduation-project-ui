@@ -33,9 +33,7 @@ onMounted(async () => {
   className.value = name
   code.value = classCode
 
-  if (!$homeworkStore.homeworks.length) {
-    await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
-  }
+  await $homeworkStore.fetchHomeworks(route.params.classroomSlug as string)
 
   homework.value = $homeworkStore.homeworks.find((homework: any) => homework.slug === route.params.homeworkSlug)
   userSubmittedAssignment.value = await $homeworkStore.fetchDetailSubmittedAssignment(route.params.classroomSlug as string, route.params.homeworkSlug as string)

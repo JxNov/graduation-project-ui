@@ -1,6 +1,5 @@
 import type { AcademicYear } from '~/schema'
 
-
 export const fetchAcademicYearsService = async (): Promise<AcademicYear[]> => {
   const { $axios } = useNuxtApp()
 
@@ -94,6 +93,39 @@ export const deleteAcademicYearService = async (slug: string): Promise<void> => 
     if (!response) {
       throw new Error('Invalid response')
     }
+  } catch (error) {
+    throw error
+  }
+}
+
+export const trashAcademicYearService = async (): Promise<AcademicYear[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/academic-years/trash')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    console.log(response)
+    return response.data.data?.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const restoreAcademicYearService = async (slug: string): Promise<AcademicYear> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/academic-years/restore/${slug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
   } catch (error) {
     throw error
   }

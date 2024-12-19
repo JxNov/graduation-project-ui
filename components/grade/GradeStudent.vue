@@ -22,9 +22,7 @@ const semestersForSelect = computed(() => {
 })
 
 onMounted(async () => {
-  if (!$classStore.classes.length) {
-    await $classStore.fetchClassForStudent($authStore.user.username)
-  }
+  await $classStore.fetchClassForStudent($authStore.user.username)
 
   classes.value = $classStore.classes
 

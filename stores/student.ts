@@ -13,7 +13,11 @@ export const useStudentStore = defineStore('student', () => {
   const fetchStudents = async () => {
     try {
       students.value = await fetchStudentsService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        students.value = []
+      }
+
       throw error
     }
   }

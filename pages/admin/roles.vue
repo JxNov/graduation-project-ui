@@ -57,7 +57,6 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
     ['name', 'Role'],
     ['actions', '', '', {
       enableSorting: false,
@@ -82,7 +81,7 @@ const columns = createColumns(
     }
   ],
   'admin.update',
-  'admin.delete'
+  'null'
 ) as ColumnDef<Role>[]
 
 const valuePermissions = extractValue($roleStore.roles, 'permissions')
@@ -120,17 +119,10 @@ const handleCloseDialog = () => {
 }
 
 async function fetchData() {
-  const promises = []
-
-  if (!$roleStore.modules.length) {
-    promises.push($roleStore.fetchModules())
-  }
-
-  if (!$roleStore.roles.length) {
-    promises.push($roleStore.fetchRoles())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $roleStore.fetchModules(),
+    $roleStore.fetchRoles()
+  ])
 }
 </script>
 

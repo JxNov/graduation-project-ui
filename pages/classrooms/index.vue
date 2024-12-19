@@ -14,12 +14,10 @@ const teacherPermissions = checkPermissions($authStore.user.permissions, ['teach
 const studentPermissions = checkPermissions($authStore.user.permissions, ['student.read'])
 
 onMounted(() => {
-  if (!$classroomStore.classrooms.length) {
-    if (teacherPermissions) {
-      $classroomStore.fetchClassrooms()
-    } else if (studentPermissions) {
-      $classroomStore.fetchClassroomStudent()
-    }
+  if (teacherPermissions) {
+    $classroomStore.fetchClassrooms()
+  } else if (studentPermissions) {
+    $classroomStore.fetchClassroomStudent()
   }
 })
 

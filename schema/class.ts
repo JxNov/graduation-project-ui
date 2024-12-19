@@ -6,6 +6,7 @@ export const classSchema = z.object({
   code: z.string(),
   teacherName: z.string(),
   username: z.string(),
+  academicYearName: z.string(),
   academicYearSlug: z.string(),
   blockSlug: z.string(),
   numberOfStudents: z.number()

@@ -5,18 +5,29 @@ import {
   fetchUserDetailService,
   updateProfileInformationService,
   createUserService,
-  forgotPasswordService
+  updateUserService,
+  deleteUserService,
+  forgotPasswordService,
+  trashUserService,
+  restoreUserService
 } from '~/services/user'
+import { useStudentStore } from '~/stores/student'
+import { useTeacherStore } from '~/stores/teacher'
 import { toast } from 'vue-sonner'
 
 export const useUserStore = defineStore('user', () => {
   const users = ref<User[]>([])
   const userDetail = ref<UserDetail | null>(null)
+  const trashUsers = ref<User[]>([])
 
   const fetchUsers = async () => {
     try {
       users.value = await fetchUsersService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        users.value = []
+      }
+
       throw error
     }
   }
@@ -41,7 +52,11 @@ export const useUserStore = defineStore('user', () => {
   const fetchUserDetail = async (username: string) => {
     try {
       userDetail.value = await fetchUserDetailService(username)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        userDetail.value = null
+      }
+
       throw error
     }
   }
@@ -67,6 +82,7 @@ export const useUserStore = defineStore('user', () => {
         toast.error(error.response.data.error)
         return
       }
+
       toast.error('Thay đổi thông tin học sinh không thành công!!!')
     }
   }
@@ -95,6 +111,36 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const updateUser = async (username: string, data: {
+    name: string,
+    dateOfBirth: string,
+    gender: string,
+    address: string,
+    phone: string,
+  }) => {
+    try {
+      const response = await updateUserService(username, data)
+
+      if (!response) {
+        throw new Error('Cập nhật học sinh không thành công!!!')
+      }
+
+      users.value = []
+      await fetchUsers()
+      useStudentStore().clearStudents()
+      await useStudentStore().fetchStudents()
+      useTeacherStore().clearTeachers()
+      await useTeacherStore().fetchTeachers()
+
+      toast.success('Cập nhật học sinh thành công!!!')
+
+      return response
+    } catch (error: any) {
+      toast.error('Cập nhật học sinh không thành công!!!')
+      throw error
+    }
+  }
+
   const forgotPassword = async (data: {
     email: string[]
   }) => {
@@ -109,6 +155,58 @@ export const useUserStore = defineStore('user', () => {
       return response
     } catch (error: any) {
       toast.error('Có lỗi xảy ra khi khôi phục mật khẩu')
+      throw error
+    }
+  }
+
+  const deleteUser = async (username: string) => {
+    try {
+      const response = await deleteUserService(username)
+
+      if (!response) {
+        throw new Error('Xóa người dùng không thành công')
+      }
+
+      users.value = users.value.filter((user: any) => user.username !== username)
+      useStudentStore().students = useStudentStore().students.filter((student: any) => student.username !== username)
+      useTeacherStore().teachers = useTeacherStore().teachers.filter((teacher: any) => teacher.username !== username)
+
+      toast.success('Xóa người dùng thành công')
+      return response
+    } catch (error: any) {
+      console.log(error)
+      toast.error('Xóa người dùng không thành công')
+      throw error
+    }
+  }
+
+  const trashUser = async () => {
+    try {
+      trashUsers.value = await trashUserService()
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        trashUsers.value = []
+      }
+
+      throw error
+    }
+  }
+
+  const restoreUser = async (username: string) => {
+    try {
+      const response = await restoreUserService(username)
+
+      if (!response) {
+        throw new Error('Khôi phục người dùng không thành công')
+      }
+
+      trashUsers.value = trashUsers.value.filter((user: any) => user.username !== username)
+      await fetchUsers()
+
+      toast.success('Khôi phục người dùng thành công')
+      return response
+    } catch (error: any) {
+      toast.error('Khôi phục người dùng không thành công')
       throw error
     }
   }
@@ -132,12 +230,17 @@ export const useUserStore = defineStore('user', () => {
   return {
     users,
     userDetail,
+    trashUsers,
     fetchUsers,
     assignRolePermission,
     fetchUserDetail,
     updateProfileInformation,
     createUser,
+    updateUser,
+    deleteUser,
     forgotPassword,
+    trashUser,
+    restoreUser,
     clearUsers
   }
 })

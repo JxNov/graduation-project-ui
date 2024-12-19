@@ -8,8 +8,10 @@ import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
 import { TeacherDialogImport, TeacherDialogAssign } from '~/components/common/dialog/teacher'
+import { UserDialogCreateEdit, UserDialogDelete } from '~/components/common/dialog/user'
 import { toast } from 'vue-sonner'
 import { Badge } from '~/components/ui/badge'
+import { Trash2 } from 'lucide-vue-next'
 
 const { $authStore, $teacherStore, $subjectStore, $bus } = useNuxtApp()
 
@@ -68,7 +70,6 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
     ['email', 'Email'],
     ['gender', 'Giới tính'],
     ['actions', '', '', {
@@ -107,7 +108,7 @@ const columns = createColumns(
       accessorKey: 'subjects',
       title: 'Môn học',
       render: (row) => h('div', { class: 'truncate' },
-        row.original.subjects.map((permission: any) => h(Badge, {
+        row.original.subjects?.map((permission: any) => h(Badge, {
           variant: 'outline',
           class: 'mr-1'
         }, () => permission))
@@ -183,17 +184,10 @@ const downloadSampleTeachers = async () => {
 }
 
 async function fetchData() {
-  const promises = []
-
-  if (!$teacherStore.teachers.length) {
-    promises.push($teacherStore.fetchTeachers())
-  }
-
-  if (!$subjectStore.subjects.length) {
-    promises.push($subjectStore.fetchSubjects())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $teacherStore.fetchTeachers(),
+    $subjectStore.fetchSubjects()
+  ])
 }
 </script>
 
@@ -203,6 +197,13 @@ async function fetchData() {
       <h2 class="text-4xl font-bold tracking-tight">Quản lý giáo viên</h2>
 
       <div class="flex gap-4">
+        <NuxtLink to="/admin/users/trash">
+          <Button variant="outline" v-if="shouldShowElement" class="flex items-center gap-2">
+            <Trash2 class="w-5 h-5" />
+            Thùng rác
+          </Button>
+        </NuxtLink>
+
         <Button variant="outline" @click="downloadSampleTeachers" v-if="shouldShowElement" :disabled="isLoaded">
           Tải file mẫu giáo viên
         </Button>
@@ -236,15 +237,15 @@ async function fetchData() {
     </DialogContent>
   </Dialog>
 
-  <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <TeacherDialogCreateEdit :data="selectedValue" edit/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isEditing" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <UserDialogCreateEdit :data="selectedValue" edit />
+    </DialogContent>
+  </Dialog>
 
-  <!--  <Dialog :open="isDeleting" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">-->
-  <!--      <TeacherDialogDelete :data="selectedValue"/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isDeleting" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <UserDialogDelete :data="selectedValue" />
+    </DialogContent>
+  </Dialog>
 </template>

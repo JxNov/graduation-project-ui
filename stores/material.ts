@@ -17,7 +17,11 @@ export const useMaterialStore = defineStore('material', () => {
     const fetchMaterialBlock = async () => {
       try {
         materialBlock.value = await fetchMaterialBlockService()
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 404) {
+          materialBlock.value = []
+        }
+
         throw error
       }
     }
@@ -25,7 +29,11 @@ export const useMaterialStore = defineStore('material', () => {
     const fetchMaterialClass = async (classSlug: string) => {
       try {
         materialClass.value = await fetchMaterialClassService(classSlug)
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 404) {
+          materialClass.value = []
+        }
+
         throw error
       }
     }

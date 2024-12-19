@@ -21,9 +21,7 @@ onMounted(async () => {
     isOpen.value = value
   })
 
-  if (!$attendanceStore.attendanceShow.length) {
-    await $attendanceStore.showAttendance()
-  }
+  await $attendanceStore.showAttendance()
 })
 
 onUnmounted(() => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '~/components/ui/button'
 
-const { $classStore, $bus } = useNuxtApp()
+const { $userStore, $bus } = useNuxtApp()
 
 interface DialogDeleteProps {
   data: any,
@@ -18,28 +18,36 @@ const handleClose = () => {
 const handleDelete = async () => {
   isLoading.value = true
 
-  await $classStore.deleteClass(props.data.slug)
+  try {
+    const response = await $userStore.deleteUser(props.data.username)
 
-  isLoading.value = false
-  handleClose()
+    if (!response) {
+      throw new Error('Xóa người dùng không thành công')
+    }
+
+    isLoading.value = false
+    handleClose()
+  } catch (error) {
+    isLoading.value = false
+  }
 }
 </script>
 
 <template>
   <DialogHeader>
-    <DialogTitle>Xóa lớp học</DialogTitle>
+    <DialogTitle>Xóa người dùng</DialogTitle>
     <DialogDescription>
-      Bạn có chắc chắn muốn xóa lớp học <strong>{{ data.name }}</strong>?
+      Bạn có muốn xóa người dùng <strong>{{ data.name }}</strong> không ?
     </DialogDescription>
   </DialogHeader>
 
   <DialogFooter class="gap-2">
     <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-      Hủy
+      Cancel
     </Button>
 
     <Button type="button" variant="default" @click="handleDelete" :disabled="isLoading">
-      Xóa
+      Delete
     </Button>
   </DialogFooter>
 </template>

@@ -7,8 +7,9 @@ export const teacherSchema = z.object({
   dateOfBirth: z.string(),
   gender: z.string(),
   phoneNumber: z.string(),
+  address: z.string(),
   email: z.string(),
-  subjects: z.array(z.string()),
+  subjects: z.array(z.string())
 })
 
 export type Teacher = z.infer<typeof teacherSchema>
