@@ -6,7 +6,7 @@ import DatePicker from '~/components/base/DatePicker.vue'
 import Combobox from '~/components/base/Combobox.vue'
 import { type DateValue, getLocalTimeZone, parseDate, today } from '@internationalized/date'
 
-const { $subjectStore, $semesterStore, $homeworkStore, $authStore, $bus } = useNuxtApp()
+const { $subjectStore, $classStore, $homeworkStore, $authStore, $bus } = useNuxtApp()
 const route = useRoute()
 
 interface DialogEditProps {
@@ -16,14 +16,19 @@ interface DialogEditProps {
 
 const props = defineProps<DialogEditProps>()
 
-const dataSemestersCombobox = $semesterStore.semesters.map((semester) => ({
-  value: semester.slug,
-  label: semester.name
+const dataSemestersCombobox = $classStore.semesterForClass.map((semester: any) => ({
+  value: semester.semesterSlug,
+  label: semester.semesterName
 }))
+
 const dataSubjectsCombobox = $subjectStore.subjects.map((subject) => ({
   value: subject.slug,
   label: subject.name
 }))
+
+const dataSubjectForTeacher = dataSubjectsCombobox.filter((subject) => {
+  return $authStore.user.subjects.includes(subject.value)
+})
 
 const dueDate = ref<DateValue>(today(getLocalTimeZone()))
 const isLoading = ref<boolean>(false)
@@ -138,7 +143,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <DatePicker
         name="startDate"
-        label="Start date"
+        label="Hạn nộp"
         :model-value="dueDate"
         :disabled="isLoading"
         @update:model-value="handleChangeDueDate"
@@ -151,6 +156,7 @@ const onSubmit = handleSubmit(async (values) => {
           <Textarea
             placeholder="Criteria"
             class="resize-none h-24"
+            :disabled="isLoading"
             v-bind="componentField"
           />
           </FormControl>
@@ -166,7 +172,7 @@ const onSubmit = handleSubmit(async (values) => {
             <FormControl>
               <Combobox
                 name="subject"
-                :data="dataSubjectsCombobox"
+                :data="dataSubjectForTeacher"
                 :disabled="isLoading"
                 :model-value="value"
                 @update:model-value="setFieldValue('subjectSlug', $event)"

@@ -12,13 +12,15 @@ import {
   assignTeachersToClassService,
   promoteStudentsService,
   trashClassService,
-  restoreClassService
+  restoreClassService,
+  fetchSemesterForClassService
 } from '~/services/class'
 import { toast } from 'vue-sonner'
 
 export const useClassStore = defineStore('class', () => {
   const classes = ref<Class[]>([])
   const trashClasses = ref<Class[]>([])
+  const semesterForClass = ref<any>([])
 
   const fetchClasses = async () => {
     try {
@@ -213,6 +215,14 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const fetchSemesterForClass = async (classSlug: string) => {
+    try {
+      semesterForClass.value = await fetchSemesterForClassService(classSlug)
+    } catch (error) {
+      throw error
+    }
+  }
+
   const replaceClasses = (response: any) => {
     const index = classes.value.findIndex(cls => cls.slug === response.slug)
     if (index !== -1) {
@@ -242,14 +252,18 @@ export const useClassStore = defineStore('class', () => {
 
   const clearClasses = () => {
     classes.value = []
+    trashClasses.value = []
+    semesterForClass.value = []
   }
 
   return {
     classes,
     trashClasses,
+    semesterForClass,
     fetchClasses,
     fetchClassForTeacher,
     fetchClassForStudent,
+    fetchSemesterForClass,
     showClass,
     createClass,
     updateClass,

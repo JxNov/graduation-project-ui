@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const props = defineProps<{
+  data: any
+}>()
 </script>
 
 <template>
@@ -10,13 +13,19 @@
     >
       <div class="flex flex-row items-start gap-4">
         <Avatar>
-          <AvatarImage src="https://github.com/radix-vue.png" alt="@radix-vue" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage :src="data?.teacherImage" :alt="data?.teacherName" />
+          <AvatarFallback>
+            {{ data?.teacherName.split(' ').map((name: string) => name[0]).join('') }}
+          </AvatarFallback>
         </Avatar>
 
         <div>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Time</CardDescription>
+          <CardTitle>
+            {{ data?.title }}
+          </CardTitle>
+          <CardDescription>
+            {{ data?.dueDate }}
+          </CardDescription>
         </div>
       </div>
     </CardHeader>

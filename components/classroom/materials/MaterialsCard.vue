@@ -64,12 +64,12 @@ const deleteMaterial = (item: any) => {
               <DropdownMenuItem
                 @click="editMaterial(item)"
               >
-                Edit
+                Sửa
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
               <DropdownMenuItem @click="deleteMaterial(item)">
-                Delete
+                Xóa
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -99,7 +99,7 @@ const deleteMaterial = (item: any) => {
           @click="openFile(item.filePath)"
         >
           <OpenInNewWindowIcon class="h-4 w-4 mr-1" />
-          Open
+          Mở tài liệu
         </Button>
 
         <Button
@@ -108,7 +108,7 @@ const deleteMaterial = (item: any) => {
           @click="downloadFile(item.filePath)"
         >
           <DownloadIcon class="h-4 w-4 mr-1" />
-          Download
+          Tải xuống
         </Button>
       </CardFooter>
     </Card>
@@ -116,7 +116,7 @@ const deleteMaterial = (item: any) => {
 
   <div v-else class="flex justify-center items-center h-96">
     <p class="text-2xl">
-      No materials found
+      Không tìm thấy tài liệu nào
     </p>
   </div>
 </template>

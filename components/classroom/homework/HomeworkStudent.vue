@@ -66,6 +66,12 @@ const handleUpdate = (data: any) => {
           @open-grade-assignment="openGradeAssignment"
         />
       </CardContent>
+
+      <CardContent v-if="!data.length" class="flex justify-center items-center h-[300px]">
+        <p class="text-gray-500">
+          Chưa có bài tập nào được nộp
+        </p>
+      </CardContent>
     </Card>
   </div>
 

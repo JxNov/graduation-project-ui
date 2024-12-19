@@ -30,9 +30,10 @@ onUnmounted(() => {
 
 const columns = createColumns(
   [
-    ['date', 'Date'],
-    ['shifts', 'Shifts'],
-    ['reason', 'Reason', '', {
+    ['date', 'Ngày'],
+    ['className', 'Lớp'],
+    ['shifts', 'Ca'],
+    ['reason', 'Lý do', '', {
       enableSorting: false,
       enableHiding: false
     }]
@@ -41,7 +42,7 @@ const columns = createColumns(
   [
     {
       accessorKey: 'status',
-      title: 'Status',
+      title: 'Trạng thái',
       render: (row) => h(Badge, {
         class: {
           'bg-green-500 hover:bg-green-600 cursor-default text-white': row.original.status === 'Present',
@@ -61,12 +62,12 @@ const valueShifts = extractValue($attendanceStore.attendanceShow, 'shifts')
 const filters: TableFilter[] = [
   {
     name: 'shifts',
-    label: 'Shifts',
+    label: 'Ca',
     values: valueShifts
   },
   {
     name: 'status',
-    label: 'Status',
+    label: 'Trạng thái',
     values: valueStatus
   }
 ]
@@ -114,10 +115,10 @@ const handleCloseDialog = () => {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Attendances</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Điểm danh</h2>
 
       <Button variant="default" @click="handleAttendance">
-        Attendance
+        Điểm danh
       </Button>
     </div>
 

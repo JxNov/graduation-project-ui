@@ -225,6 +225,7 @@ export const useUserStore = defineStore('user', () => {
   const clearUsers = () => {
     users.value = []
     userDetail.value = null
+    trashUsers.value = []
   }
 
   return {

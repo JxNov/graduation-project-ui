@@ -58,7 +58,7 @@ const redirect = (path: string) => {
 
     <CardFooter class="flex justify-end border-t pt-6">
       <Button type="button" @click="redirect(`/classrooms/${classroom.classSlug}`)">
-        Details
+        Xem chi tiết
       </Button>
     </CardFooter>
   </div>

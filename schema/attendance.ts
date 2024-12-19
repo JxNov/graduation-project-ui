@@ -35,7 +35,8 @@ export const attendanceShowSchema = z.object({
   shifts: z.string(),
   className: z.string(),
   status: z.string(),
-  reason: z.string()
+  reason: z.string(),
+  username: z.string()
 })
 
 export type AttendanceShow = z.infer<typeof attendanceShowSchema>

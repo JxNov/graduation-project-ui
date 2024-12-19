@@ -33,8 +33,16 @@ export const useGenerationStore = defineStore('generation', () => {
       toast.success('Tạo mới khóa học sinh thành công')
 
       return response
-    } catch (error) {
-      toast.error('Tạo mới khóa học sinh thất bại')
+    } catch (error: any) {
+      for (const key in error.response.data.errors) {
+        toast.error(error.response.data.errors[key][0])
+      }
+
+      if (!error.response.data.errors) {
+        toast.error(error.response.data.error)
+      }
+
+      throw error
     }
   }
 
@@ -112,6 +120,7 @@ export const useGenerationStore = defineStore('generation', () => {
 
   const clearGenerations = () => {
     generations.value = []
+    trashGenerations.value = []
   }
 
   return {

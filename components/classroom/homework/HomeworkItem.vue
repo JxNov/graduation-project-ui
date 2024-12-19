@@ -86,8 +86,8 @@ const deleteHomework = (homework: any) => {
           <div class="flex flex-col gap-4">
             <CardDescription v-if="!homework.dueDate">Không có ngày đến hạn</CardDescription>
             <p class="text-sm" v-else>
-              Hạn nộp:
-              {{ homework.dueDate }}
+              Tiêu chí:
+              <span class="font-semibold">{{ homework.criteria }}</span>
             </p>
           </div>
 

@@ -52,6 +52,10 @@ onBeforeUnmount(() => {
       @editHomework="selectedValue = homework; isEditing = true"
       @deleteHomework="selectedValue = homework; isDeleting = true"
     />
+
+    <div v-if="!$homeworkStore.homeworks.length" class="flex justify-center items-center h-[300px]">
+      <p class="text-gray-500">Không có bài tập nào</p>
+    </div>
   </div>
 
   <Dialog :open="isCreating" @update:open="handleCloseDialog">

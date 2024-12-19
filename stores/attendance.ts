@@ -101,7 +101,7 @@ export const useAttendanceStore = defineStore('attendance', () => {
         throw new Error('Cập nhật diểm danh thất bại!!!')
       }
 
-      attendanceShow.value = [...attendanceShow.value, response]
+      await showAttendance()
 
       toast.success('Cập nhật điểm danh thành công!!!')
       return response

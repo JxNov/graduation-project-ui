@@ -250,3 +250,19 @@ export const restoreClassService = async (slug: string): Promise<Class> => {
     throw error
   }
 }
+
+export const fetchSemesterForClassService = async (slug: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/classes/get-semester/${slug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

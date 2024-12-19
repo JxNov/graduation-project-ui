@@ -14,9 +14,7 @@ export const useGradeStore = defineStore('grade', () => {
     try {
       grades.value = await fetchGradeService(query)
     } catch (error: any) {
-      if (error.response.status === 404) {
-        grades.value = []
-      }
+      grades.value = []
 
       throw error
     }
@@ -26,9 +24,7 @@ export const useGradeStore = defineStore('grade', () => {
     try {
       grades.value = await fetchGradeByTeacherService(query)
     } catch (error: any) {
-      if (error.response.status === 404) {
-        grades.value = []
-      }
+      grades.value = []
 
       throw error
     }
@@ -38,9 +34,7 @@ export const useGradeStore = defineStore('grade', () => {
     try {
       grades.value = await fetchGradeStudentService(query)
     } catch (error: any) {
-      if (error.response.status === 404) {
-        grades.value = []
-      }
+      grades.value = []
 
       throw error
     }

@@ -38,8 +38,16 @@ export const useSemesterStore = defineStore('semester', () => {
       toast.success('Tạo mới học kỳ thành công')
 
       return response
-    } catch (error) {
-      toast.error('Tạo mới học kỳ thất bại')
+    } catch (error: any) {
+      for (const key in error.response.data.errors) {
+        toast.error(error.response.data.errors[key][0])
+      }
+
+      if (!error.response.data.errors) {
+        toast.error(error.response.data.error)
+      }
+
+      throw error
     }
   }
 
@@ -118,6 +126,7 @@ export const useSemesterStore = defineStore('semester', () => {
 
   const clearSemesters = () => {
     semesters.value = []
+    trashSemesters.value = []
   }
 
   return {

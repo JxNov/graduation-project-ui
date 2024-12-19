@@ -2,13 +2,13 @@
 import Code from '../Code.vue'
 import BulletinBoardEditor from './BulletinBoardEditor.vue'
 import BulletinBoardHomework from './BulletinBoardHomework.vue'
-import BulletinBoardHomeworkComment from './BulletinBoardHomeworkComment.vue'
 import BulletinBoardNotification from './BulletinBoardNotification.vue'
 import BulletinBoardHomeworkDueDate from './BulletinBoardHomeworkDueDate.vue'
 import { scrollToFragment } from '@/utils/scrollToFragment'
 import { checkPermissions } from '~/utils/checkPermissions'
 
-const { $authStore } = useNuxtApp()
+const { $authStore, $homeworkStore } = useNuxtApp()
+const route = useRoute()
 
 defineProps<{
   articlesClassroom: any
@@ -18,6 +18,23 @@ defineProps<{
 }>()
 
 const teacherPermissions = checkPermissions($authStore.user.permissions, ['teacher.read'])
+const isDueDate = ref<boolean>(false)
+
+const calculateDueDate = (dueDate: string) => {
+  const dueDateInMs = new Date(dueDate).getTime()
+  const currentDate = new Date().getTime()
+  const diffTime = dueDateInMs - currentDate
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+}
+
+onMounted(async () => {
+  const homeworks = $homeworkStore.homeworks.filter((homework: any) => {
+    const dueDate = calculateDueDate(homework.dueDate)
+    return dueDate <= 3 && dueDate >= 0
+  })
+
+  isDueDate.value = homeworks.length > 0
+})
 </script>
 
 <template>
@@ -40,16 +57,22 @@ const teacherPermissions = checkPermissions($authStore.user.permissions, ['teach
       <div class="hidden md:block col-span-3 space-y-4">
         <Code :class-name="className" :code="code" />
 
-        <Card>
+        <Card v-if="!teacherPermissions">
           <CardHeader>
             <CardTitle>Sắp đến hạn</CardTitle>
-            <CardDescription>Tuyệt vời, không có bài tập nào sắp đến hạn!</CardDescription>
+            <!--            <CardDescription>Tuyệt vời, không có bài tập nào sắp đến hạn!</CardDescription>-->
+            <CardDescription v-if="!isDueDate">Tuyệt vời, không có bài tập nào sắp đến hạn!</CardDescription>
           </CardHeader>
 
-          <!--          <CardContent class="flex flex-col gap-4">-->
-          <!--            <BulletinBoardHomeworkDueDate @click="scrollToFragment('1')" />-->
-          <!--            <BulletinBoardHomeworkDueDate @click="scrollToFragment('2')" />-->
-          <!--          </CardContent>-->
+          <CardContent class="flex flex-col gap-4">
+            <template v-for="homework in $homeworkStore.homeworks" :key="homework.slug">
+              <BulletinBoardHomeworkDueDate
+                :data="homework"
+                v-if="calculateDueDate(homework.dueDate) <= 3 && calculateDueDate(homework.dueDate) >= 0"
+                @click="scrollToFragment(homework.slug)"
+              />
+            </template>
+          </CardContent>
         </Card>
       </div>
 
@@ -57,12 +80,12 @@ const teacherPermissions = checkPermissions($authStore.user.permissions, ['teach
         <div class="flex flex-col gap-4">
           <BulletinBoardEditor :class-slug="classSlug" v-if="teacherPermissions" />
 
-          <!--          <BulletinBoardHomework id="1">-->
-          <!--            <BulletinBoardHomeworkComment />-->
-          <!--          </BulletinBoardHomework>-->
-
-          <!--          <BulletinBoardHomework id="2" />-->
-          <!--          <BulletinBoardHomework id="3" />-->
+          <template v-for="homework in $homeworkStore.homeworks" :key="homework.slug">
+            <BulletinBoardHomework
+              :data="homework"
+              :id="homework.slug"
+            />
+          </template>
 
           <BulletinBoardNotification
             v-for="article in articlesClassroom"

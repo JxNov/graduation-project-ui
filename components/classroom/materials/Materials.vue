@@ -118,12 +118,12 @@ onBeforeUnmount(() => {
         <div class="flex justify-end gap-2">
           <div class="relative">
             <Search class="absolute left-2 top-2.5 size-4 text-muted-foreground" />
-            <Input v-model="searchValue" placeholder="Search" class="pl-8" />
+            <Input v-model="searchValue" placeholder="Tìm kiếm" class="pl-8" />
           </div>
 
           <Select v-model="selectedSubject">
             <SelectTrigger class="w-[180px]">
-              <SelectValue placeholder="Select a subject" />
+              <SelectValue placeholder="Môn học" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

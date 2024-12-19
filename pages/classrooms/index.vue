@@ -68,7 +68,9 @@ const handleInteractOutside = (event: Event) => {
     />
 
     <div v-if="!$classroomStore.classrooms.length" class="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4">
-      <p class="text-lg text-center text-gray-500">No classroom found</p>
+      <p class="text-lg text-center text-gray-500">
+        Không có lớp học nào
+      </p>
     </div>
   </div>
 

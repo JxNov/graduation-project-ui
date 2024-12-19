@@ -57,7 +57,11 @@ export const useMaterialStore = defineStore('material', () => {
         toast.success('Tạo tài liệu lớp học thành công')
 
         return response
-      } catch (error) {
+      } catch (error: any) {
+        for (const key in error.response.data.errors) {
+          toast.error(error.response.data.errors[key][0])
+        }
+
         throw error
       }
     }

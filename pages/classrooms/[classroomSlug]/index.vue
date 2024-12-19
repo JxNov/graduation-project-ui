@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import type { Article } from '~/schema'
 
-const { $classroomStore, $homeworkStore, $materialStore, $subjectStore, $semesterStore, $bus } = useNuxtApp()
+const {
+  $classroomStore,
+  $homeworkStore,
+  $materialStore,
+  $subjectStore,
+  $semesterStore,
+  $classStore,
+  $bus
+} = useNuxtApp()
 const route = useRoute()
 const echo = useEcho()
 const useIdFunction = () => useId()
@@ -105,7 +113,8 @@ async function fetchData() {
     $homeworkStore.fetchHomeworks(route.params.classroomSlug as string),
     $materialStore.fetchMaterialClass(classSlug),
     $subjectStore.fetchSubjects(),
-    $semesterStore.fetchSemesters()
+    $semesterStore.fetchSemesters(),
+    $classStore.fetchSemesterForClass(route.params.classroomSlug as string)
   ])
 }
 </script>

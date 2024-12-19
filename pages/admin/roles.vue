@@ -129,10 +129,10 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Roles</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý vai trò</h2>
 
       <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new role
+        Tạo mới
       </Button>
     </div>
 
