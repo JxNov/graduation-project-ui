@@ -73,18 +73,18 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6 px-1" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle>
-        Grade Assignment
+        Điểm bài tập
       </DialogTitle>
 
       <DialogDescription>
-        Grade the assignment for the student <strong>{{ props.data.studentName }}</strong>
+        Đánh giá bài tập cho học sinh <strong>{{ props.data.studentName }}</strong>
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="score">
         <FormItem>
-          <FormLabel>Score</FormLabel>
+          <FormLabel>Điểm</FormLabel>
 
           <FormControl>
             <Input type="text" placeholder="Score..." v-bind="componentField" :disabled="isLoading" />
@@ -96,7 +96,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="feedback">
         <FormItem>
-          <FormLabel>Feedback</FormLabel>
+          <FormLabel>Nhận xét</FormLabel>
           <FormControl>
           <Textarea
             placeholder="Feedback"
@@ -111,11 +111,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

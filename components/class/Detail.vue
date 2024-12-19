@@ -171,7 +171,7 @@ const columns = createColumns(
             isOpen.value = true
             selectedValue.value = { ...row.original, subject: subject.value, semester: semester.value }
           }
-        }, { default: () => 'Enter score' })
+        }, { default: () => 'Nhập điểm' })
       ),
       options: {
         enableSorting: false,

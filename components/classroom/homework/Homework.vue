@@ -41,7 +41,7 @@ onBeforeUnmount(() => {
     <div class="flex justify-end" v-if="teacherPermissions">
       <Button type="button" @click="isCreating = true">
         <PlusIcon class="w-6 h-6 mr-1" />
-        Create Homework
+        Tạo bài tập
       </Button>
     </div>
 

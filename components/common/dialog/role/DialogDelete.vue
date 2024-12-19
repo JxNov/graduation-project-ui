@@ -27,19 +27,19 @@ const handleDelete = async () => {
 
 <template>
   <DialogHeader>
-    <DialogTitle>Delete Role</DialogTitle>
+    <DialogTitle>Xóa vai trò</DialogTitle>
     <DialogDescription>
-      Are you sure you want to delete <strong>{{ data.name }}</strong> role?
+      Bạn có muốn xóa vai trò <strong>{{ data.name }}</strong> không?
     </DialogDescription>
   </DialogHeader>
 
   <DialogFooter class="gap-2">
     <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-      Cancel
+      Hủy
     </Button>
 
     <Button type="button" variant="default" @click="handleDelete" :disabled="isLoading">
-      Delete
+      Xóa
     </Button>
   </DialogFooter>
 </template>

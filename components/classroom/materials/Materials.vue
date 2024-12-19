@@ -105,13 +105,13 @@ onBeforeUnmount(() => {
         @click="isCreating = true"
       >
         <PlusIcon class="size-4 mr-2" />
-        Create Material
+        Tạo tài liệu
       </Button>
     </div>
 
     <Card class="flex justify-between items-center gap-4 p-4">
       <CardTitle class="text-2xl">
-        Materials List
+        Danh sách tài liệu
       </CardTitle>
 
       <form>
@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Subjects</SelectLabel>
+                <SelectLabel>Môn</SelectLabel>
                 <SelectItem
                   v-for="(subject, index) in getMaterialSubject"
                   :key="index"
@@ -144,7 +144,7 @@ onBeforeUnmount(() => {
             variant="outline"
             @click="clearSearch"
           >
-            Clear filters
+            Xóa bộ lọc
           </Button>
         </div>
       </form>

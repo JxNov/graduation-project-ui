@@ -27,7 +27,6 @@ const initialValues = ref<any>({
 })
 
 if (props.edit) {
-  console.log(props.data)
   const formatDateOfBirth = props.data.dateOfBirth.split('/').reverse().join('-')
 
   initialValues.value = {

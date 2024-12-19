@@ -50,11 +50,11 @@ const handleUpdate = (data: any) => {
     <div class="flex justify-between items-center">
       <TabsList>
         <TabsTrigger value="instruct">
-          Instruct
+          Hướng dẫn
         </TabsTrigger>
 
         <TabsTrigger value="student-homework">
-          Student Homework
+          Bài tập của học sinh
         </TabsTrigger>
       </TabsList>
 

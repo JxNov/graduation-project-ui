@@ -56,7 +56,7 @@ const handleInteractOutside = (event: Event) => {
   <div class="flex justify-end">
     <Button @click="isDialogOpen = true">
       <PlusIcon class="w-6 h-6 mr-2" />
-      Join Classroom
+      Tham gia lớp học
     </Button>
   </div>
 
@@ -76,17 +76,17 @@ const handleInteractOutside = (event: Event) => {
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
       <ScrollArea class="max-h-[650px] w-full px-4">
         <DialogHeader>
-          <DialogTitle>Join Classroom</DialogTitle>
+          <DialogTitle>Tham gia lớp học</DialogTitle>
 
           <DialogDescription>
-            Enter the invitation code to join the classroom
+            Nhập mã lớp học để tham gia
           </DialogDescription>
         </DialogHeader>
 
         <form class="space-y-6" @submit="onSubmit">
           <FormField v-slot="{ componentField }" name="code" :validate-on-blur="!isFieldDirty">
             <FormItem>
-              <FormLabel>Code</FormLabel>
+              <FormLabel>Mã lớp</FormLabel>
 
               <FormControl>
                 <Input type="text" placeholder="xxxxxxx" v-bind="componentField" />
@@ -97,7 +97,7 @@ const handleInteractOutside = (event: Event) => {
 
           <DialogFooter>
             <Button type="submit">
-              Join
+              Tham gia
             </Button>
           </DialogFooter>
         </form>

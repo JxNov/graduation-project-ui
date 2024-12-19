@@ -4,41 +4,40 @@ import { z } from 'zod'
 import { useForm } from 'vee-validate'
 import TagsCombobox from '~/components/base/TagsCombobox.vue'
 
-const { $studentStore, $classStore, $bus } = useNuxtApp()
+const { $teacherStore, $classStore, $bus } = useNuxtApp()
 
 const props = defineProps<{
   classSlug: string
 }>()
 
 const isLoading = ref<boolean>(false)
-const students = $studentStore.students.map(student => ({ label: student.name, value: student.username }))
+const teachers = $teacherStore.teachers.map(teacher => ({ label: teacher.name, value: teacher.username }))
 
 const formSchema = toTypedSchema(z.object({
-  students: z.array(z.string()).min(1)
+  teachers: z.array(z.string()).min(1)
 }))
 
 const { setFieldValue, handleSubmit } = useForm({
   validationSchema: formSchema,
   initialValues: {
-    students: []
+    teachers: []
   }
 })
 
 const handleClose = () => {
-  $bus.emit('close-dialog-assign', false)
+  $bus.emit('close-dialog-assign-teacher', false)
 }
 
 const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
   try {
-    const response = await $classStore.assignStudentsToClass({
-      classSlug: props.classSlug,
-      username: values.students
+    const response = await $classStore.assignTeachersToClass(props.classSlug, {
+      username: values.teachers
     })
 
     if (!response) {
-      throw new Error('Thêm học sinh vào lớp không thành công')
+      throw new Error('Gán giáo viên vào lớp không thành công')
     }
 
     isLoading.value = false
@@ -53,22 +52,22 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle>
-        Thêm học sinh vào lớp
+        Gán giáo viên vào lớp
       </DialogTitle>
 
       <DialogDescription>
-        Thêm học sinh vào lớp
+        Gán giáo viên vào lớp để dạy học sinh
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
-      <FormField v-slot="{ value }" name="students">
+      <FormField v-slot="{ value }" name="teachers">
         <FormItem>
-          <FormLabel>Học sinh</FormLabel>
+          <FormLabel>Giáo viên</FormLabel>
 
           <FormControl>
-            <TagsCombobox placeholder="Chọn học sinh" :data="students" v-bind:model-value="value"
-              @update:model-value="value" />
+            <TagsCombobox placeholder="Chọn giáo viên" :data="teachers" v-bind:model-value="value"
+                          @update:model-value="value" />
           </FormControl>
 
           <FormMessage />

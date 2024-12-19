@@ -9,6 +9,7 @@ import {
   deleteClassService,
   distributeStudentsService,
   assignStudentsToClassService,
+  assignTeachersToClassService,
   promoteStudentsService,
   trashClassService,
   restoreClassService
@@ -143,6 +144,25 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const assignTeachersToClass = async (slug: string, data: {
+    username: string[]
+  }) => {
+    try {
+      const response = await assignTeachersToClassService(slug, data)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      toast.success('Thêm giáo viên vào lớp thành công')
+
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const promoteStudents = async (slug: string, data: {
     name: string
     username: string
@@ -236,6 +256,7 @@ export const useClassStore = defineStore('class', () => {
     deleteClass,
     distributeStudents,
     assignStudentsToClass,
+    assignTeachersToClass,
     promoteStudents,
     trashClass,
     restoreClass,

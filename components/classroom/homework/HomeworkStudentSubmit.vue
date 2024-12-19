@@ -86,7 +86,7 @@ const formatNumber = (value: number) => {
                 @click="openFileAssignment(data.filePath)"
               >
                 <EyeOpenIcon class="w-4 h-4" />
-                View
+                Xem
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
@@ -95,7 +95,7 @@ const formatNumber = (value: number) => {
                 @click="downloadFileAssignment(data.filePath)"
               >
                 <DownloadIcon class="w-4 h-4" />
-                Download
+                Tải xuống
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

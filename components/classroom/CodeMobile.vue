@@ -63,7 +63,7 @@ const copyToClipboard = (text: string) => {
 
             <p class="text-primary cursor-pointer flex items-center" @click="copyToClipboard(props.code)">
               <CopyIcon class="h-4 w-4 mr-2" />
-              Copy
+              Sao chép
             </p>
           </div>
         </DialogContent>

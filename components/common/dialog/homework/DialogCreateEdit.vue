@@ -109,24 +109,24 @@ const onSubmit = handleSubmit(async (values) => {
   <form class="space-y-6 px-1" @submit="onSubmit">
     <DialogHeader>
       <DialogTitle v-if="props.edit">
-        Edit Material for Semester
+        Cập nhật bài tập
       </DialogTitle>
       <DialogTitle v-else>
-        Create Material for Semester
+        Tạo bài tập
       </DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit Material
+        Cập nhật bài tập
       </DialogDescription>
       <DialogDescription v-else>
-        Create Material
+        Tạo bài tập
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="title">
         <FormItem>
-          <FormLabel>Title</FormLabel>
+          <FormLabel>Tiêu đề</FormLabel>
 
           <FormControl>
             <Input type="text" placeholder="Title..." v-bind="componentField" :disabled="isLoading" />
@@ -146,7 +146,7 @@ const onSubmit = handleSubmit(async (values) => {
 
       <FormField v-slot="{ componentField }" name="criteria">
         <FormItem>
-          <FormLabel>Criteria</FormLabel>
+          <FormLabel>Tiêu chí bài tập</FormLabel>
           <FormControl>
           <Textarea
             placeholder="Criteria"
@@ -161,7 +161,7 @@ const onSubmit = handleSubmit(async (values) => {
       <div class="grid grid-cols-2 gap-6">
         <FormField v-slot="{ value }" name="subjectSlug">
           <FormItem>
-            <FormLabel>Subject</FormLabel>
+            <FormLabel>Môn học</FormLabel>
 
             <FormControl>
               <Combobox
@@ -179,7 +179,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <FormField v-slot="{ value }" name="semesterSlug">
           <FormItem>
-            <FormLabel>Semester</FormLabel>
+            <FormLabel>Kỳ học</FormLabel>
 
             <FormControl>
               <Combobox
@@ -199,11 +199,11 @@ const onSubmit = handleSubmit(async (values) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

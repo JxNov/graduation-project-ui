@@ -59,12 +59,12 @@ const teacherPermissions = checkPermissions($authStore.user.permissions, ['teach
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" class="w-[160px]">
                 <DropdownMenuItem>
-                  Edit
+                  Sửa
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem>
-                  Delete
+                  Xóa
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

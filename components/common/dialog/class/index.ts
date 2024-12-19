@@ -1,6 +1,7 @@
 export { default as ClassDialogDistribution } from './DialogDistribution.vue'
 export { default as ClassDialogCreateEdit } from './DialogCreateEdit.vue'
 export { default as ClassDialogDelete } from './DialogDelete.vue'
-export { default as ClassDialogAssign } from './DialogAssign.vue'
+export { default as ClassDialogAssignStudent } from './DialogAssignStudent.vue'
+export { default as ClassDialogAssignTeacher } from './DialogAssignTeacher.vue'
 export { default as ClassDialogUpToClass } from './DialogUpToClass.vue'
 export { default as ClassDialogRestore } from './DialogRestore.vue'

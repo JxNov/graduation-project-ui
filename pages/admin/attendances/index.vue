@@ -62,7 +62,7 @@ async function fetchData() {
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Attendances</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Điểm danh lớp học</h2>
     </div>
 
     <LayoutTable
