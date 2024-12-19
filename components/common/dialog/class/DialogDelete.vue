@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button } from '~/components/ui/button'
 
-const { $generationStore, $bus } = useNuxtApp()
+const { $classStore, $bus } = useNuxtApp()
 
 interface DialogDeleteProps {
   data: any,
@@ -18,7 +18,7 @@ const handleClose = () => {
 const handleDelete = async () => {
   isLoading.value = true
 
-  await $generationStore.deleteGeneration(props.data.slug)
+  await $classStore.deleteClass(props.data.slug)
 
   isLoading.value = false
   handleClose()

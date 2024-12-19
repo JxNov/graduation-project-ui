@@ -77,3 +77,35 @@ export const deleteGenerationService = async (slug: string): Promise<void> => {
     throw error
   }
 }
+
+export const trashGenerationService = async (): Promise<Generation[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/generations/trash')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const restoreGenerationService = async (slug: string): Promise<Generation> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/generations/restore/${slug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}

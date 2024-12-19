@@ -197,7 +197,7 @@ onBeforeUnmount(() => {
         @click="sendAttendanceDataToServer"
         :disabled="isLoading"
       >
-        Attendance
+        Điểm danh
       </Button>
     </div>
   </div>

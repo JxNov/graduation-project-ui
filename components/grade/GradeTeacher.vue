@@ -39,13 +39,7 @@ const semestersForSelect = computed(() => {
 })
 
 onMounted(async () => {
-  if (!$classStore.classes.length) {
-    await $classStore.fetchClassForTeacher($authStore.user.username)
-  }
-
-  if (!$subjectStore.subjects.length) {
-    await $subjectStore.fetchSubjects()
-  }
+  await fetchData()
 
   const {
     semesters: semesterAcademicYear,
@@ -268,6 +262,13 @@ const filters: TableFilter[] = [
 const redirect = (path: string) => {
   router.push(path)
 }
+
+async function fetchData() {
+  await Promise.all([
+    $classStore.fetchClassForTeacher($authStore.user.username),
+    $subjectStore.fetchSubjects()
+  ])
+}
 </script>
 
 <template>
@@ -353,6 +354,6 @@ const redirect = (path: string) => {
     </div>
 
     <LayoutTable :data="$gradeStore.grades" :columns="isTeacherForClass ? columnsTeacherForClass : columns"
-      :filters="isTeacherForClass ? filters : []" />
+                 :filters="isTeacherForClass ? filters : []" />
   </div>
 </template>

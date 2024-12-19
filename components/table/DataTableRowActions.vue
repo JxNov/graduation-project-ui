@@ -22,7 +22,8 @@ interface DialogEditAuthorityProps {
 }
 
 const props = defineProps<DialogEditAuthorityProps>()
-const data = computed(() => props.schema.parse(props.row.original))
+// const data = computed(() => props.schema.parse(props.row.original))
+const data = ref<any>(props.row.original)
 
 const handleEdit = () => {
   $bus.emit('open-dialog-edit', data.value)
@@ -35,8 +36,7 @@ const handleDelete = () => {
 
 <template>
   <ConfigProvider :use-id="useIdFunction">
-    <DropdownMenu>
-      <!--    v-if="permissionEdit || permissionDelete"-->
+    <DropdownMenu v-if="permissionEdit || permissionDelete">
       <DropdownMenuTrigger as-child>
         <Button
           variant="ghost"
@@ -47,15 +47,12 @@ const handleDelete = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" class="w-[160px]">
-        <DropdownMenuItem @click="handleEdit">
-          <!--        v-if="permissionEdit"-->
+        <DropdownMenuItem @click="handleEdit" v-if="permissionEdit">
           Sửa
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <!--      v-if="permissionEdit && permissionDelete"-->
+        <DropdownMenuSeparator v-if="permissionEdit && permissionDelete" />
 
-        <DropdownMenuItem @click="handleDelete">
-          <!--        v-if="permissionDelete"-->
+        <DropdownMenuItem @click="handleDelete" v-if="permissionDelete">
           Xóa
         </DropdownMenuItem>
       </DropdownMenuContent>

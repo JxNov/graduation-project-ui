@@ -129,21 +129,21 @@ const handleChange = (checked: boolean, value: string) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle v-if="props.edit">Edit role</DialogTitle>
-      <DialogTitle v-else>Create new role</DialogTitle>
+      <DialogTitle v-if="props.edit">Cập nhật vai trò</DialogTitle>
+      <DialogTitle v-else>Thêm mới vai trò</DialogTitle>
 
       <DialogDescription v-if="props.edit">
-        Edit role <strong>{{ props.data.name }}</strong> with specific permissions here.
+        Cập nhật vai trò <strong>{{ props.data.name }}</strong> với các quyền cụ thể.
       </DialogDescription>
       <DialogDescription v-else>
-        Create a new role with specific permissions.
+        Tạo mới vai trò với các quyền cụ thể.
       </DialogDescription>
     </DialogHeader>
 
     <div class="space-y-6">
       <FormField v-slot="{ componentField }" name="name">
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên vai trò</FormLabel>
 
           <FormControl>
             <Input type="text" placeholder="Name..." v-bind="componentField" :disabled="isLoading" />
@@ -154,7 +154,7 @@ const handleChange = (checked: boolean, value: string) => {
       </FormField>
 
       <div class="space-y-2">
-        <p class="text-md font-semibold">List of permissions</p>
+        <p class="text-md font-semibold">Danh sách quyền</p>
         <div class="rounded-md border">
           <Table>
             <TableHeader>
@@ -164,7 +164,7 @@ const handleChange = (checked: boolean, value: string) => {
                 </TableCell>
 
                 <TableCell>
-                  Permissions
+                  Quyền
                 </TableCell>
 
                 <TableCell class="w-24">
@@ -174,7 +174,7 @@ const handleChange = (checked: boolean, value: string) => {
                     @update:checked="handleSelectAll"
                   />
 
-                  Select All
+                  Chọn tất cả
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -220,11 +220,11 @@ const handleChange = (checked: boolean, value: string) => {
 
     <DialogFooter class="gap-2">
       <Button type="button" variant="outline" @click="handleClose" :disabled="isLoading">
-        Cancel
+        Hủy
       </Button>
 
       <Button type="submit" :disabled="isLoading">
-        Save changes
+        Lưu
       </Button>
     </DialogFooter>
   </form>

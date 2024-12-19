@@ -17,7 +17,11 @@ export const useMaterialStore = defineStore('material', () => {
     const fetchMaterialBlock = async () => {
       try {
         materialBlock.value = await fetchMaterialBlockService()
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 404) {
+          materialBlock.value = []
+        }
+
         throw error
       }
     }
@@ -25,7 +29,11 @@ export const useMaterialStore = defineStore('material', () => {
     const fetchMaterialClass = async (classSlug: string) => {
       try {
         materialClass.value = await fetchMaterialClassService(classSlug)
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 404) {
+          materialClass.value = []
+        }
+
         throw error
       }
     }
@@ -49,7 +57,11 @@ export const useMaterialStore = defineStore('material', () => {
         toast.success('Tạo tài liệu lớp học thành công')
 
         return response
-      } catch (error) {
+      } catch (error: any) {
+        for (const key in error.response.data.errors) {
+          toast.error(error.response.data.errors[key][0])
+        }
+
         throw error
       }
     }

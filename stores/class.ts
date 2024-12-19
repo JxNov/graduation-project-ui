@@ -9,17 +9,27 @@ import {
   deleteClassService,
   distributeStudentsService,
   assignStudentsToClassService,
-  promoteStudentsService
+  assignTeachersToClassService,
+  promoteStudentsService,
+  trashClassService,
+  restoreClassService,
+  fetchSemesterForClassService
 } from '~/services/class'
 import { toast } from 'vue-sonner'
 
 export const useClassStore = defineStore('class', () => {
   const classes = ref<Class[]>([])
+  const trashClasses = ref<Class[]>([])
+  const semesterForClass = ref<any>([])
 
   const fetchClasses = async () => {
     try {
       classes.value = await fetchClassesService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classes.value = []
+      }
+
       throw error
     }
   }
@@ -27,7 +37,11 @@ export const useClassStore = defineStore('class', () => {
   const fetchClassForTeacher = async (username: string) => {
     try {
       classes.value = await fetchClassForTeacherService(username)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classes.value = []
+      }
+
       throw error
     }
   }
@@ -35,7 +49,11 @@ export const useClassStore = defineStore('class', () => {
   const fetchClassForStudent = async (username: string) => {
     try {
       classes.value = await fetchClassForStudentService(username)
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classes.value = []
+      }
+
       throw error
     }
   }
@@ -128,6 +146,25 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const assignTeachersToClass = async (slug: string, data: {
+    username: string[]
+  }) => {
+    try {
+      const response = await assignTeachersToClassService(slug, data)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      toast.success('Thêm giáo viên vào lớp thành công')
+
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const promoteStudents = async (slug: string, data: {
     name: string
     username: string
@@ -143,6 +180,45 @@ export const useClassStore = defineStore('class', () => {
       return response
     } catch (error: any) {
       toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
+  const trashClass = async () => {
+    try {
+      trashClasses.value = await trashClassService()
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        trashClasses.value = []
+      }
+
+      throw error
+    }
+  }
+
+  const restoreClass = async (slug: string) => {
+    try {
+      const response = await restoreClassService(slug)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      trashClasses.value = trashClasses.value.filter(cls => cls.slug !== slug)
+      classes.value = [...classes.value, response]
+
+      toast.success('Khôi phục lớp học thành công')
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
+  const fetchSemesterForClass = async (classSlug: string) => {
+    try {
+      semesterForClass.value = await fetchSemesterForClassService(classSlug)
+    } catch (error) {
       throw error
     }
   }
@@ -176,20 +252,28 @@ export const useClassStore = defineStore('class', () => {
 
   const clearClasses = () => {
     classes.value = []
+    trashClasses.value = []
+    semesterForClass.value = []
   }
 
   return {
     classes,
+    trashClasses,
+    semesterForClass,
     fetchClasses,
     fetchClassForTeacher,
     fetchClassForStudent,
+    fetchSemesterForClass,
     showClass,
     createClass,
     updateClass,
     deleteClass,
     distributeStudents,
     assignStudentsToClass,
+    assignTeachersToClass,
     promoteStudents,
+    trashClass,
+    restoreClass,
     clearClasses
   }
 })

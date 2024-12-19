@@ -23,8 +23,11 @@ export const useChatStore = defineStore('chat', () => {
 
       chatPreviews.value = response
       return response
-    } catch (err) {
-      throw err
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        chatPreviews.value = []
+      }
+      throw error
     }
   }
 
@@ -38,8 +41,11 @@ export const useChatStore = defineStore('chat', () => {
 
       chatPreviews.value = response
       return response
-    } catch (err) {
-      throw err
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        chatPreviews.value = []
+      }
+      throw error
     }
   }
 
@@ -53,16 +59,24 @@ export const useChatStore = defineStore('chat', () => {
 
       chats.value = response
       return response
-    } catch (err) {
-      throw err
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        chats.value = []
+      }
+
+      throw error
     }
   }
 
   const getChatStudent = async (id: number) => {
     try {
       chats.value = await getChatStudentService(id)
-    } catch (err) {
-      throw err
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        chats.value = []
+      }
+
+      throw error
     }
   }
 

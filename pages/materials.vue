@@ -6,21 +6,11 @@ onMounted(async () => {
 })
 
 async function fetchData() {
-  const promises = []
-
-  if (!$materialStore.materialBlock.length) {
-    promises.push($materialStore.fetchMaterialBlock())
-  }
-
-  if (!$blockStore.blocks.length) {
-    promises.push($blockStore.fetchBlocks())
-  }
-
-  if (!$subjectStore.subjects.length) {
-    promises.push($subjectStore.fetchSubjects())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $materialStore.fetchMaterialBlock(),
+    $blockStore.fetchBlocks(),
+    $subjectStore.fetchSubjects()
+  ])
 }
 </script>
 

@@ -7,7 +7,11 @@ export const useSubjectStore = defineStore('subject', () => {
   const fetchSubjects = async () => {
     try {
       subjects.value = await fetchSubjectsService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        subjects.value = []
+      }
+
       throw error
     }
   }

@@ -8,7 +8,9 @@ import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { StudentDialogImport, StudentDialogCreateEdit } from '@/components/common/dialog/student'
+import { UserDialogCreateEdit, UserDialogDelete } from '~/components/common/dialog/user'
 import { toast } from 'vue-sonner'
+import { Trash2 } from 'lucide-vue-next'
 
 const { $authStore, $generationStore, $academicYearStore, $studentStore, $bus } = useNuxtApp()
 
@@ -62,7 +64,6 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
     ['email', 'Email'],
     ['gender', 'Giới tính'],
     ['actions', '', '', {
@@ -159,21 +160,11 @@ const downloadSampleStudents = async () => {
 }
 
 async function fetchData() {
-  const promises = []
-
-  if (!$generationStore.generations.length) {
-    promises.push($generationStore.fetchGenerations())
-  }
-
-  if (!$academicYearStore.academicYears.length) {
-    promises.push($academicYearStore.fetchAcademicYears())
-  }
-
-  if (!$studentStore.students.length) {
-    promises.push($studentStore.fetchStudents())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $generationStore.fetchGenerations(),
+    $academicYearStore.fetchAcademicYears(),
+    $studentStore.fetchStudents()
+  ])
 }
 </script>
 
@@ -183,6 +174,13 @@ async function fetchData() {
       <h2 class="text-4xl font-bold tracking-tight">Quản lý học sinh</h2>
 
       <div class="flex gap-4">
+        <NuxtLink to="/admin/users/trash">
+          <Button variant="outline" v-if="shouldShowElement" class="flex items-center gap-2">
+            <Trash2 class="w-5 h-5" />
+            Thùng rác
+          </Button>
+        </NuxtLink>
+
         <Button variant="outline" @click="downloadSampleStudents" v-if="shouldShowElement" :disabled="isLoaded">
           Tải file mẫu học sinh
         </Button>
@@ -212,15 +210,15 @@ async function fetchData() {
     </DialogContent>
   </Dialog>
 
-  <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <StudentDialogCreateEdit :data="selectedValue" edit/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isEditing" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <UserDialogCreateEdit :data="selectedValue" edit />
+    </DialogContent>
+  </Dialog>
 
-  <!--  <Dialog :open="isDeleting" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">-->
-  <!--      <StudentDialogDelete :data="selectedValue"/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isDeleting" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <UserDialogDelete :data="selectedValue" />
+    </DialogContent>
+  </Dialog>
 </template>

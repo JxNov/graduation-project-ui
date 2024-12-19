@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import type { Article } from '~/schema'
 
-const { $classroomStore, $homeworkStore, $materialStore, $subjectStore, $semesterStore, $bus } = useNuxtApp()
+const {
+  $classroomStore,
+  $homeworkStore,
+  $materialStore,
+  $subjectStore,
+  $semesterStore,
+  $classStore,
+  $bus
+} = useNuxtApp()
 const route = useRoute()
 const echo = useEcho()
 const useIdFunction = () => useId()
@@ -101,25 +109,13 @@ onBeforeUnmount(() => {
 })
 
 async function fetchData() {
-  const promises = []
-
-  if (!$homeworkStore.homeworks.length) {
-    promises.push($homeworkStore.fetchHomeworks(route.params.classroomSlug as string))
-  }
-
-  if (!$materialStore.materialClass.length) {
-    promises.push($materialStore.fetchMaterialClass(classSlug))
-  }
-
-  if (!$subjectStore.subjects.length) {
-    promises.push($subjectStore.fetchSubjects())
-  }
-
-  if (!$semesterStore.semesters.length) {
-    promises.push($semesterStore.fetchSemesters())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $homeworkStore.fetchHomeworks(route.params.classroomSlug as string),
+    $materialStore.fetchMaterialClass(classSlug),
+    $subjectStore.fetchSubjects(),
+    $semesterStore.fetchSemesters(),
+    $classStore.fetchSemesterForClass(route.params.classroomSlug as string)
+  ])
 }
 </script>
 
@@ -128,19 +124,19 @@ async function fetchData() {
     <div class="flex justify-between items-center">
       <TabsList>
         <TabsTrigger as-child value="bulletin-board">
-          Bulletin Board
+          Bảng tin
         </TabsTrigger>
 
         <TabsTrigger as-child value="homework">
-          Homework
+          Bài tập
         </TabsTrigger>
 
         <TabsTrigger as-child value="people">
-          People
+          Mọi người
         </TabsTrigger>
 
         <TabsTrigger as-child value="materials">
-          Materials
+          Tài liệu
         </TabsTrigger>
       </TabsList>
 

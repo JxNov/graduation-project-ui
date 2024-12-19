@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
             variant="outline"
             @click="clearSearch"
           >
-            Bỏ lọc
+            Xóa bộ lọc
           </Button>
         </div>
       </form>

@@ -115,6 +115,50 @@ export const createUserService = async (data: {
   }
 }
 
+export const updateUserService = async (username: string, data: {
+  name: string,
+  dateOfBirth: string,
+  gender: string,
+  address: string,
+  phone: string,
+}): Promise<User> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/users/change-info/${username}`, {
+      name: data.name,
+      date_of_birth: data.dateOfBirth,
+      gender: data.gender,
+      address: data.address,
+      phone_number: data.phone
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const deleteUserService = async (username: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.delete(`/v1/users/${username}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
 export const forgotPasswordService = async (data: {
   email: string[]
 }): Promise<any> => {
@@ -130,6 +174,38 @@ export const forgotPasswordService = async (data: {
     }
 
     return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const trashUserService = async (): Promise<User[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/users/trash')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const restoreUserService = async (username: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/users/restore/${username}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response
   } catch (error) {
     throw error
   }

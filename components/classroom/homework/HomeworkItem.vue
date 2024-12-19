@@ -67,12 +67,12 @@ const deleteHomework = (homework: any) => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" class="w-[160px]">
                   <DropdownMenuItem @click="editHomework(homework)">
-                    Edit
+                    Sửa
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
 
                   <DropdownMenuItem @click="deleteHomework(homework)">
-                    Delete
+                    Xóa
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -86,8 +86,8 @@ const deleteHomework = (homework: any) => {
           <div class="flex flex-col gap-4">
             <CardDescription v-if="!homework.dueDate">Không có ngày đến hạn</CardDescription>
             <p class="text-sm" v-else>
-              Due date:
-              {{ homework.dueDate }}
+              Tiêu chí:
+              <span class="font-semibold">{{ homework.criteria }}</span>
             </p>
           </div>
 
@@ -110,7 +110,7 @@ const deleteHomework = (homework: any) => {
             type="button"
             @click="redirect(`/classrooms/${route.params.classroomSlug}/homeworks/${homework.slug}`)"
           >
-            Details
+            Xem chi tiết
           </Button>
         </CardFooter>
       </CollapsibleContent>

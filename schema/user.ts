@@ -6,6 +6,9 @@ export const userSchema = z.object({
   image: z.string(),
   email: z.string(),
   gender: z.string(),
+  dateOfBirth: z.string(),
+  address: z.string(),
+  phoneNumber: z.string(),
   roles: z.array(z.string())
 })
 

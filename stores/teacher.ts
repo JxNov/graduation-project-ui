@@ -9,7 +9,11 @@ export const useTeacherStore = defineStore('teacher', () => {
   const fetchTeachers = async () => {
     try {
       teachers.value = await fetchTeachersService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        teachers.value = []
+      }
+
       throw error
     }
   }

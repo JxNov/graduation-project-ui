@@ -46,29 +46,29 @@ const teacherPermissions = checkPermissions($authStore.user.permissions, ['teach
         </div>
 
         <div class="w-full flex-row-reverse flex justify-between items-center lg:w-fit lg:flex-col lg:items-end gap-4">
-          <ConfigProvider :use-id="useIdFunction" v-if="teacherPermissions">
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button
-                  variant="ghost"
-                  class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-                >
-                  <DotsVerticalIcon class="h-4 w-4" />
-                  <span class="sr-only">Open menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" class="w-[160px]">
-                <DropdownMenuItem>
-                  Edit
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
+          <!--          <ConfigProvider :use-id="useIdFunction" v-if="teacherPermissions">-->
+          <!--            <DropdownMenu>-->
+          <!--              <DropdownMenuTrigger as-child>-->
+          <!--                <Button-->
+          <!--                  variant="ghost"-->
+          <!--                  class="flex h-8 w-8 p-0 data-[state=open]:bg-muted"-->
+          <!--                >-->
+          <!--                  <DotsVerticalIcon class="h-4 w-4" />-->
+          <!--                  <span class="sr-only">Open menu</span>-->
+          <!--                </Button>-->
+          <!--              </DropdownMenuTrigger>-->
+          <!--              <DropdownMenuContent align="end" class="w-[160px]">-->
+          <!--                <DropdownMenuItem>-->
+          <!--                  Sửa-->
+          <!--                </DropdownMenuItem>-->
+          <!--                <DropdownMenuSeparator />-->
 
-                <DropdownMenuItem>
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </ConfigProvider>
+          <!--                <DropdownMenuItem>-->
+          <!--                  Xóa-->
+          <!--                </DropdownMenuItem>-->
+          <!--              </DropdownMenuContent>-->
+          <!--            </DropdownMenu>-->
+          <!--          </ConfigProvider>-->
 
           <CardTitle
             class="pr-2 ml-14"

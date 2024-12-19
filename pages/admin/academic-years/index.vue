@@ -1,26 +1,27 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { Generation } from '~/schema'
-import { generationSchema } from '~/schema'
+import type { AcademicYear } from '~/schema'
+import { academicYearSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
-import { GenerationDialogCreateEdit, GenerationDialogDelete } from '~/components/common/dialog/generation'
+import { AcademicYearDialogCreateEdit, AcademicYearDialogDelete } from '~/components/common/dialog/academic-year'
 import { extractValue } from '~/utils/extractValue'
 import { checkPermissions } from '~/utils/checkPermissions'
+import { Trash2 } from 'lucide-vue-next'
 
-const { $authStore, $generationStore, $bus } = useNuxtApp()
+const { $authStore, $academicYearStore, $generationStore, $bus } = useNuxtApp()
 
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
-const selectedValue = ref<Generation | object>({})
+const selectedValue = ref<AcademicYear | object>({})
 
 onMounted(async () => {
-  $bus.on('open-dialog-edit', (row: Generation) => {
+  $bus.on('open-dialog-edit', (row: AcademicYear) => {
     isEditing.value = true
     selectedValue.value = row
   })
 
-  $bus.on('open-dialog-delete', (row: Generation) => {
+  $bus.on('open-dialog-delete', (row: AcademicYear) => {
     isDeleting.value = true
     selectedValue.value = row
   })
@@ -36,7 +37,7 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
-  $bus.on('delete-rows', (values: Generation[]) => {
+  $bus.on('delete-rows', (values: AcademicYear[]) => {
     const slugs = values.map((value) => value.slug)
     console.log(slugs)
   })
@@ -54,8 +55,8 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
-    ['name', 'Khóa học sinh'],
+    ['name', 'Năm học'],
+    ['generationName', 'Khóa học sinh'],
     ['startDate', 'Ngày bắt đầu'],
     ['endDate', 'Ngày kết thúc'],
     ['actions', '', '', {
@@ -63,16 +64,22 @@ const columns = createColumns(
       enableHiding: false
     }]
   ],
-  generationSchema,
+  academicYearSchema,
   [],
   'admin.update',
   'admin.delete'
-) as ColumnDef<Generation>[]
+) as ColumnDef<AcademicYear>[]
 
-const valueStartDate = extractValue($generationStore.generations, 'startDate')
-const valueEndDate = extractValue($generationStore.generations, 'endDate')
+const valueGenerationName = extractValue($academicYearStore.academicYears, 'generationName')
+const valueStartDate = extractValue($academicYearStore.academicYears, 'startDate')
+const valueEndDate = extractValue($academicYearStore.academicYears, 'endDate')
 
 const filters = [
+  {
+    name: 'generationName',
+    label: 'Khóa học',
+    values: valueGenerationName
+  },
   {
     name: 'startDate',
     label: 'Ngày bắt đầu',
@@ -102,27 +109,34 @@ const handleCloseDialog = () => {
 }
 
 async function fetchData() {
-  const promises = []
-
-  if (!$generationStore.generations.length) {
-    promises.push($generationStore.fetchGenerations())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $generationStore.fetchGenerations(),
+    $academicYearStore.fetchAcademicYears()
+  ])
 }
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Quản lý khóa học sinh</h2>
-      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Tạo mới khóa học sinh
-      </Button>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý năm học</h2>
+
+      <div class="flex justify-between items-center gap-4">
+        <NuxtLink to="/admin/academic-years/trash">
+          <Button variant="outline" v-if="shouldShowElement" class="flex items-center gap-2">
+            <Trash2 class="w-5 h-5" />
+            Thùng rác
+          </Button>
+        </NuxtLink>
+
+        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+          Tạo mới năm học
+        </Button>
+      </div>
     </div>
 
     <LayoutTable
-      :data="$generationStore.generations"
+      :data="$academicYearStore.academicYears"
       :columns="columns"
       :filters="filters"
     />
@@ -130,19 +144,19 @@ async function fetchData() {
 
   <Dialog :open="isCreating" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <GenerationDialogCreateEdit />
+      <AcademicYearDialogCreateEdit />
     </DialogContent>
   </Dialog>
 
   <Dialog :open="isEditing" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <GenerationDialogCreateEdit :data="selectedValue" edit />
+      <AcademicYearDialogCreateEdit :data="selectedValue" edit />
     </DialogContent>
   </Dialog>
 
   <Dialog :open="isDeleting" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <GenerationDialogDelete :data="selectedValue" />
+      <AcademicYearDialogDelete :data="selectedValue" />
     </DialogContent>
   </Dialog>
 </template>

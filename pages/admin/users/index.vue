@@ -7,8 +7,14 @@ import { createColumns } from '~/composables/columns'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { extractValue } from '~/utils/extractValue'
 import { Badge } from '~/components/ui/badge'
-import { UserDialogAssign, UserDialogCreateEdit, UserDialogRestorePassword } from '~/components/common/dialog/user'
+import {
+  UserDialogAssign,
+  UserDialogCreateEdit,
+  UserDialogDelete,
+  UserDialogRestorePassword
+} from '~/components/common/dialog/user'
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar'
+import { Trash2 } from 'lucide-vue-next'
 
 const { $authStore, $userStore, $roleStore, $bus } = useNuxtApp()
 
@@ -68,7 +74,6 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
     ['email', 'Email'],
     ['gender', 'Giới tính'],
     ['actions', '', '', {
@@ -157,21 +162,11 @@ const shouldShowElement = computed(() => {
 })
 
 async function fetchData() {
-  const promises = []
-
-  if (!$userStore.users.length) {
-    promises.push($userStore.fetchUsers())
-  }
-
-  if (!$roleStore.modules.length) {
-    promises.push($roleStore.fetchModules())
-  }
-
-  if (!$roleStore.roles.length) {
-    promises.push($roleStore.fetchRoles())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $userStore.fetchUsers(),
+    $roleStore.fetchModules(),
+    $roleStore.fetchRoles()
+  ])
 }
 </script>
 
@@ -181,6 +176,13 @@ async function fetchData() {
       <h2 class="text-4xl font-bold tracking-tight">Quản lý người dùng</h2>
 
       <div class="flex gap-4">
+        <NuxtLink to="/admin/users/trash">
+          <Button variant="outline" v-if="shouldShowElement" class="flex items-center gap-2">
+            <Trash2 class="w-5 h-5" />
+            Thùng rác
+          </Button>
+        </NuxtLink>
+
         <Button variant="outline" @click="isRestoring = true" v-if="shouldShowElement">
           Khôi phục mật khẩu người dùng
         </Button>
@@ -220,15 +222,15 @@ async function fetchData() {
     </DialogContent>
   </Dialog>
 
-  <!--  <Dialog :open="isEditing" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogCreateEdit :data="selectedValue" edit/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isEditing" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[550px]" @interact-outside="handleInteractOutside">
+      <UserDialogCreateEdit :data="selectedValue" edit />
+    </DialogContent>
+  </Dialog>
 
-  <!--  <Dialog :open="isDeleting" @update:open="handleCloseDialog">-->
-  <!--    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">-->
-  <!--      <UserDialogDelete :data="selectedValue"/>-->
-  <!--    </DialogContent>-->
-  <!--  </Dialog>-->
+  <Dialog :open="isDeleting" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <UserDialogDelete :data="selectedValue" />
+    </DialogContent>
+  </Dialog>
 </template>

@@ -7,11 +7,14 @@ import {
   ClassDialogDistribution,
   ClassDialogCreateEdit,
   ClassDialogDelete,
-  ClassDialogAssign,
+  ClassDialogAssignStudent,
+  ClassDialogAssignTeacher,
   ClassDialogUpToClass
 } from '~/components/common/dialog/class'
 import { checkPermissions } from '~/utils/checkPermissions'
 import { Button } from '~/components/ui/button'
+import { extractValue } from '~/utils/extractValue'
+import { Trash2 } from 'lucide-vue-next'
 
 const { $authStore, $academicYearStore, $classStore, $teacherStore, $studentStore, $blockStore, $bus } = useNuxtApp()
 const router = useRouter()
@@ -21,7 +24,8 @@ const adminPermissions = checkPermissions($authStore.user.permissions, ['admin.c
 const isDistribution = ref<boolean>(false)
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
-const isAssigning = ref<boolean>(false)
+const isAssigningStudent = ref<boolean>(false)
+const isAssigningTeacher = ref<boolean>(false)
 const isUpToClass = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
 const selectedValue = ref<Class | object>({})
@@ -44,8 +48,13 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
-  $bus.on('close-dialog-assign', (value: boolean) => {
-    isAssigning.value = value
+  $bus.on('close-dialog-assign-student', (value: boolean) => {
+    isAssigningStudent.value = value
+    selectedClassSlug.value = ''
+  })
+
+  $bus.on('close-dialog-assign-teacher', (value: boolean) => {
+    isAssigningTeacher.value = value
     selectedClassSlug.value = ''
   })
 
@@ -75,7 +84,7 @@ onBeforeUnmount(() => {
   $bus.off('open-dialog-edit')
   $bus.off('open-dialog-delete')
   $bus.off('close-dialog-create-edit')
-  $bus.off('close-dialog-assign')
+  $bus.off('close-dialog-assign-student')
   $bus.off('close-dialog-up-to-class')
   $bus.off('close-dialog-delete')
   $bus.off('delete-rows')
@@ -83,13 +92,13 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
     ['name', 'Lớp học'],
     ['teacherName', 'GVCN'],
     ['numberOfStudents', 'Số lượng học sinh'],
     ['code', 'Mã lớp', '', {
       enableSorting: false
     }],
+    ['academicYearName', 'Năm học'],
     ['actions', '', '', {
       enableSorting: false,
       enableHiding: false
@@ -125,9 +134,17 @@ const columns = createColumns(
               size: 'sm',
               onClick: () => {
                 selectedClassSlug.value = row.original.slug
-                isAssigning.value = true
+                isAssigningStudent.value = true
               }
-            }, { default: () => 'Thêm học sinh' })
+            }, { default: () => 'Thêm học sinh' }),
+            isAdmin && h(Button, {
+              variant: 'outline',
+              size: 'sm',
+              onClick: () => {
+                selectedClassSlug.value = row.original.slug
+                isAssigningTeacher.value = true
+              }
+            }, { default: () => 'Thêm giáo viên dạy' })
           ])
         )
       },
@@ -142,6 +159,16 @@ const columns = createColumns(
   'admin.delete'
 ) as ColumnDef<Class>[]
 
+const valueAcademicYearName = extractValue($classStore.trashClasses, 'academicYearName')
+
+const filters = [
+  {
+    name: 'academicYearName',
+    label: 'Năm học',
+    values: valueAcademicYearName
+  }
+]
+
 const handleInteractOutside = (event: Event) => {
   const target = event.target as HTMLElement
   if (target?.closest('[data-sonner-toaster]')) return event.preventDefault()
@@ -151,7 +178,8 @@ const handleCloseDialog = () => {
   isDistribution.value = false
   isCreating.value = false
   isEditing.value = false
-  isAssigning.value = false
+  isAssigningStudent.value = false
+  isAssigningTeacher.value = false
   isUpToClass.value = false
   isDeleting.value = false
   selectedValue.value = {}
@@ -162,29 +190,13 @@ async function fetchData() {
   const promises = []
 
   if (adminPermissions) {
-    if (!$teacherStore.teachers.length) {
-      promises.push($teacherStore.fetchTeachers())
-    }
-
-    if (!$studentStore.students.length) {
-      promises.push($studentStore.fetchStudents())
-    }
-
-    if (!$blockStore.blocks.length) {
-      promises.push($blockStore.fetchBlocks())
-    }
-
-    if (!$academicYearStore.academicYears.length) {
-      promises.push($academicYearStore.fetchAcademicYears())
-    }
-
-    if (!$classStore.classes.length) {
-      promises.push($classStore.fetchClasses())
-    }
+    promises.push($teacherStore.fetchTeachers())
+    promises.push($studentStore.fetchStudents())
+    promises.push($blockStore.fetchBlocks())
+    promises.push($academicYearStore.fetchAcademicYears())
+    promises.push($classStore.fetchClasses())
   } else {
-    if (!$classStore.classes.length) {
-      promises.push($classStore.fetchClassForTeacher($authStore.user.username))
-    }
+    promises.push($classStore.fetchClassForTeacher($authStore.user.username))
   }
 
   await Promise.all(promises)
@@ -197,6 +209,13 @@ async function fetchData() {
       <h2 class="text-4xl font-bold tracking-tight">Quản lý lớp học</h2>
 
       <div class="flex gap-2">
+        <NuxtLink to="/admin/classes/trash">
+          <Button variant="outline" v-if="adminPermissions" class="flex items-center gap-2">
+            <Trash2 class="w-5 h-5" />
+            Thùng rác
+          </Button>
+        </NuxtLink>
+
         <Button variant="outline" @click="isDistribution = true" v-if="adminPermissions">
           Phân lớp học sinh
         </Button>
@@ -207,7 +226,7 @@ async function fetchData() {
       </div>
     </div>
 
-    <LayoutTable :data="$classStore.classes" :columns="columns" :filters="[]" />
+    <LayoutTable :data="$classStore.classes" :columns="columns" :filters="filters" />
   </div>
 
   <Dialog :open="isDistribution" @update:open="handleCloseDialog">
@@ -234,9 +253,15 @@ async function fetchData() {
     </DialogContent>
   </Dialog>
 
-  <Dialog :open="isAssigning" @update:open="handleCloseDialog">
+  <Dialog :open="isAssigningStudent" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <ClassDialogAssign :class-slug="selectedClassSlug" />
+      <ClassDialogAssignStudent :class-slug="selectedClassSlug" />
+    </DialogContent>
+  </Dialog>
+
+  <Dialog :open="isAssigningTeacher" @update:open="handleCloseDialog">
+    <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
+      <ClassDialogAssignTeacher :class-slug="selectedClassSlug" />
     </DialogContent>
   </Dialog>
 

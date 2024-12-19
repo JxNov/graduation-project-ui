@@ -3,17 +3,24 @@ import {
   fetchGenerationsService,
   createGenerationService,
   updateGenerationService,
-  deleteGenerationService
+  deleteGenerationService,
+  trashGenerationService,
+  restoreGenerationService
 } from '~/services/generation'
 import { toast } from 'vue-sonner'
 
 export const useGenerationStore = defineStore('generation', () => {
   const generations = ref<Generation[]>([])
+  const trashGenerations = ref<Generation[]>([])
 
   const fetchGenerations = async () => {
     try {
       generations.value = await fetchGenerationsService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        generations.value = []
+      }
+
       throw error
     }
   }
@@ -26,8 +33,16 @@ export const useGenerationStore = defineStore('generation', () => {
       toast.success('Tạo mới khóa học sinh thành công')
 
       return response
-    } catch (error) {
-      toast.error('Tạo mới khóa học sinh thất bại')
+    } catch (error: any) {
+      for (const key in error.response.data.errors) {
+        toast.error(error.response.data.errors[key][0])
+      }
+
+      if (!error.response.data.errors) {
+        toast.error(error.response.data.error)
+      }
+
+      throw error
     }
   }
 
@@ -59,6 +74,37 @@ export const useGenerationStore = defineStore('generation', () => {
     }
   }
 
+  const trashGeneration = async () => {
+    try {
+      trashGenerations.value = await trashGenerationService()
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        trashGenerations.value = []
+      }
+
+      throw error
+    }
+  }
+
+  const restoreGeneration = async (slug: string) => {
+    try {
+      const response = await restoreGenerationService(slug)
+
+      if (!response) {
+        throw new Error('Invalid response')
+      }
+
+      trashGenerations.value = trashGenerations.value.filter(generation => generation.slug !== slug)
+      generations.value = [...generations.value, response]
+
+      toast.success('Khôi phục khóa học sinh thành công')
+      return response
+    } catch (error: any) {
+      toast.error(error.response.data.error)
+      throw error
+    }
+  }
+
   const replaceGenerations = (response: any) => {
     const index = generations.value.findIndex(generation => generation.slug === response.slug)
     if (index !== -1) {
@@ -74,14 +120,18 @@ export const useGenerationStore = defineStore('generation', () => {
 
   const clearGenerations = () => {
     generations.value = []
+    trashGenerations.value = []
   }
 
   return {
     generations,
+    trashGenerations,
     fetchGenerations,
     createGeneration,
     updateGeneration,
     deleteGeneration,
+    trashGeneration,
+    restoreGeneration,
     clearGenerations
   }
 })

@@ -57,7 +57,6 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
     ['name', 'Role'],
     ['actions', '', '', {
       enableSorting: false,
@@ -82,7 +81,7 @@ const columns = createColumns(
     }
   ],
   'admin.update',
-  'admin.delete'
+  'null'
 ) as ColumnDef<Role>[]
 
 const valuePermissions = extractValue($roleStore.roles, 'permissions')
@@ -120,27 +119,20 @@ const handleCloseDialog = () => {
 }
 
 async function fetchData() {
-  const promises = []
-
-  if (!$roleStore.modules.length) {
-    promises.push($roleStore.fetchModules())
-  }
-
-  if (!$roleStore.roles.length) {
-    promises.push($roleStore.fetchRoles())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $roleStore.fetchModules(),
+    $roleStore.fetchRoles()
+  ])
 }
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Manage Roles</h2>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý vai trò</h2>
 
       <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Create new role
+        Tạo mới
       </Button>
     </div>
 

@@ -106,7 +106,7 @@ const closeAll = () => {
               Hủy
             </Button>
 
-            <Button type="submit" :disabled="isLoading">Submit</Button>
+            <Button type="submit" :disabled="isLoading">Lưu</Button>
           </CardFooter>
         </form>
       </CollapsibleContent>

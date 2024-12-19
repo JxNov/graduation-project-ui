@@ -1,26 +1,27 @@
 <script setup lang="ts">
 import type { ColumnDef } from '@tanstack/vue-table'
-import type { AcademicYear } from '~/schema'
-import { academicYearSchema } from '~/schema'
+import type { Semester } from '~/schema'
+import { semesterSchema } from '~/schema'
 import { createColumns } from '~/composables/columns'
-import { AcademicYearDialogCreateEdit, AcademicYearDialogDelete } from '~/components/common/dialog/academic-year'
+import { SemesterDialogCreateEdit, SemesterDialogDelete } from '~/components/common/dialog/semester'
 import { extractValue } from '~/utils/extractValue'
 import { checkPermissions } from '~/utils/checkPermissions'
+import { Trash2 } from 'lucide-vue-next'
 
-const { $authStore, $academicYearStore, $generationStore, $bus } = useNuxtApp()
+const { $authStore, $semesterStore, $academicYearStore, $bus } = useNuxtApp()
 
 const isCreating = ref<boolean>(false)
 const isEditing = ref<boolean>(false)
 const isDeleting = ref<boolean>(false)
-const selectedValue = ref<AcademicYear | object>({})
+const selectedValue = ref<Semester | object>({})
 
 onMounted(async () => {
-  $bus.on('open-dialog-edit', (row: AcademicYear) => {
+  $bus.on('open-dialog-edit', (row: Semester) => {
     isEditing.value = true
     selectedValue.value = row
   })
 
-  $bus.on('open-dialog-delete', (row: AcademicYear) => {
+  $bus.on('open-dialog-delete', (row: Semester) => {
     isDeleting.value = true
     selectedValue.value = row
   })
@@ -36,7 +37,7 @@ onMounted(async () => {
     selectedValue.value = {}
   })
 
-  $bus.on('delete-rows', (values: AcademicYear[]) => {
+  $bus.on('delete-rows', (values: Semester[]) => {
     const slugs = values.map((value) => value.slug)
     console.log(slugs)
   })
@@ -54,9 +55,9 @@ onBeforeUnmount(() => {
 
 const columns = createColumns(
   [
-    ['select'],
-    ['name', 'Năm học'],
+    ['name', 'Học kỳ'],
     ['generationName', 'Khóa học sinh'],
+    ['academicYearName', 'Năm học'],
     ['startDate', 'Ngày bắt đầu'],
     ['endDate', 'Ngày kết thúc'],
     ['actions', '', '', {
@@ -64,21 +65,33 @@ const columns = createColumns(
       enableHiding: false
     }]
   ],
-  academicYearSchema,
+  semesterSchema,
   [],
   'admin.update',
   'admin.delete'
-) as ColumnDef<AcademicYear>[]
+) as ColumnDef<Semester>[]
 
-const valueGenerationName = extractValue($academicYearStore.academicYears, 'generationName')
-const valueStartDate = extractValue($academicYearStore.academicYears, 'startDate')
-const valueEndDate = extractValue($academicYearStore.academicYears, 'endDate')
+const valueGenerationName = extractValue($semesterStore.semesters, 'generationName')
+const valueAcademicYearName = extractValue($semesterStore.semesters, 'academicYearName')
+const valueSemester = extractValue($semesterStore.semesters, 'name')
+const valueStartDate = extractValue($semesterStore.semesters, 'startDate')
+const valueEndDate = extractValue($semesterStore.semesters, 'endDate')
 
 const filters = [
   {
+    name: 'name',
+    label: 'Học kỳ',
+    values: valueSemester
+  },
+  {
     name: 'generationName',
-    label: 'Khóa học',
+    label: 'Khóa học sinh',
     values: valueGenerationName
+  },
+  {
+    name: 'academicYearName',
+    label: 'Năm học',
+    values: valueAcademicYearName
   },
   {
     name: 'startDate',
@@ -109,31 +122,34 @@ const handleCloseDialog = () => {
 }
 
 async function fetchData() {
-  const promises = []
-
-  if (!$generationStore.generations.length) {
-    promises.push($generationStore.fetchGenerations())
-  }
-
-  if (!$academicYearStore.academicYears.length) {
-    promises.push($academicYearStore.fetchAcademicYears())
-  }
-
-  await Promise.all(promises)
+  await Promise.all([
+    $academicYearStore.fetchAcademicYears(),
+    $semesterStore.fetchSemesters()
+  ])
 }
 </script>
 
 <template>
   <div class="w-full flex flex-col gap-4">
     <div class="flex justify-between items-center">
-      <h2 class="text-4xl font-bold tracking-tight">Quản lý năm học</h2>
-      <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
-        Tạo mới năm học
-      </Button>
+      <h2 class="text-4xl font-bold tracking-tight">Quản lý học kỳ</h2>
+
+      <div class="flex justify-between items-center gap-4">
+        <NuxtLink to="/admin/semesters/trash">
+          <Button variant="outline" v-if="shouldShowElement" class="flex items-center gap-2">
+            <Trash2 class="w-5 h-5" />
+            Thùng rác
+          </Button>
+        </NuxtLink>
+
+        <Button variant="default" @click="isCreating = true" v-if="shouldShowElement">
+          Tạo mới học kỳ
+        </Button>
+      </div>
     </div>
 
     <LayoutTable
-      :data="$academicYearStore.academicYears"
+      :data="$semesterStore.semesters"
       :columns="columns"
       :filters="filters"
     />
@@ -141,19 +157,19 @@ async function fetchData() {
 
   <Dialog :open="isCreating" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <AcademicYearDialogCreateEdit />
+      <SemesterDialogCreateEdit />
     </DialogContent>
   </Dialog>
 
   <Dialog :open="isEditing" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <AcademicYearDialogCreateEdit :data="selectedValue" edit />
+      <SemesterDialogCreateEdit :data="selectedValue" edit />
     </DialogContent>
   </Dialog>
 
   <Dialog :open="isDeleting" @update:open="handleCloseDialog">
     <DialogContent class="sm:max-w-[425px]" @interact-outside="handleInteractOutside">
-      <AcademicYearDialogDelete :data="selectedValue" />
+      <SemesterDialogDelete :data="selectedValue" />
     </DialogContent>
   </Dialog>
 </template>

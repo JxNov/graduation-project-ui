@@ -11,8 +11,7 @@ const props = defineProps<{
   dueDate: string | undefined
 }>()
 
-const isLoading = ref<boolean>(true)
-const isLoadingForm = ref<boolean>(false)
+const isLoading = ref<boolean>(false)
 const isDueDate = ref<boolean>(false)
 const dataUser = ref<any>(null)
 
@@ -41,13 +40,11 @@ watch(() => props.data, (data) => {
         dataUser.value = item
       }
     })
-
-    isLoading.value = false
   }
 })
 
 const onSubmit = handleSubmit(async (values) => {
-  isLoadingForm.value = true
+  isLoading.value = true
 
   const data = {
     username: $authStore.user.username,
@@ -61,10 +58,10 @@ const onSubmit = handleSubmit(async (values) => {
       throw new Error('Failed to submit assignment')
     }
 
-    isLoadingForm.value = false
+    isLoading.value = false
     dataUser.value = response
   } catch (error) {
-    isLoadingForm.value = false
+    isLoading.value = false
     throw error
   }
 })
@@ -109,17 +106,13 @@ const formatNumber = (value: number) => {
 
       <CardDescription
         :class="dataUser?.submittedAt ? 'text-green-500' : 'text-red-500'"
-        v-if="!isLoading"
+        v-if="isDueDate"
       >
         {{ dataUser?.submittedAt ? 'Đã nộp' : 'Chưa nộp' }}
       </CardDescription>
     </CardHeader>
 
-    <CardContent v-if="isLoading">
-      <div class="w-full h-32 bg-gray-200 rounded-md animate-pulse"></div>
-    </CardContent>
-
-    <CardContent v-else-if="dataUser?.filePath">
+    <CardContent v-if="dataUser">
       <img
         v-if="dataUser.filePath"
         :src="`https://drive.google.com/thumbnail?id=${dataUser.filePath}`"
@@ -152,24 +145,24 @@ const formatNumber = (value: number) => {
       <!--      </Button>-->
     </CardContent>
 
-    <CardContent v-else-if="isDueDate">
+    <CardContent v-else>
       <form @submit="onSubmit" class="flex flex-col justify-between gap-4" v-if="isDueDate">
         <FormField name="file">
           <FormItem>
             <FormControl>
-              <Input type="file" @change="handleFileChange" :disabled="isLoadingForm" />
+              <Input type="file" @change="handleFileChange" :disabled="isLoading" />
             </FormControl>
 
             <FormMessage />
           </FormItem>
         </FormField>
 
-        <Button type="submit" class="w-full select-none" :disabled="isLoadingForm">
+        <Button type="submit" class="w-full select-none" :disabled="isLoading">
           Gửi bài
         </Button>
       </form>
 
-      <div class="flex items-center justify-center" v-else>
+      <div class="flex items-center justify-center" v-if="!isDueDate">
         <CardDescription class="text-xs italic">Không thể nộp bài tập sau ngày đến hạn</CardDescription>
       </div>
     </CardContent>

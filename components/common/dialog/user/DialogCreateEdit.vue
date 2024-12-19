@@ -4,9 +4,16 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { z } from 'zod'
 import { useForm } from 'vee-validate'
 import DatePicker from '~/components/base/DatePicker.vue'
-import { type DateValue, getLocalTimeZone, today } from '@internationalized/date'
+import { type DateValue, getLocalTimeZone, parseDate, today } from '@internationalized/date'
 
 const { $userStore, $bus } = useNuxtApp()
+
+interface DialogEditProps {
+  data?: any,
+  edit?: boolean,
+}
+
+const props = defineProps<DialogEditProps>()
 
 const isLoading = ref<boolean>(false)
 const dateOfBirth = ref<DateValue>(today(getLocalTimeZone()))
@@ -18,6 +25,19 @@ const initialValues = ref<any>({
   address: '',
   phone: ''
 })
+
+if (props.edit) {
+  const formatDateOfBirth = props.data.dateOfBirth.split('/').reverse().join('-')
+
+  initialValues.value = {
+    name: props.data.name,
+    dateOfBirth: formatDateOfBirth,
+    gender: props.data.gender,
+    address: props.data.address,
+    phone: props.data.phoneNumber
+  }
+  dateOfBirth.value = parseDate(formatDateOfBirth)
+}
 
 const formSchema = toTypedSchema(z.object({
   name: z.string().max(50),
@@ -51,6 +71,24 @@ const onSubmit = handleSubmit(async (values) => {
   isLoading.value = true
 
   try {
+    if (props.edit) {
+      const response = await $userStore.updateUser(props.data.username, {
+        name: values.name,
+        dateOfBirth: values.dateOfBirth,
+        gender: values.gender,
+        address: values.address,
+        phone: values.phone
+      })
+
+      if (!response) {
+        throw new Error('Không cập nhật được người dùng')
+      }
+
+      isLoading.value = false
+      handleClose()
+      return
+    }
+
     const response = await $userStore.createUser({
       name: values.name,
       dateOfBirth: values.dateOfBirth,
@@ -74,12 +112,18 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form class="space-y-6" @submit="onSubmit">
     <DialogHeader>
-      <DialogTitle>
-        Tạo/Chỉnh sửa người dùng
+      <DialogTitle v-if="edit">
+        Chỉnh sửa người dùng
+      </DialogTitle>
+      <DialogTitle v-else>
+        Tạo mới người dùng
       </DialogTitle>
 
-      <DialogDescription>
-        Tạo hoặc chỉnh sửa vai trò và quyền của người dùng
+      <DialogDescription v-if="edit">
+        Chỉnh sửa thông tin người dùng
+      </DialogDescription>
+      <DialogDescription v-else>
+        Tạo mới người dùng
       </DialogDescription>
     </DialogHeader>
 
@@ -95,7 +139,7 @@ const onSubmit = handleSubmit(async (values) => {
       </FormField>
 
       <DatePicker name="startDate" label="Ngày sinh" :model-value="dateOfBirth" :disabled="isLoading"
-        @update:model-value="handleChangeDateOfBirth" />
+                  @update:model-value="handleChangeDateOfBirth" />
 
       <FormField v-slot="{ componentField }" type="radio" name="gender">
         <FormItem class="space-y-3">

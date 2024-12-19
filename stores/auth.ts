@@ -2,11 +2,10 @@ import type { Auth } from '~/schema'
 import { clearStores } from './index'
 import { getCsrfTokenService } from '~/services/general'
 import { loginService, profileService, logoutService, refreshTokenService } from '~/services/auth'
+import { useGeneralStore } from '~/stores/general'
 import { toast } from 'vue-sonner'
 
 export const useAuthStore = defineStore('auth', () => {
-  const { $generalStore } = useNuxtApp()
-
   const user = ref<Auth>({
     name: '',
     username: '',
@@ -26,7 +25,7 @@ export const useAuthStore = defineStore('auth', () => {
       await getCsrfTokenService()
       await loginService(data)
       user.value = await profileService()
-      $generalStore.isLogged = true
+      useGeneralStore().isLogged = true
 
       toast.success('Đăng nhập thành công!!!')
     } catch (error) {

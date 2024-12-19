@@ -32,7 +32,11 @@ export const useClassroomStore = defineStore('classroom', () => {
   const fetchClassrooms = async () => {
     try {
       classrooms.value = await fetchClassroomsService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classrooms.value = []
+      }
+
       throw error
     }
   }
@@ -56,7 +60,11 @@ export const useClassroomStore = defineStore('classroom', () => {
   const fetchClassroomStudent = async () => {
     try {
       classrooms.value = await fetchClassroomStudentService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        classrooms.value = []
+      }
+
       throw error
     }
   }

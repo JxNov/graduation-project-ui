@@ -173,6 +173,26 @@ export const assignStudentsToClassService = async (data: {
   }
 }
 
+export const assignTeachersToClassService = async (slug: string, data: {
+  username: string[]
+}): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.post(`/v1/classes/assign-class/${slug}`, {
+      username: data.username
+    })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response
+  } catch (error) {
+    throw error
+  }
+}
+
 export const promoteStudentsService = async (slug: string, data: {
   name: string
   username: string
@@ -188,6 +208,54 @@ export const promoteStudentsService = async (slug: string, data: {
       academic_year_slug: data.academicYearSlug,
       block_slug: data.blockSlug
     })
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const trashClassService = async (): Promise<Class[]> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/classes/trash')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const restoreClassService = async (slug: string): Promise<Class> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.patch(`/v1/classes/restore/${slug}`)
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const fetchSemesterForClassService = async (slug: string): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get(`/v1/classes/get-semester/${slug}`)
 
     if (!response) {
       throw new Error('Invalid response')

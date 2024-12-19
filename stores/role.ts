@@ -17,7 +17,11 @@ export const useRoleStore = defineStore('role', () => {
   const fetchModules = async () => {
     try {
       modules.value = await fetchModulesService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        modules.value = []
+      }
+
       throw error
     }
   }
@@ -25,7 +29,11 @@ export const useRoleStore = defineStore('role', () => {
   const fetchRoles = async () => {
     try {
       roles.value = await fetchRolesService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        roles.value = []
+      }
+
       throw error
     }
   }
@@ -33,7 +41,11 @@ export const useRoleStore = defineStore('role', () => {
   const fetchPermissions = async () => {
     try {
       permissions.value = await fetchPermissionsService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        permissions.value = []
+      }
+
       throw error
     }
   }

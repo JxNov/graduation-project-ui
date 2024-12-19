@@ -8,7 +8,11 @@ export const useGeminiStore = defineStore('gemini', () => {
   const fetchGeminis = async () => {
     try {
       geminis.value = await fetchGeminisService()
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        geminis.value = []
+      }
+
       throw error
     }
   }
