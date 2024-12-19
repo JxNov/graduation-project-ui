@@ -74,7 +74,7 @@ watch(() => academicYear.value, async (value: any) => {
     classes: classAcademicYear
   } = await $academicYearStore.showAcademicYear(value)
   semesters.value = semesterAcademicYear
-  classes.value = classAcademicYear
+  classes.value = classAcademicYear.filter((cls: any) => cls.classSlug === $classStore.classes[0].slug)
 
   if (isTeacherForClass.value) {
     await $gradeStore.fetchGradeByTeacher(`academicYear=${value}&class=${$classStore.classes[0].slug}&semester=${semestersForSelect.value[0].value}`)

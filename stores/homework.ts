@@ -80,16 +80,16 @@ export const useHomeworkStore = defineStore('homework', () => {
         const response = await deleteHomeworkService(slug)
 
         if (!response) {
-          throw new Error('Failed to delete homework')
+          throw new Error('Xóa bài tập thất bại')
         }
 
-        toast.success('Homework deleted successfully')
+        toast.success('Bài tập đã được xóa')
 
         homeworks.value = homeworks.value.filter(homework => homework.slug !== slug)
 
         return response
       } catch (error) {
-        toast.error('Failed to delete homework')
+        toast.error('Xóa bài tập thất bại')
       }
     }
 
@@ -109,14 +109,14 @@ export const useHomeworkStore = defineStore('homework', () => {
         const response = await submitAssignmentService(assignmentSlug, data)
 
         if (!response) {
-          throw new Error('Failed to submit assignment')
+          throw new Error('Nộp bài thất bại')
         }
 
-        toast.success('Assignment submitted successfully')
+        toast.success('Nộp bài thành công')
 
         return response
       } catch (error) {
-        toast.error('Failed to submit assignment')
+        toast.error('Nộp bài thất bại')
         throw error
       }
     }
@@ -129,14 +129,14 @@ export const useHomeworkStore = defineStore('homework', () => {
         const response = await giveScoreService(assignmentSlug, username, data)
 
         if (!response) {
-          throw new Error('Failed to give score')
+          throw new Error('Cập nhật điểm thất bại')
         }
 
-        toast.success('Score given successfully')
+        toast.success('Cập nhật điểm thành công')
 
         return response
       } catch (error) {
-        toast.error('Failed to give score')
+        toast.error('Cập nhật điểm thất bại')
         throw error
       }
     }
