@@ -266,3 +266,35 @@ export const fetchSemesterForClassService = async (slug: string): Promise<any> =
     throw error
   }
 }
+
+export const fetchSurplusStudentsService = async (): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/excels/students-class/surplusStudents')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data.students
+  } catch (error) {
+    throw error
+  }
+}
+
+export const fetchRepeatStudentsService = async (): Promise<any> => {
+  const { $axios } = useNuxtApp()
+
+  try {
+    const response = await $axios.get('/v1/classes/getfailedstudents')
+
+    if (!response) {
+      throw new Error('Invalid response')
+    }
+
+    return response.data.data.failedStudents
+  } catch (error) {
+    throw error
+  }
+}

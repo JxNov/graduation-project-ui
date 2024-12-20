@@ -111,6 +111,8 @@ const columns = createColumns(
       title: '',
       render: (row) => {
         const isAdmin = checkPermissions($authStore.user.permissions, ['admin.create'])
+        const block9 = $blockStore.blocks.find((block) => block.slug === 'khoi-9')
+        const blockSlug = row.original.blockSlug
 
         return h('div', { class: 'truncate px-2' },
           h('div', { class: 'flex items-center gap-2' }, [
@@ -121,7 +123,7 @@ const columns = createColumns(
                 router.push(`/admin/classes/${row.original.slug}`)
               }
             }, { default: () => 'Điểm' }),
-            isAdmin && h(Button, {
+            isAdmin && block9 && blockSlug !== 'khoi-9' && h(Button, {
               variant: 'outline',
               size: 'sm',
               onClick: () => {
@@ -213,6 +215,18 @@ async function fetchData() {
           <Button variant="outline" v-if="adminPermissions" class="flex items-center gap-2">
             <Trash2 class="w-5 h-5" />
             Thùng rác
+          </Button>
+        </NuxtLink>
+
+        <NuxtLink to="/admin/classes/repeat">
+          <Button variant="outline" v-if="adminPermissions" class="flex items-center gap-2">
+            Học sinh lưu ban
+          </Button>
+        </NuxtLink>
+
+        <NuxtLink to="/admin/classes/surplus">
+          <Button variant="outline" v-if="adminPermissions" class="flex items-center gap-2">
+            Học sinh chưa xếp lớp
           </Button>
         </NuxtLink>
 

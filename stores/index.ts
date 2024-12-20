@@ -16,6 +16,7 @@ import { useChatStore } from './chat'
 import { useGeminiStore } from './gemini'
 import { useMaterialStore } from './material'
 import { useGradeStore } from './grade'
+import { useStatisticStore } from './statistic'
 
 export const clearStores = () => {
   useGeneralStore().clearGeneral()
@@ -36,4 +37,5 @@ export const clearStores = () => {
   useGeminiStore().clearGeminis()
   useMaterialStore().clearMaterials()
   useGradeStore().clearGrades()
+  useStatisticStore().clearStatistic()
 }
