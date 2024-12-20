@@ -13,7 +13,9 @@ import {
   promoteStudentsService,
   trashClassService,
   restoreClassService,
-  fetchSemesterForClassService
+  fetchSemesterForClassService,
+  fetchRepeatStudentsService,
+  fetchSurplusStudentsService
 } from '~/services/class'
 import { toast } from 'vue-sonner'
 
@@ -21,6 +23,8 @@ export const useClassStore = defineStore('class', () => {
   const classes = ref<Class[]>([])
   const trashClasses = ref<Class[]>([])
   const semesterForClass = ref<any>([])
+  const repeatStudents = ref<any>([])
+  const surplusStudents = ref<any>([])
 
   const fetchClasses = async () => {
     try {
@@ -223,6 +227,24 @@ export const useClassStore = defineStore('class', () => {
     }
   }
 
+  const fetchRepeatStudents = async () => {
+    try {
+      repeatStudents.value = await fetchRepeatStudentsService()
+    } catch (error) {
+      repeatStudents.value = []
+      throw error
+    }
+  }
+
+  const fetchSurplusStudents = async () => {
+    try {
+      surplusStudents.value = await fetchSurplusStudentsService()
+    } catch (error) {
+      surplusStudents.value = []
+      throw error
+    }
+  }
+
   const replaceClasses = (response: any) => {
     const index = classes.value.findIndex(cls => cls.slug === response.slug)
     if (index !== -1) {
@@ -254,12 +276,16 @@ export const useClassStore = defineStore('class', () => {
     classes.value = []
     trashClasses.value = []
     semesterForClass.value = []
+    repeatStudents.value = []
+    surplusStudents.value = []
   }
 
   return {
     classes,
     trashClasses,
     semesterForClass,
+    repeatStudents,
+    surplusStudents,
     fetchClasses,
     fetchClassForTeacher,
     fetchClassForStudent,
@@ -274,6 +300,8 @@ export const useClassStore = defineStore('class', () => {
     promoteStudents,
     trashClass,
     restoreClass,
+    fetchRepeatStudents,
+    fetchSurplusStudents,
     clearClasses
   }
 })

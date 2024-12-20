@@ -18,6 +18,7 @@ import { useHomeworkStore } from '~/stores/homework'
 import { useMaterialStore } from '~/stores/material'
 import { useGradeStore } from '~/stores/grade'
 import { useSubjectStore } from '~/stores/subject'
+import { useStatisticStore } from '~/stores/statistic'
 
 export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('generalStore', useGeneralStore())
@@ -40,4 +41,5 @@ export default defineNuxtPlugin((NuxtApp) => {
   NuxtApp.provide('materialStore', useMaterialStore())
   NuxtApp.provide('gradeStore', useGradeStore())
   NuxtApp.provide('subjectStore', useSubjectStore())
+  NuxtApp.provide('statisticStore', useStatisticStore())
 })

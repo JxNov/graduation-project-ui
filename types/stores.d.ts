@@ -18,6 +18,7 @@ import { useHomeworkStore } from '~/stores/homework'
 import { useMaterialStore } from '~/stores/material'
 import { useGradeStore } from '~/stores/grade'
 import { useSubjectStore } from '~/stores/subject'
+import { useStatisticStore } from '~/stores/statistic'
 
 declare module '#app' {
   interface NuxtApp {
@@ -41,6 +42,7 @@ declare module '#app' {
     $materialStore: ReturnType<typeof useMaterialStore>;
     $gradeStore: ReturnType<typeof useGradeStore>;
     $subjectStore: ReturnType<typeof useSubjectStore>;
+    $statisticStore: ReturnType<typeof useStatisticStore>;
   }
 }
 
@@ -66,5 +68,6 @@ declare module '@vue/runtime-core' {
     $materialStore: ReturnType<typeof useMaterialStore>;
     $gradeStore: ReturnType<typeof useGradeStore>;
     $subjectStore: ReturnType<typeof useSubjectStore>;
+    $statisticStore: ReturnType<typeof useStatisticStore>;
   }
 }

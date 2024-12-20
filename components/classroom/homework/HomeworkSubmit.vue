@@ -18,7 +18,7 @@ const dataUser = ref<any>(null)
 const formSchema = toTypedSchema(z.object({
   file: z.instanceof(File)
     .refine((file) => file.type === 'application/pdf' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || file.type === 'application/zip', {
-      message: 'File must be a PDF, DOCX, or ZIP'
+      message: 'File nộp phải là định dạng PDF, DOCX, or ZIP'
     })
 }))
 
@@ -55,7 +55,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await $homeworkStore.submitAssignment(route.params.homeworkSlug as string, data)
 
     if (!response) {
-      throw new Error('Failed to submit assignment')
+      throw new Error('Nộp bài thất bại')
     }
 
     isLoading.value = false
